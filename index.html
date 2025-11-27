@@ -138,7 +138,7 @@
       outline: none;
       background: #f9fafb;
       transition:
-        border-color 0.16s.ease,
+        border-color 0.16s ease,
         box-shadow 0.16s ease,
         background-color 0.16s ease,
         transform 0.06s ease;
@@ -210,6 +210,16 @@
       text-align: center;
     }
 
+    .error-box {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: #991b1b;
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+    
     @media (max-width: 480px) {
       .card {
         padding: 20px 18px 16px;
@@ -266,14 +276,13 @@
             />
           </div>
 
-          <!-- NUEVO CAMPO: Lugar de emisión -->
           <div class="field">
             <label for="lugar_emision">Lugar de emisión</label>
             <input
               type="text"
               id="lugar_emision"
               name="lugar_emision"
-              placeholder="Ej. ACAPULCO DE JUÁREZ , GUERRERO"
+              placeholder="Ej. CUAUHTEMOC , CIUDAD DE MEXICO"
             />
           </div>
 
@@ -285,6 +294,8 @@
             Al enviar, se consultará el servicio del SAT y se descargará un archivo
             <strong>.docx</strong> con tu constancia. Puedes abrirlo en Word para guardarlo como PDF o imprimirlo.
           </p>
+
+          <p id="error-box" class="error-box" style="display:none;"></p>
         </form>
       </div>
     </div>
@@ -293,7 +304,76 @@
       Este sitio no almacena tus datos; solo se usan para consultar tu constancia en el SAT.
     </p>
   </div>
+  <script>
+    const form = document.querySelector("form");
+    const button = form.querySelector("button");
+    const errorBox = document.getElementById("error-box");
+    const originalBtnText = button.innerText;
+  
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault(); // No hagas submit normal
+  
+      // Limpiar errores
+      errorBox.style.display = "none";
+      errorBox.textContent = "";
+  
+      // Estado "cargando"
+      button.disabled = true;
+      button.innerText = "Generando...";
+      
+      try {
+        const formData = new FormData(form);
+  
+        const resp = await fetch("https://constancia-backend.onrender.com/generar", {
+          method: "POST",
+          body: formData,
+          headers: {
+            "X-Requested-With": "fetch"
+          }
+        });
+  
+        // Si NO es 2xx, intentamos leer JSON de error y mostrarlo
+        if (!resp.ok) {
+          let msg = "Ocurrió un error inesperado. Intenta de nuevo.";
+          try {
+            const data = await resp.json();
+            if (data && data.message) msg = data.message;
+          } catch (_) {}
+          errorBox.textContent = msg;
+          errorBox.style.display = "block";
+          return;
+        }
+  
+        // Si todo bien, viene un .docx → lo bajamos como archivo
+        const blob = await resp.blob();
+  
+        // Tratar de leer el nombre de archivo del header
+        let filename = "constancia_RFC.docx";
+        const dispo = resp.headers.get("Content-Disposition");
+        if (dispo) {
+          const match = dispo.match(/filename="?([^"]+)"?/i);
+          if (match && match[1]) {
+            filename = match[1];
+          }
+        }
+  
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      } catch (err) {
+        console.error(err);
+        errorBox.textContent = "No se pudo contactar el servidor. Revisa tu conexión e intenta de nuevo.";
+        errorBox.style.display = "block";
+      } finally {
+        button.disabled = false;
+        button.innerText = originalBtnText;
+      }
+    });
+  </script>
 </body>
 </html>
-
-
