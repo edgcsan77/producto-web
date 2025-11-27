@@ -9,6 +9,25 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --bg-gradient-1: radial-gradient(circle at top left, rgba(139, 92, 246, 0.16), transparent 60%);
+      --bg-gradient-2: radial-gradient(circle at bottom right, rgba(249, 115, 22, 0.12), #f4ebdc);
+      --card-radius: 20px;
+      --border-subtle: rgba(148, 163, 184, 0.25);
+      --accent: #8b5cf6;
+      --accent-soft: rgba(139, 92, 246, 0.18);
+      --accent-strong: #6366f1;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --text-soft: #9ca3af;
+      --input-bg: #f9fafb;
+      --input-border: #d1d5db;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.18);
+      --shadow-strong: 0 20px 45px rgba(79, 70, 229, 0.35);
+      --radius-full: 999px;
+      --transition-fast: 0.16s ease;
+    }
+
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -19,56 +38,72 @@
       padding: 16px;
       color: #1f2933;
       background:
-        radial-gradient(circle at top left, rgba(139, 92, 246, 0.16), transparent 60%),
-        radial-gradient(circle at bottom right, rgba(249, 115, 22, 0.12), #f4ebdc);
+        var(--bg-gradient-1),
+        var(--bg-gradient-2);
     }
 
     .shell {
       width: 100%;
-      max-width: 480px;
+      max-width: 520px;
+      animation: fadeIn 0.5s ease-out;
     }
 
     .logo-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 4px 10px;
-      border-radius: 999px;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
       background: rgba(255, 255, 255, 0.7);
       border: 1px solid rgba(148, 163, 184, 0.35);
       font-size: 0.72rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       color: #4b5563;
-      backdrop-filter: blur(4px);
-      margin-bottom: 10px;
+      backdrop-filter: blur(6px);
+      margin-bottom: 14px;
     }
 
     .logo-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      width: 11px;
+      height: 11px;
+      border-radius: var(--radius-full);
+      background: conic-gradient(from 160deg, #8b5cf6, #ec4899, #f97316, #8b5cf6);
+      box-shadow: 0 0 10px rgba(139, 92, 246, 0.8);
     }
 
     .card {
-      background: #ffffff;
-      border-radius: 18px;
+      background: linear-gradient(145deg, #ffffff, #f9fafb);
+      border-radius: var(--card-radius);
       padding: 24px 24px 18px;
       box-shadow:
-        0 18px 40px rgba(15, 23, 42, 0.18),
-        0 0 0 1px rgba(15, 23, 42, 0.03);
+        var(--shadow-soft),
+        0 0 0 1px rgba(148, 163, 184, 0.18);
       position: relative;
       overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      transform-origin: center;
+      transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        border-color var(--transition-fast);
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-strong);
+      border-color: rgba(129, 140, 248, 0.7);
     }
 
     .card::before {
       content: "";
       position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.14), transparent 60%);
-      opacity: 0.9;
+      inset: -40%;
+      background:
+        radial-gradient(circle at top right, rgba(139, 92, 246, 0.11), transparent 60%),
+        radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.07), transparent 55%);
+      opacity: 0.95;
       pointer-events: none;
     }
 
@@ -77,29 +112,30 @@
       z-index: 1;
     }
 
-    h1 {
-      font-size: 1.4rem;
-      margin: 0 0 4px;
-      color: #111827;
-    }
-
-    .subtitle {
-      margin: 0 0 18px;
-      font-size: 0.9rem;
-      color: #6b7280;
-    }
-
     .badge-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
+      align-items: flex-start;
+      margin-bottom: 12px;
       gap: 8px;
     }
 
+    h1 {
+      font-size: 1.5rem;
+      margin: 0 0 4px;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
     .badge-chip {
-      padding: 3px 8px;
-      border-radius: 999px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
       background: rgba(16, 185, 129, 0.08);
       color: #059669;
       font-size: 0.75rem;
@@ -107,14 +143,75 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      border: 1px solid rgba(16, 185, 129, 0.25);
     }
 
     .badge-chip span {
-      font-size: 0.6rem;
+      font-size: 0.7rem;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      margin-bottom: 4px;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+    }
+
+    .meta-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .meta-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(52, 211, 153, 1);
+      box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.25);
+    }
+
+    .meta-right {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      opacity: 0.9;
+    }
+
+    .meta-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.35);
     }
 
     form {
-      margin-top: 10px;
+      margin-top: 14px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+      position: relative;
+      padding-top: 2px;
+    }
+
+    .field:last-of-type {
+      margin-bottom: 26px;
+    }
+
+    .field::before {
+      /* icono sutil a la izquierda del label, controlado con data-icon */
+      content: attr(data-icon);
+      position: absolute;
+      left: -4px;
+      top: 21px;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+      opacity: 0.65;
+      pointer-events: none;
     }
 
     label {
@@ -125,26 +222,30 @@
       color: #4b5563;
     }
 
-    .field {
-      margin-bottom: 14px;
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
     }
-  
-    .field:last-of-type {
-      margin-bottom: 24px;
+
+    .label-hint {
+      font-size: 0.7rem;
+      color: var(--text-soft);
     }
 
     input {
       width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #d1d5db;
+      padding: 10px 12px 10px 11px;
+      border-radius: 12px;
+      border: 1px solid var(--input-border);
       font-size: 0.95rem;
       outline: none;
-      background: #f9fafb;
+      background: var(--input-bg);
       transition:
-        border-color 0.16s ease,
-        box-shadow 0.16s ease,
-        background-color 0.16s ease,
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast),
+        background-color var(--transition-fast),
         transform 0.06s ease;
     }
 
@@ -154,41 +255,77 @@
 
     input:focus {
       background: #ffffff;
-      border-color: #8b5cf6;
-      box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.7), 0 0 0 6px rgba(139, 92, 246, 0.13);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.7), 0 0 0 7px rgba(139, 92, 246, 0.12);
       transform: translateY(-1px);
+    }
+
+    .field:focus-within label {
+      color: var(--accent-strong);
     }
 
     button {
       width: 100%;
-      padding: 11px 14px;
-      border-radius: 999px;
+      padding: 12px 16px;
+      border-radius: var(--radius-full);
       border: none;
       font-weight: 600;
       font-size: 0.98rem;
       cursor: pointer;
-      background: linear-gradient(135deg, #8b5cf6, #6366f1);
+      background: radial-gradient(circle at top left, #a855f7, #6366f1);
       color: #ffffff;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.35);
+      box-shadow: 0 12px 26px rgba(99, 102, 241, 0.4);
       transition:
         transform 0.08s ease,
         box-shadow 0.08s ease,
-        filter 0.1s ease;
+        filter 0.1s ease,
+        opacity 0.12s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.4) 40%,
+        transparent 80%
+      );
+      opacity: 0;
+      transform: translateX(-80%);
+      transition: transform 0.6s ease, opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    button:hover::after {
+      opacity: 1;
+      transform: translateX(40%);
     }
 
     button:hover {
-      filter: brightness(1.03);
+      filter: brightness(1.04);
       transform: translateY(-1px);
-      box-shadow: 0 16px 26px rgba(79, 70, 229, 0.4);
+      box-shadow: 0 18px 30px rgba(79, 70, 229, 0.45);
     }
 
     button:active {
       transform: translateY(0);
-      box-shadow: 0 6px 12px rgba(79, 70, 229, 0.3);
+      box-shadow: 0 7px 12px rgba(79, 70, 229, 0.35);
+      filter: brightness(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.8;
+      cursor: default;
+      transform: none;
+      box-shadow: 0 8px 16px rgba(148, 163, 184, 0.4);
     }
 
     .btn-icon {
@@ -198,20 +335,40 @@
 
     .hint {
       font-size: 0.78rem;
-      color: #6b7280;
-      margin-top: 10px;
-      line-height: 1.4;
+      color: var(--text-muted);
+      margin-top: 12px;
+      line-height: 1.5;
+      padding: 10px 11px;
+      border-radius: 12px;
+      background: rgba(249, 250, 251, 0.9);
+      border: 1px dashed rgba(209, 213, 219, 0.8);
     }
 
     .hint strong {
       color: #4b5563;
     }
 
-    .footer {
-      margin-top: 10px;
-      font-size: 0.72rem;
-      color: #9ca3af;
-      text-align: center;
+    .security-row {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-soft);
+      gap: 8px;
+    }
+
+    .security-left,
+    .security-right {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+
+    .lock-icon,
+    .bolt-icon {
+      font-size: 0.9rem;
     }
 
     .error-box {
@@ -222,16 +379,60 @@
       border: 1px solid #fecaca;
       border-radius: 10px;
       padding: 8px 10px;
+      display: none;
     }
-    
+
+    .error-box.is-visible {
+      display: block;
+      animation: shake 0.18s ease-out;
+    }
+
+    .footer {
+      margin-top: 12px;
+      font-size: 0.72rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+
     @media (max-width: 480px) {
       .card {
         padding: 20px 18px 16px;
         border-radius: 16px;
       }
       h1 {
-        font-size: 1.25rem;
+        font-size: 1.3rem;
       }
+      .meta-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+      .security-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .field::before {
+        display: none; /* ahorrar espacio en pantallas muy pequeñas */
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      50% { transform: translateX(2px); }
+      75% { transform: translateX(-1px); }
+      100% { transform: translateX(0); }
     }
   </style>
 </head>
@@ -247,10 +448,22 @@
         <div class="badge-row">
           <div>
             <h1>Constancia de Situación Fiscal</h1>
-            <p class="subtitle">Genera tu constancia en formato Word lista para imprimir o convertir a PDF.</p>
+            <p class="subtitle">
+              Genera tu constancia en formato Word lista para imprimir o convertir a PDF.
+            </p>
           </div>
           <div class="badge-chip">
             <span>●</span> BETA
+          </div>
+        </div>
+
+        <div class="meta-row">
+          <div class="meta-left">
+            <span class="meta-dot"></span>
+            <span>Conectado al servicio del SAT</span>
+          </div>
+          <div class="meta-right">
+            <span class="meta-pill">Sin registro de datos</span>
           </div>
         </div>
 
@@ -258,8 +471,11 @@
           method="POST"
           action="https://constancia-backend.onrender.com/generar"
         >
-          <div class="field">
-            <label for="rfc">RFC</label>
+          <div class="field" data-icon="🧾">
+            <div class="label-row">
+              <label for="rfc">RFC</label>
+              <span class="label-hint">Tal como aparece en tu constancia</span>
+            </div>
             <input
               type="text"
               id="rfc"
@@ -269,8 +485,11 @@
             />
           </div>
 
-          <div class="field">
-            <label for="idcif">idCIF</label>
+          <div class="field" data-icon="🆔">
+            <div class="label-row">
+              <label for="idcif">idCIF</label>
+              <span class="label-hint">Ubícalo en el QR de tu constancia</span>
+            </div>
             <input
               type="text"
               id="idcif"
@@ -280,8 +499,11 @@
             />
           </div>
 
-          <div class="field">
-            <label for="lugar_emision">Lugar de emisión</label>
+          <div class="field" data-icon="📍">
+            <div class="label-row">
+              <label for="lugar_emision">Lugar de emisión</label>
+              <span class="label-hint">Opcional, se imprimirá en la constancia</span>
+            </div>
             <input
               type="text"
               id="lugar_emision"
@@ -291,6 +513,7 @@
           </div>
 
           <button type="submit">
+            <span class="btn-icon">⚡</span>
             <span>Generar constancia</span>
           </button>
 
@@ -299,7 +522,18 @@
             <strong>.docx</strong> con tu constancia. Puedes abrirlo en Word para guardarlo como PDF o imprimirlo.
           </p>
 
-          <p id="error-box" class="error-box" style="display:none;"></p>
+          <div class="security-row">
+            <div class="security-left">
+              <span class="lock-icon">🔒</span>
+              <span>Solo lectura de tu información</span>
+            </div>
+            <div class="security-right">
+              <span class="bolt-icon">⚡</span>
+              <span>Proceso automático en segundos</span>
+            </div>
+          </div>
+
+          <p id="error-box" class="error-box"></p>
         </form>
       </div>
     </div>
@@ -308,26 +542,27 @@
       Este sitio no almacena tus datos; solo se usan para consultar tu constancia en el SAT.
     </p>
   </div>
+
   <script>
     const form = document.querySelector("form");
     const button = form.querySelector("button");
     const errorBox = document.getElementById("error-box");
     const originalBtnText = button.innerText;
-  
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault(); // No hagas submit normal
-  
+
       // Limpiar errores
-      errorBox.style.display = "none";
+      errorBox.classList.remove("is-visible");
       errorBox.textContent = "";
-  
+
       // Estado "cargando"
       button.disabled = true;
       button.innerText = "Generando...";
-      
+
       try {
         const formData = new FormData(form);
-  
+
         const resp = await fetch("https://constancia-backend.onrender.com/generar", {
           method: "POST",
           body: formData,
@@ -335,7 +570,7 @@
             "X-Requested-With": "fetch"
           }
         });
-  
+
         // Si NO es 2xx, intentamos leer JSON de error y mostrarlo
         if (!resp.ok) {
           let msg = "Ocurrió un error inesperado. Intenta de nuevo.";
@@ -344,13 +579,13 @@
             if (data && data.message) msg = data.message;
           } catch (_) {}
           errorBox.textContent = msg;
-          errorBox.style.display = "block";
+          errorBox.classList.add("is-visible");
           return;
         }
-  
+
         // Si todo bien, viene un .docx → lo bajamos como archivo
         const blob = await resp.blob();
-  
+
         // Tratar de leer el nombre de archivo del header
         let filename = "constancia_RFC.docx";
         const dispo = resp.headers.get("Content-Disposition");
@@ -360,7 +595,7 @@
             filename = match[1];
           }
         }
-  
+
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -372,7 +607,7 @@
       } catch (err) {
         console.error(err);
         errorBox.textContent = "No se pudo contactar el servidor. Revisa tu conexión e intenta de nuevo.";
-        errorBox.style.display = "block";
+        errorBox.classList.add("is-visible");
       } finally {
         button.disabled = false;
         button.innerText = originalBtnText;
@@ -381,7 +616,3 @@
   </script>
 </body>
 </html>
-
-
-
-
