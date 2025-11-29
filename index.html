@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Generar Constancia SAT</title>
+  <title>Generar CIF SAT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * {
@@ -370,9 +370,9 @@
   <div class="shell">
     <div class="topbar">
       <div class="brand">
-        <div class="brand-badge">CF</div>
+        <div class="brand-badge">CIF</div>
         <div>
-          <div>Constancia Fiscal</div>
+          <div>Constancia de Situación Fiscal</div>
           <div style="font-size:0.72rem; color:#6b7280;">Uso personal · No oficial</div>
         </div>
       </div>
@@ -389,7 +389,7 @@
         </div>
         <div class="status-chip">
           <span class="status-dot"></span>
-          <span>Conectado al servicio del SAT</span>
+          <span>Conectado</span>
         </div>
       </div>
 
@@ -399,7 +399,7 @@
 
       <form
         method="POST"
-        action="https://constancia-backend.onrender.com/generar"
+        action="https://fiscal-backend.onrender.com/generar"
       >
         <div class="field">
           <div class="label-row">
@@ -490,7 +490,7 @@
       try {
         const formData = new FormData(form);
 
-        const resp = await fetch("https://constancia-backend.onrender.com/generar", {
+        const resp = await fetch("https://fiscal-backend.onrender.com/generar", {
           method: "POST",
           body: formData,
           headers: {
@@ -540,3 +540,4 @@
   </script>
 </body>
 </html>
+
