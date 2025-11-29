@@ -10,20 +10,19 @@
     }
 
     :root {
-      --bg-gradient-1: radial-gradient(circle at top left, rgba(139, 92, 246, 0.16), transparent 60%);
-      --bg-gradient-2: radial-gradient(circle at bottom right, rgba(249, 115, 22, 0.12), #f4ebdc);
-      --card-radius: 20px;
-      --border-subtle: rgba(148, 163, 184, 0.25);
-      --accent: #8b5cf6;
-      --accent-soft: rgba(139, 92, 246, 0.18);
-      --accent-strong: #6366f1;
+      --bg: #f3f4f6;
+      --card-bg: #ffffff;
+      --card-radius: 18px;
+      --border-subtle: #e5e7eb;
+      --accent: #2563eb;
+      --accent-soft: rgba(37, 99, 235, 0.08);
+      --accent-strong: #1d4ed8;
       --text-main: #111827;
       --text-muted: #6b7280;
       --text-soft: #9ca3af;
       --input-bg: #f9fafb;
       --input-border: #d1d5db;
-      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.18);
-      --shadow-strong: 0 20px 45px rgba(79, 70, 229, 0.35);
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.12);
       --radius-full: 999px;
       --transition-fast: 0.16s ease;
     }
@@ -36,95 +35,80 @@
       align-items: center;
       justify-content: center;
       padding: 16px;
-      color: #1f2933;
-      background:
-        var(--bg-gradient-1),
-        var(--bg-gradient-2);
+      color: var(--text-main);
+      background: radial-gradient(circle at top, #e5ecff 0, #f3f4f6 45%, #f3f4f6 100%);
     }
 
     .shell {
       width: 100%;
       max-width: 520px;
-      animation: fadeIn 0.5s ease-out;
+      animation: fadeIn 0.4s ease-out;
     }
 
-    .logo-pill {
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .brand {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 5px 12px;
-      border-radius: var(--radius-full);
-      background: rgba(255, 255, 255, 0.7);
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      font-size: 0.72rem;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #4b5563;
-      backdrop-filter: blur(6px);
-      margin-bottom: 14px;
+      color: #111827;
     }
 
-    .logo-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: var(--radius-full);
-      background: conic-gradient(from 160deg, #8b5cf6, #ec4899, #f97316, #8b5cf6);
-      box-shadow: 0 0 10px rgba(139, 92, 246, 0.8);
+    .brand-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #eff6ff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.4);
+    }
+
+    .env-pill {
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .card {
-      background: linear-gradient(145deg, #ffffff, #f9fafb);
+      background: var(--card-bg);
       border-radius: var(--card-radius);
-      padding: 24px 24px 18px;
-      box-shadow:
-        var(--shadow-soft),
-        0 0 0 1px rgba(148, 163, 184, 0.18);
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      transform-origin: center;
-      transition:
-        transform var(--transition-fast),
-        box-shadow var(--transition-fast),
-        border-color var(--transition-fast);
+      padding: 22px 22px 18px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-subtle);
     }
 
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-strong);
-      border-color: rgba(129, 140, 248, 0.7);
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background:
-        radial-gradient(circle at top right, rgba(139, 92, 246, 0.11), transparent 60%),
-        radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.07), transparent 55%);
-      opacity: 0.95;
-      pointer-events: none;
-    }
-
-    .card-inner {
-      position: relative;
-      z-index: 1;
-    }
-
-    .badge-row {
+    .card-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 12px;
       gap: 8px;
+      margin-bottom: 10px;
     }
 
     h1 {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       margin: 0 0 4px;
       color: var(--text-main);
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
     }
 
     .subtitle {
@@ -133,85 +117,39 @@
       color: var(--text-muted);
     }
 
-    .badge-chip {
-      padding: 4px 10px;
-      border-radius: var(--radius-full);
-      background: rgba(16, 185, 129, 0.08);
-      color: #059669;
+    .status-chip {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
       font-size: 0.75rem;
-      font-weight: 600;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      border: 1px solid rgba(16, 185, 129, 0.25);
+      border: 1px solid rgba(37, 99, 235, 0.25);
     }
 
-    .badge-chip span {
-      font-size: 0.7rem;
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
     }
 
     .meta-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
+      margin-top: 6px;
       margin-bottom: 4px;
       font-size: 0.78rem;
       color: var(--text-soft);
     }
 
-    .meta-left {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .meta-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 999px;
-      background: rgba(52, 211, 153, 1);
-      box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.25);
-    }
-
-    .meta-right {
-      display: inline-flex;
-      gap: 10px;
-      align-items: center;
-      opacity: 0.9;
-    }
-
-    .meta-pill {
-      padding: 2px 7px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.35);
-    }
-
     form {
-      margin-top: 14px;
+      margin-top: 12px;
     }
 
     .field {
       margin-bottom: 16px;
-      position: relative;
-      padding-top: 2px;
-    }
-
-    .field:last-of-type {
-      margin-bottom: 26px;
-    }
-
-    .field::before {
-      /* icono sutil a la izquierda del label, controlado con data-icon */
-      content: attr(data-icon);
-      position: absolute;
-      left: -4px;
-      top: 21px;
-      transform: translateY(-50%);
-      font-size: 0.85rem;
-      opacity: 0.65;
-      pointer-events: none;
     }
 
     label {
@@ -219,7 +157,7 @@
       margin-bottom: 6px;
       font-size: 0.8rem;
       font-weight: 600;
-      color: #4b5563;
+      color: #374151;
     }
 
     .label-row {
@@ -236,8 +174,8 @@
 
     input {
       width: 100%;
-      padding: 10px 12px 10px 11px;
-      border-radius: 12px;
+      padding: 10px 11px;
+      border-radius: 10px;
       border: 1px solid var(--input-border);
       font-size: 0.95rem;
       outline: none;
@@ -256,7 +194,7 @@
     input:focus {
       background: #ffffff;
       border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.7), 0 0 0 7px rgba(139, 92, 246, 0.12);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.8), 0 0 0 6px rgba(59, 130, 246, 0.15);
       transform: translateY(-1px);
     }
 
@@ -266,19 +204,19 @@
 
     button {
       width: 100%;
-      padding: 12px 16px;
+      padding: 11px 16px;
       border-radius: var(--radius-full);
       border: none;
       font-weight: 600;
-      font-size: 0.98rem;
+      font-size: 0.96rem;
       cursor: pointer;
-      background: radial-gradient(circle at top left, #a855f7, #6366f1);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: #ffffff;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 12px 26px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.5);
       transition:
         transform 0.08s ease,
         box-shadow 0.08s ease,
@@ -295,12 +233,12 @@
       background: linear-gradient(
         120deg,
         transparent 0%,
-        rgba(255, 255, 255, 0.4) 40%,
+        rgba(255, 255, 255, 0.35) 40%,
         transparent 80%
       );
       opacity: 0;
       transform: translateX(-80%);
-      transition: transform 0.6s ease, opacity 0.3s ease;
+      transition: transform 0.55s ease, opacity 0.3s ease;
       pointer-events: none;
     }
 
@@ -310,42 +248,37 @@
     }
 
     button:hover {
-      filter: brightness(1.04);
+      filter: brightness(1.03);
       transform: translateY(-1px);
-      box-shadow: 0 18px 30px rgba(79, 70, 229, 0.45);
+      box-shadow: 0 14px 26px rgba(37, 99, 235, 0.55);
     }
 
     button:active {
       transform: translateY(0);
-      box-shadow: 0 7px 12px rgba(79, 70, 229, 0.35);
-      filter: brightness(0.98);
+      box-shadow: 0 7px 14px rgba(37, 99, 235, 0.45);
+      filter: brightness(0.99);
     }
 
     button:disabled {
-      opacity: 0.8;
+      opacity: 0.85;
       cursor: default;
       transform: none;
-      box-shadow: 0 8px 16px rgba(148, 163, 184, 0.4);
-    }
-
-    .btn-icon {
-      font-size: 1.05rem;
-      line-height: 1;
+      box-shadow: 0 7px 14px rgba(148, 163, 184, 0.6);
     }
 
     .hint {
       font-size: 0.78rem;
       color: var(--text-muted);
-      margin-top: 12px;
+      margin-top: 10px;
       line-height: 1.5;
-      padding: 10px 11px;
-      border-radius: 12px;
-      background: rgba(249, 250, 251, 0.9);
-      border: 1px dashed rgba(209, 213, 219, 0.8);
+      padding: 9px 10px;
+      border-radius: 10px;
+      background: #f9fafb;
+      border: 1px dashed #e5e7eb;
     }
 
     .hint strong {
-      color: #4b5563;
+      color: #374151;
     }
 
     .security-row {
@@ -388,7 +321,7 @@
     }
 
     .footer {
-      margin-top: 12px;
+      margin-top: 10px;
       font-size: 0.72rem;
       color: #9ca3af;
       text-align: center;
@@ -396,23 +329,20 @@
 
     @media (max-width: 480px) {
       .card {
-        padding: 20px 18px 16px;
-        border-radius: 16px;
+        padding: 18px 16px 16px;
+        border-radius: 14px;
       }
       h1 {
-        font-size: 1.3rem;
+        font-size: 1.25rem;
       }
-      .meta-row {
+      .topbar {
         flex-direction: column;
         align-items: flex-start;
-        gap: 4px;
+        gap: 6px;
       }
       .security-row {
         flex-direction: column;
         align-items: flex-start;
-      }
-      .field::before {
-        display: none; /* ahorrar espacio en pantallas muy pequeñas */
       }
     }
 
@@ -438,94 +368,101 @@
 </head>
 <body>
   <div class="shell">
-    <div class="card">
-      <div class="card-inner">
-        <div class="badge-row">
-          <div>
-            <h1>Constancia de Situación Fiscal</h1>
-            <p class="subtitle">
-              Genera tu constancia en formato Word lista para imprimir o convertir a PDF.
-            </p>
-          </div>
-          <div class="badge-chip">
-            BETA
-          </div>
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-badge">CF</div>
+        <div>
+          <div>Constancia Fiscal</div>
+          <div style="font-size:0.72rem; color:#6b7280;">Uso personal · No oficial</div>
         </div>
-
-        <div class="meta-row">
-          <div class="meta-left">
-            <span class="meta-dot"></span>
-            <span>Conectado al servicio del SAT</span>
-          </div>
-        </div>
-
-        <form
-          method="POST"
-          action="https://constancia-backend.onrender.com/generar"
-        >
-          <div class="field">
-            <div class="label-row">
-              <label for="rfc">RFC</label>
-            </div>
-            <input
-              type="text"
-              id="rfc"
-              name="rfc"
-              placeholder="Ej. TOHJ640426XXX"
-              required
-            />
-          </div>
-
-          <div class="field">
-            <div class="label-row">
-              <label for="idcif">idCIF</label>
-              <span class="label-hint">Tal como aparece en tu constancia</span>
-            </div>
-            <input
-              type="text"
-              id="idcif"
-              name="idcif"
-              placeholder="Ej. 19010347XXX"
-              required
-            />
-          </div>
-
-          <div class="field">
-            <div class="label-row">
-              <label for="lugar_emision">Lugar de emisión</label>
-              <span class="label-hint">Opcional, se imprimirá en la constancia</span>
-            </div>
-            <input
-              type="text"
-              id="lugar_emision"
-              name="lugar_emision"
-              placeholder="Ej. MONTERREY , NUEVO LEON"
-            />
-          </div>
-
-          <button type="submit">
-            <span>Generar constancia</span>
-          </button>
-
-          <p class="hint">
-            Al enviar, se consultará el servicio del SAT y se descargará un archivo
-            <strong>.docx</strong> con tu constancia. Puedes abrirlo en Word para guardarlo como PDF o imprimirlo.
-          </p>
-
-          <div class="security-row">
-            <div class="security-left">
-              <span class="lock-icon">🔒</span>
-              <span>Solo lectura de tu información</span>
-            </div>
-            <div class="security-right">
-              <span class="bolt-icon">⚡</span>
-              <span>Proceso automático en segundos</span>
-            </div>
-          </div>
-
-          <p id="error-box" class="error-box"></p>
-        </form>
       </div>
+      <span class="env-pill">BETA</span>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h1>Constancia de Situación Fiscal</h1>
+          <p class="subtitle">
+            Genera tu constancia en formato Word lista para imprimir o convertir a PDF.
+          </p>
+        </div>
+        <div class="status-chip">
+          <span class="status-dot"></span>
+          <span>Conectado al servicio del SAT</span>
+        </div>
+      </div>
+
+      <div class="meta-row">
+        Ingresa tu RFC e idCIF tal como aparecen en tu constancia actual.
+      </div>
+
+      <form
+        method="POST"
+        action="https://constancia-backend.onrender.com/generar"
+      >
+        <div class="field">
+          <div class="label-row">
+            <label for="rfc">RFC</label>
+          </div>
+          <input
+            type="text"
+            id="rfc"
+            name="rfc"
+            placeholder="Ej. TOHJ640426XXX"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <div class="label-row">
+            <label for="idcif">idCIF</label>
+            <span class="label-hint">Tal como aparece en tu constancia</span>
+          </div>
+          <input
+            type="text"
+            id="idcif"
+            name="idcif"
+            placeholder="Ej. 19010347XXX"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <div class="label-row">
+            <label for="lugar_emision">Lugar de emisión</label>
+            <span class="label-hint">Opcional, se imprimirá en la constancia</span>
+          </div>
+          <input
+            type="text"
+            id="lugar_emision"
+            name="lugar_emision"
+            placeholder="Ej. MONTERREY , NUEVO LEÓN"
+          />
+        </div>
+
+        <button type="submit">
+          <span>Generar constancia</span>
+        </button>
+
+        <p class="hint">
+          Al enviar, se consultará el servicio del SAT y se descargará un archivo
+          <strong>.docx</strong> con tu constancia. Puedes abrirlo en Word para guardarlo como PDF o imprimirlo.
+        </p>
+
+        <div class="security-row">
+          <div class="security-left">
+            <span class="lock-icon">🔒</span>
+            <span>Solo lectura de tu información</span>
+          </div>
+          <div class="security-right">
+            <span class="bolt-icon">⚡</span>
+            <span>Proceso automático en segundos</span>
+          </div>
+        </div>
+
+        <p id="error-box" class="error-box"></p>
+      </form>
     </div>
 
     <p class="footer">
@@ -561,7 +498,6 @@
           }
         });
 
-        // Si NO es 2xx, intentamos leer JSON de error y mostrarlo
         if (!resp.ok) {
           let msg = "Ocurrió un error inesperado. Intenta de nuevo.";
           try {
@@ -573,10 +509,8 @@
           return;
         }
 
-        // Si todo bien, viene un .docx → lo bajamos como archivo
         const blob = await resp.blob();
 
-        // Tratar de leer el nombre de archivo del header
         let filename = "constancia_RFC.docx";
         const dispo = resp.headers.get("Content-Disposition");
         if (dispo) {
@@ -606,9 +540,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
