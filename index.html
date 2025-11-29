@@ -394,7 +394,7 @@
 
       <form
         method="POST"
-        action="https://fiscal-backend.onrender.com/generar"
+        action="https://constancia-backend.onrender.com/generar"
       >
         <div class="field">
           <div class="label-row">
@@ -481,7 +481,7 @@
       try {
         const formData = new FormData(form);
 
-        const resp = await fetch("https://fiscal-backend.onrender.com/generar", {
+        const resp = await fetch("https://constancia-backend.onrender.com/generar", {
           method: "POST",
           body: formData,
           headers: {
@@ -531,6 +531,7 @@
   </script>
 </body>
 </html>
+
 
 
 
