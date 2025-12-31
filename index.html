@@ -554,15 +554,26 @@
           },
           body: JSON.stringify({ username, password }),
         });
-
+      
         const data = await resp.json().catch(() => ({}));
-
-        if (!resp.ok || !data.ok) {
-          loginErrorBox.textContent = data.message || "No se pudo iniciar sesión.";
+      
+        // 1) Caso específico: ya tiene sesión activa
+        if (resp.status === 409) {
+          loginErrorBox.textContent =
+            data.message || "Este usuario ya tiene sesión activa.";
           loginErrorBox.classList.add("is-visible");
           return;
         }
-
+      
+        // 2) Cualquier otro error de login
+        if (!resp.ok || !data.ok) {
+          loginErrorBox.textContent =
+            data.message || "No se pudo iniciar sesión.";
+          loginErrorBox.classList.add("is-visible");
+          return;
+        }
+      
+        // 3) Éxito
         setToken(data.token);
         updateView();
       } catch (err) {
@@ -676,5 +687,6 @@
   </script>
 </body>
 </html>
+
 
 
