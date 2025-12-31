@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Panel de constancias RFC</title>
+  <title>Generar CIF</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * { box-sizing: border-box; }
@@ -10,17 +10,17 @@
     :root {
       --bg: #f3f4f6;
       --card-bg: #ffffff;
-      --card-radius: 20px;
+      --card-radius: 18px;
       --border-subtle: #e5e7eb;
       --accent: #2563eb;
       --accent-soft: rgba(37, 99, 235, 0.08);
       --accent-strong: #1d4ed8;
-      --text-main: #0f172a;
+      --text-main: #111827;
       --text-muted: #6b7280;
       --text-soft: #9ca3af;
       --input-bg: #f9fafb;
       --input-border: #d1d5db;
-      --shadow-soft: 0 20px 55px rgba(15, 23, 42, 0.18);
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.12);
       --radius-full: 999px;
       --transition-fast: 0.16s ease;
     }
@@ -32,48 +32,22 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px 16px;
+      padding: 16px;
       color: var(--text-main);
-      background:
-        radial-gradient(circle at top, #dbeafe 0, #f3f4f6 42%, #e5e7eb 100%);
+      background: radial-gradient(circle at top, #e5ecff 0, #f3f4f6 45%, #f3f4f6 100%);
     }
 
     .shell {
       width: 100%;
-      max-width: 880px;
+      max-width: 520px;
       animation: fadeIn 0.4s ease-out;
-    }
-
-    .shell-inner {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
-      gap: 20px;
-      align-items: stretch;
-    }
-
-    @media (max-width: 720px) {
-      .shell-inner {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    /* HERO LADO IZQUIERDO */
-
-    .hero-card {
-      background: radial-gradient(circle at top left, #dbeafe 0, #eff6ff 40%, #ffffff 100%);
-      border-radius: 24px;
-      padding: 22px 22px 20px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
     }
 
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 10px;
       font-size: 0.8rem;
       color: var(--text-soft);
     }
@@ -81,167 +55,32 @@
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      font-weight: 600;
+      color: #111827;
     }
 
-    .brand-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 14px;
-      background: conic-gradient(from 160deg, #1d4ed8, #38bdf8, #22c55e, #1d4ed8);
-      padding: 2px;
+    .brand-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #1d4ed8, #38bdf8);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.6);
-    }
-
-    .brand-mark-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 12px;
-      background: #0f172a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #e5e7eb;
-      font-size: 0.8rem;
+      color: #eff6ff;
+      font-size: 0.7rem;
       font-weight: 700;
-      letter-spacing: 0.06em;
-    }
-
-    .brand-text-main {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #0f172a;
-    }
-
-    .brand-text-sub {
-      font-size: 0.72rem;
-      color: #64748b;
-    }
-
-    .env-pill {
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: rgba(22, 163, 74, 0.06);
-      color: #15803d;
-      border: 1px solid rgba(22, 163, 74, 0.25);
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .hero-main-title {
-      font-size: 1.45rem;
-      margin: 10px 0 4px;
-      color: #0f172a;
-      letter-spacing: -0.02em;
-    }
-
-    .hero-subtitle {
-      font-size: 0.9rem;
-      color: #4b5563;
-      margin: 0 0 6px;
-      max-width: 32rem;
-    }
-
-    .hero-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin: 8px 0 4px;
-    }
-
-    .hero-badge {
-      font-size: 0.7rem;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.85);
-      color: #e5e7eb;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .hero-badge span {
-      color: #4ade80;
-    }
-
-    .hero-steps {
-      margin-top: 10px;
-      padding: 10px 11px;
-      border-radius: 12px;
-      background: rgba(15, 23, 42, 0.02);
-      border: 1px dashed rgba(148, 163, 184, 0.7);
-      font-size: 0.78rem;
-      color: #4b5563;
-    }
-
-    .hero-steps-title {
-      font-size: 0.76rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #6b7280;
-      margin-bottom: 4px;
-    }
-
-    .hero-steps-list {
-      display: grid;
-      gap: 3px;
-    }
-
-    .hero-step {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .hero-step-index {
-      width: 16px;
-      height: 16px;
-      border-radius: 999px;
-      background: rgba(37, 99, 235, 0.1);
-      color: #1d4ed8;
-      font-size: 0.72rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-    }
-
-    .hero-note {
-      margin-top: 8px;
-      font-size: 0.72rem;
-      color: #6b7280;
-    }
-
-    .hero-note strong {
-      color: #374151;
-    }
-
-    /* PANEL DERECHO: CARDS */
-
-    .panel-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.4);
     }
 
     .card {
       background: var(--card-bg);
       border-radius: var(--card-radius);
-      padding: 20px 20px 16px;
+      padding: 22px 22px 18px;
       box-shadow: var(--shadow-soft);
       border: 1px solid var(--border-subtle);
-    }
-
-    .card--subtle {
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09);
-      border-style: dashed;
-      border-color: rgba(148, 163, 184, 0.7);
+      margin-bottom: 10px;
     }
 
     .card-header {
@@ -253,7 +92,7 @@
     }
 
     h1 {
-      font-size: 1.25rem;
+      font-size: 1.4rem;
       margin: 0 0 4px;
       color: var(--text-main);
       letter-spacing: -0.01em;
@@ -261,12 +100,12 @@
 
     .subtitle {
       margin: 0;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
     }
 
     .status-chip {
-      padding: 3px 8px;
+      padding: 4px 8px;
       border-radius: 999px;
       background: var(--accent-soft);
       color: var(--accent-strong);
@@ -275,7 +114,6 @@
       align-items: center;
       gap: 6px;
       border: 1px solid rgba(37, 99, 235, 0.25);
-      white-space: nowrap;
     }
 
     .status-dot {
@@ -286,11 +124,18 @@
       box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
     }
 
-    .field { margin-bottom: 14px; }
+    .meta-row {
+      margin-top: 6px;
+      margin-bottom: 4px;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+    }
+
+    .field { margin-bottom: 16px; }
 
     label {
       display: block;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       font-size: 0.8rem;
       font-weight: 600;
       color: #374151;
@@ -310,7 +155,7 @@
 
     input {
       width: 100%;
-      padding: 9px 11px;
+      padding: 10px 11px;
       border-radius: 10px;
       border: 1px solid var(--input-border);
       font-size: 0.95rem;
@@ -340,7 +185,7 @@
       border-radius: var(--radius-full);
       border: none;
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.96rem;
       cursor: pointer;
       background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: #ffffff;
@@ -404,9 +249,9 @@
       box-shadow: none;
       border-radius: 999px;
       border: 1px solid #e5e7eb;
-      padding: 6px 11px;
+      padding: 8px 14px;
       width: auto;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
     }
 
     .button-ghost:hover {
@@ -418,7 +263,7 @@
     .hint {
       font-size: 0.78rem;
       color: var(--text-muted);
-      margin-top: 9px;
+      margin-top: 10px;
       line-height: 1.5;
       padding: 9px 10px;
       border-radius: 10px;
@@ -433,12 +278,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.74rem;
+      font-size: 0.75rem;
       color: var(--text-soft);
       gap: 8px;
     }
 
-    .security-left {
+    .security-left,
+    .security-right {
       display: inline-flex;
       align-items: center;
       gap: 5px;
@@ -462,28 +308,27 @@
     }
 
     .footer {
-      margin-top: 10px;
+      margin-top: 4px;
       font-size: 0.72rem;
       color: #9ca3af;
       text-align: center;
     }
 
-    .footer span {
-      color: #6b7280;
-    }
-
-    @media (max-width: 720px) {
-      body {
-        padding-top: 14px;
-      }
-      .hero-card {
-        padding: 18px 16px;
-      }
+    @media (max-width: 480px) {
       .card {
-        padding: 18px 16px 15px;
-        border-radius: 16px;
+        padding: 18px 16px 16px;
+        border-radius: 14px;
       }
-      h1 { font-size: 1.18rem; }
+      h1 { font-size: 1.25rem; }
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .security-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
 
     @keyframes fadeIn {
@@ -502,197 +347,146 @@
 </head>
 <body>
   <div class="shell">
-    <div class="shell-inner">
-      <!-- LADO IZQUIERDO: HERO / INFO -->
-      <section class="hero-card">
-        <div class="topbar">
-          <div class="brand">
-            <div class="brand-mark">
-              <div class="brand-mark-inner">RFC</div>
-            </div>
-            <div>
-              <div class="brand-text-main">Panel de constancias RFC</div>
-              <div class="brand-text-sub">Generación automática desde el portal del SAT</div>
-            </div>
-          </div>
-          <span class="env-pill">Servicio en línea</span>
-        </div>
-
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-badge">RFC</div>
         <div>
-          <h2 class="hero-main-title">Genera constancias listas para imprimir en segundos</h2>
-          <p class="hero-subtitle">
-            Solo necesitas tu usuario, contraseña, RFC e idCIF. El sistema consulta directamente al SAT
-            y descarga tu constancia en formato <strong>.docx</strong>.
-          </p>
+          <div>Registro Federal de Contribuyentes</div>
+          <div style="font-size:0.72rem; color:#6b7280;">Proceso automático en segundos</div>
         </div>
-
-        <div class="hero-badges">
-          <div class="hero-badge">
-            <span>●</span> Sesión protegida por usuario
-          </div>
-          <div class="hero-badge">
-            <span>●</span> Archivo compatible con Word / PDF
-          </div>
-        </div>
-
-        <div class="hero-steps">
-          <div class="hero-steps-title">Cómo funciona</div>
-          <div class="hero-steps-list">
-            <div class="hero-step">
-              <div class="hero-step-index">1</div>
-              <div>Inicia sesión con tu usuario y contraseña asignados.</div>
-            </div>
-            <div class="hero-step">
-              <div class="hero-step-index">2</div>
-              <div>Captura RFC, idCIF y (opcional) el lugar de emisión.</div>
-            </div>
-            <div class="hero-step">
-              <div class="hero-step-index">3</div>
-              <div>Descarga tu constancia en Word para imprimir o convertir a PDF.</div>
-            </div>
-          </div>
-        </div>
-
-        <p class="hero-note">
-          <strong>Aviso:</strong> Este sistema es una herramienta de consulta y
-          <strong>no es un sitio oficial del SAT</strong>. Los datos solo se usan para generar tu constancia.
-        </p>
-      </section>
-
-      <!-- LADO DERECHO: LOGIN + CONSTANCIA -->
-      <div class="panel-stack">
-        <!-- CARD LOGIN -->
-        <div class="card" id="login-card">
-          <div class="card-header">
-            <div>
-              <h1>Acceso al panel</h1>
-              <p class="subtitle">
-                Ingresa con tu usuario y contraseña para empezar a generar constancias.
-              </p>
-            </div>
-          </div>
-
-          <form id="login-form" novalidate>
-            <div class="field">
-              <label for="login-username">Usuario</label>
-              <input
-                type="text"
-                id="login-username"
-                autocomplete="username"
-                placeholder=""
-                required
-              />
-            </div>
-
-            <div class="field">
-              <label for="login-password">Contraseña</label>
-              <input
-                type="password"
-                id="login-password"
-                autocomplete="current-password"
-                required
-              />
-            </div>
-
-            <button type="submit" id="login-button">
-              Iniciar sesión
-            </button>
-
-            <p id="login-error-box" class="error-box"></p>
-
-            <p class="hint">
-              Por seguridad, solo se permite <strong>una sesión activa por usuario</strong>.
-              Si alguien más inicia sesión con tu cuenta, se cerrará tu sesión actual.
-            </p>
-          </form>
-        </div>
-
-        <!-- CARD CONSTANCIA -->
-        <div class="card card--subtle" id="constancia-card" style="display:none;">
-          <div class="card-header">
-            <div>
-              <h1>Constancia de Situación Fiscal</h1>
-              <p class="subtitle">
-                Genera tu constancia en formato Word lista para imprimir o convertir a PDF.
-              </p>
-            </div>
-            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
-              <div class="status-chip">
-                <span class="status-dot"></span>
-                <span>Sesión activa</span>
-              </div>
-              <button type="button" class="button-ghost" id="logout-button">
-                Cerrar sesión
-              </button>
-            </div>
-          </div>
-
-          <form id="constancia-form">
-            <div class="field">
-              <div class="label-row">
-                <label for="rfc">RFC</label>
-              </div>
-              <input
-                type="text"
-                id="rfc"
-                name="rfc"
-                placeholder="Ej. TOHJ640426XXX"
-                required
-              />
-            </div>
-
-            <div class="field">
-              <div class="label-row">
-                <label for="idcif">idCIF</label>
-                <span class="label-hint">Tal como aparece en tu constancia</span>
-              </div>
-              <input
-                type="text"
-                id="idcif"
-                name="idcif"
-                placeholder="Ej. 19010347XXX"
-                required
-              />
-            </div>
-
-            <div class="field">
-              <div class="label-row">
-                <label for="lugar_emision">Lugar de emisión</label>
-                <span class="label-hint">Opcional, se imprimirá en la constancia</span>
-              </div>
-              <input
-                type="text"
-                id="lugar_emision"
-                name="lugar_emision"
-                placeholder="Ej. MONTERREY , NUEVO LEÓN"
-              />
-            </div>
-
-            <button type="submit" id="constancia-button">
-              <span>Generar constancia</span>
-            </button>
-
-            <p class="hint">
-              Al enviar, se consultará el servicio del SAT y se descargará un archivo
-              <strong>.docx</strong> con tu constancia. Puedes abrirlo en Word para guardarlo como PDF o imprimirlo.
-            </p>
-
-            <div class="security-row">
-              <div class="security-left">
-                <span>🔒</span>
-                <span>Consulta de solo lectura, sin guardar tu información.</span>
-              </div>
-            </div>
-
-            <p id="error-box" class="error-box"></p>
-          </form>
-        </div>
-
-        <p class="footer">
-          <span>Este sitio no almacena tus datos; solo se usan para consultar tu constancia en el SAT.</span>
-        </p>
       </div>
     </div>
+
+    <!-- CARD LOGIN -->
+    <div class="card" id="login-card">
+      <div class="card-header">
+        <div>
+          <h1>Acceso</h1>
+          <p class="subtitle">
+            Ingresa con tu usuario y contraseña para generar constancias.
+          </p>
+        </div>
+      </div>
+
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="login-username">Usuario</label>
+          <input
+            type="text"
+            id="login-username"
+            autocomplete="username"
+            placeholder=""
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="login-password">Contraseña</label>
+          <input
+            type="password"
+            id="login-password"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+
+        <button type="submit" id="login-button">
+          Iniciar sesión
+        </button>
+
+        <p id="login-error-box" class="error-box"></p>
+
+        <p class="hint">
+          Por seguridad, solo se permite una sesión activa por usuario. Si inicias sesión
+          en otro dispositivo, la sesión anterior se cerrará.
+        </p>
+      </form>
+    </div>
+
+    <!-- CARD CONSTANCIA -->
+    <div class="card" id="constancia-card" style="display:none;">
+      <div class="card-header">
+        <div>
+          <h1>Constancia de Situación Fiscal</h1>
+          <p class="subtitle">
+            Genera tu constancia en formato Word lista para imprimir o convertir a PDF.
+          </p>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+          <div class="status-chip">
+            <span class="status-dot"></span>
+            <span>Sesión activa</span>
+          </div>
+          <button type="button" class="button-ghost" id="logout-button">
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
+
+      <form id="constancia-form">
+        <div class="field">
+          <div class="label-row">
+            <label for="rfc">RFC</label>
+          </div>
+          <input
+            type="text"
+            id="rfc"
+            name="rfc"
+            placeholder="Ej. TOHJ640426XXX"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <div class="label-row">
+            <label for="idcif">idCIF</label>
+            <span class="label-hint">Tal como aparece en tu constancia</span>
+          </div>
+          <input
+            type="text"
+            id="idcif"
+            name="idcif"
+            placeholder="Ej. 19010347XXX"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <div class="label-row">
+            <label for="lugar_emision">Lugar de emisión</label>
+            <span class="label-hint">Opcional, se imprimirá en la constancia</span>
+          </div>
+          <input
+            type="text"
+            id="lugar_emision"
+            name="lugar_emision"
+            placeholder="Ej. MONTERREY , NUEVO LEÓN"
+          />
+        </div>
+
+        <button type="submit" id="constancia-button">
+          <span>Generar constancia</span>
+        </button>
+
+        <p class="hint">
+          Al enviar, se consultará el servicio del SAT y se descargará un archivo
+          <strong>.docx</strong> con tu constancia. Puedes abrirlo en Word para guardarlo como PDF o imprimirlo.
+        </p>
+
+        <div class="security-row">
+          <div class="security-left">
+            <span>🔒</span>
+            <span>Solo lectura de tu información</span>
+          </div>
+        </div>
+
+        <p id="error-box" class="error-box"></p>
+      </form>
+    </div>
+
+    <p class="footer">
+      Este sitio no almacena tus datos; solo se usan para consultar tu constancia en el SAT.
+    </p>
   </div>
 
   <script>
@@ -760,23 +554,26 @@
           },
           body: JSON.stringify({ username, password }),
         });
-
+      
         const data = await resp.json().catch(() => ({}));
-
+      
+        // 1) Caso específico: ya tiene sesión activa
         if (resp.status === 409) {
           loginErrorBox.textContent =
             data.message || "Este usuario ya tiene sesión activa.";
           loginErrorBox.classList.add("is-visible");
           return;
         }
-
+      
+        // 2) Cualquier otro error de login
         if (!resp.ok || !data.ok) {
           loginErrorBox.textContent =
             data.message || "No se pudo iniciar sesión.";
           loginErrorBox.classList.add("is-visible");
           return;
         }
-
+      
+        // 3) Éxito
         setToken(data.token);
         updateView();
       } catch (err) {
