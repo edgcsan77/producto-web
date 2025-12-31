@@ -372,6 +372,17 @@
           <div style="font-size:0.72rem; color:#6b7280;">Proceso automático en segundos</div>
         </div>
       </div>
+
+      <div id="topbar-session" class="topbar-session" style="display:none;">
+        <div class="status-chip">
+          <span class="status-dot"></span>
+          <span>Sesión activa</span>
+        </div>
+        <button type="button" class="button-ghost" id="logout-button">
+          <span style="font-size:0.8rem;">↩</span>
+          <span>Cerrar sesión</span>
+        </button>
+      </div>
     </div>
 
     <!-- CARD LOGIN -->
@@ -428,11 +439,6 @@
           <p class="subtitle">
             Genera tu constancia en formato Word lista para imprimir o convertir a PDF.
           </p>
-        </div>
-        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
-          <button type="button" class="button-ghost" id="logout-button">
-            Cerrar sesión
-          </button>
         </div>
       </div>
 
@@ -700,5 +706,6 @@
   </script>
 </body>
 </html>
+
 
 
