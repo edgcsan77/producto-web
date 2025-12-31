@@ -576,9 +576,24 @@
     });
 
     // ---- LOGOUT ----
-    logoutButton.addEventListener("click", () => {
-      setToken(null);
-      updateView();
+    logoutButton.addEventListener("click", async () => {
+      const token = getToken();
+      try {
+        if (token) {
+          await fetch(`${API_BASE}/logout`, {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "X-Requested-With": "fetch",
+            },
+          });
+        }
+      } catch (err) {
+        console.error("Error en logout:", err);
+      } finally {
+        setToken(null);
+        updateView();
+      }
     });
 
     // ---- GENERAR CONSTANCIA ----
@@ -661,4 +676,5 @@
   </script>
 </body>
 </html>
+
 
