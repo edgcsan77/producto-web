@@ -244,20 +244,37 @@
     }
 
     .button-ghost {
-      background: #f9fafb;
-      color: #4b5563;
-      box-shadow: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
       border-radius: 999px;
-      border: 1px solid #e5e7eb;
-      padding: 8px 14px;
-      width: auto;
+      border: 1px solid rgba(148, 163, 184, 0.8); /* gris suave */
+      background: rgba(249, 250, 251, 0.95);      /* casi blanco */
+      color: #4b5563;                              /* gris medio */
       font-size: 0.8rem;
-    }
-
-    .button-ghost:hover {
-      background: #f3f4f6;
+      font-weight: 500;
       box-shadow: none;
+      cursor: pointer;
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.08s ease,
+        box-shadow 0.08s ease;
+    }
+    
+    .button-ghost:hover {
+      background: #fee2e2;               /* rojito muy suave */
+      border-color: #ef4444;
+      color: #b91c1c;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(248, 113, 113, 0.35);
+    }
+    
+    .button-ghost:active {
       transform: translateY(0);
+      box-shadow: 0 3px 8px rgba(248, 113, 113, 0.25);
     }
 
     .hint {
@@ -687,3 +704,4 @@
   </script>
 </body>
 </html>
+
