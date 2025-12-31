@@ -5,9 +5,7 @@
   <title>Generar CIF</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     :root {
       --bg: #f3f4f6;
@@ -76,24 +74,13 @@
       box-shadow: 0 6px 14px rgba(37, 99, 235, 0.4);
     }
 
-    .env-pill {
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: #fee2e2;
-      color: #b91c1c;
-      border: 1px solid #fecaca;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
     .card {
       background: var(--card-bg);
       border-radius: var(--card-radius);
       padding: 22px 22px 18px;
       box-shadow: var(--shadow-soft);
       border: 1px solid var(--border-subtle);
+      margin-bottom: 10px;
     }
 
     .card-header {
@@ -144,13 +131,7 @@
       color: var(--text-soft);
     }
 
-    form {
-      margin-top: 12px;
-    }
-
-    .field {
-      margin-bottom: 16px;
-    }
+    .field { margin-bottom: 16px; }
 
     label {
       display: block;
@@ -187,9 +168,7 @@
         transform 0.06s ease;
     }
 
-    input::placeholder {
-      color: #9ca3af;
-    }
+    input::placeholder { color: #9ca3af; }
 
     input:focus {
       background: #ffffff;
@@ -198,9 +177,7 @@
       transform: translateY(-1px);
     }
 
-    .field:focus-within label {
-      color: var(--accent-strong);
-    }
+    .field:focus-within label { color: var(--accent-strong); }
 
     button {
       width: 100%;
@@ -266,6 +243,23 @@
       box-shadow: 0 7px 14px rgba(148, 163, 184, 0.6);
     }
 
+    .button-ghost {
+      background: #f9fafb;
+      color: #4b5563;
+      box-shadow: none;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      padding: 8px 14px;
+      width: auto;
+      font-size: 0.8rem;
+    }
+
+    .button-ghost:hover {
+      background: #f3f4f6;
+      box-shadow: none;
+      transform: translateY(0);
+    }
+
     .hint {
       font-size: 0.78rem;
       color: var(--text-muted);
@@ -277,9 +271,7 @@
       border: 1px dashed #e5e7eb;
     }
 
-    .hint strong {
-      color: #374151;
-    }
+    .hint strong { color: #374151; }
 
     .security-row {
       margin-top: 8px;
@@ -299,11 +291,6 @@
       white-space: nowrap;
     }
 
-    .lock-icon,
-    .bolt-icon {
-      font-size: 0.9rem;
-    }
-
     .error-box {
       margin-top: 10px;
       font-size: 0.8rem;
@@ -321,7 +308,7 @@
     }
 
     .footer {
-      margin-top: 10px;
+      margin-top: 4px;
       font-size: 0.72rem;
       color: #9ca3af;
       text-align: center;
@@ -332,9 +319,7 @@
         padding: 18px 16px 16px;
         border-radius: 14px;
       }
-      h1 {
-        font-size: 1.25rem;
-      }
+      h1 { font-size: 1.25rem; }
       .topbar {
         flex-direction: column;
         align-items: flex-start;
@@ -347,14 +332,8 @@
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(6px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes shake {
@@ -378,7 +357,54 @@
       </div>
     </div>
 
-    <div class="card">
+    <!-- CARD LOGIN -->
+    <div class="card" id="login-card">
+      <div class="card-header">
+        <div>
+          <h1>Acceso</h1>
+          <p class="subtitle">
+            Ingresa con tu usuario y contraseña para generar constancias.
+          </p>
+        </div>
+      </div>
+
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="login-username">Usuario</label>
+          <input
+            type="text"
+            id="login-username"
+            autocomplete="username"
+            placeholder="Ej. admin"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="login-password">Contraseña</label>
+          <input
+            type="password"
+            id="login-password"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+
+        <button type="submit" id="login-button">
+          Iniciar sesión
+        </button>
+
+        <p id="login-error-box" class="error-box"></p>
+
+        <p class="hint">
+          Por seguridad, solo se permite una sesión activa por usuario. Si inicias sesión
+          en otro dispositivo, la sesión anterior se cerrará.
+        </p>
+      </form>
+    </div>
+
+    <!-- CARD CONSTANCIA -->
+    <div class="card" id="constancia-card" style="display:none;">
       <div class="card-header">
         <div>
           <h1>Constancia de Situación Fiscal</h1>
@@ -386,16 +412,18 @@
             Genera tu constancia en formato Word lista para imprimir o convertir a PDF.
           </p>
         </div>
-        <div class="status-chip">
-          <span class="status-dot"></span>
-          <span>Conectado</span>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+          <div class="status-chip">
+            <span class="status-dot"></span>
+            <span>Sesión activa</span>
+          </div>
+          <button type="button" class="button-ghost" id="logout-button">
+            Cerrar sesión
+          </button>
         </div>
       </div>
 
-      <form
-        method="POST"
-        action="https://constancia-backend.onrender.com/generar"
-      >
+      <form id="constancia-form">
         <div class="field">
           <div class="label-row">
             <label for="rfc">RFC</label>
@@ -436,7 +464,7 @@
           />
         </div>
 
-        <button type="submit">
+        <button type="submit" id="constancia-button">
           <span>Generar constancia</span>
         </button>
 
@@ -447,7 +475,7 @@
 
         <div class="security-row">
           <div class="security-left">
-            <span class="lock-icon">🔒</span>
+            <span>🔒</span>
             <span>Solo lectura de tu información</span>
           </div>
         </div>
@@ -462,32 +490,134 @@
   </div>
 
   <script>
-    const form = document.querySelector("form");
-    const button = form.querySelector("button");
+    const API_BASE = "https://constancia-backend.onrender.com";
+    const TOKEN_KEY = "constancia_token";
+
+    const loginCard = document.getElementById("login-card");
+    const constanciaCard = document.getElementById("constancia-card");
+
+    const loginForm = document.getElementById("login-form");
+    const loginButton = document.getElementById("login-button");
+    const loginErrorBox = document.getElementById("login-error-box");
+
+    const constanciaForm = document.getElementById("constancia-form");
+    const constanciaButton = document.getElementById("constancia-button");
     const errorBox = document.getElementById("error-box");
-    const originalBtnText = button.innerText;
+    const originalConstanciaBtnText = constanciaButton.innerText;
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault(); // No hagas submit normal
+    const logoutButton = document.getElementById("logout-button");
 
-      // Limpiar errores
+    function getToken() {
+      return localStorage.getItem(TOKEN_KEY);
+    }
+
+    function setToken(token) {
+      if (token) {
+        localStorage.setItem(TOKEN_KEY, token);
+      } else {
+        localStorage.removeItem(TOKEN_KEY);
+      }
+    }
+
+    function updateView() {
+      const hasToken = !!getToken();
+      loginCard.style.display = hasToken ? "none" : "block";
+      constanciaCard.style.display = hasToken ? "block" : "none";
+    }
+
+    updateView();
+
+    // ---- LOGIN ----
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      loginErrorBox.classList.remove("is-visible");
+      loginErrorBox.textContent = "";
+
+      const username = document.getElementById("login-username").value.trim();
+      const password = document.getElementById("login-password").value;
+
+      if (!username || !password) {
+        loginErrorBox.textContent = "Escribe usuario y contraseña.";
+        loginErrorBox.classList.add("is-visible");
+        return;
+      }
+
+      loginButton.disabled = true;
+      loginButton.innerText = "Entrando...";
+
+      try {
+        const resp = await fetch(`${API_BASE}/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "fetch",
+          },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const data = await resp.json().catch(() => ({}));
+
+        if (!resp.ok || !data.ok) {
+          loginErrorBox.textContent = data.message || "No se pudo iniciar sesión.";
+          loginErrorBox.classList.add("is-visible");
+          return;
+        }
+
+        setToken(data.token);
+        updateView();
+      } catch (err) {
+        console.error(err);
+        loginErrorBox.textContent = "No se pudo contactar el servidor. Intenta de nuevo.";
+        loginErrorBox.classList.add("is-visible");
+      } finally {
+        loginButton.disabled = false;
+        loginButton.innerText = "Iniciar sesión";
+      }
+    });
+
+    // ---- LOGOUT ----
+    logoutButton.addEventListener("click", () => {
+      setToken(null);
+      updateView();
+    });
+
+    // ---- GENERAR CONSTANCIA ----
+    constanciaForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
       errorBox.classList.remove("is-visible");
       errorBox.textContent = "";
 
-      // Estado "cargando"
-      button.disabled = true;
-      button.innerText = "Generando...";
+      const token = getToken();
+      if (!token) {
+        errorBox.textContent = "Tu sesión no está activa. Inicia sesión de nuevo.";
+        errorBox.classList.add("is-visible");
+        setToken(null);
+        updateView();
+        return;
+      }
+
+      constanciaButton.disabled = true;
+      constanciaButton.innerText = "Generando...";
 
       try {
-        const formData = new FormData(form);
+        const formData = new FormData(constanciaForm);
+        const headers = { "X-Requested-With": "fetch" };
+        headers["Authorization"] = `Bearer ${token}`;
 
-        const resp = await fetch("https://constancia-backend.onrender.com/generar", {
+        const resp = await fetch(`${API_BASE}/generar`, {
           method: "POST",
           body: formData,
-          headers: {
-            "X-Requested-With": "fetch"
-          }
+          headers,
         });
+
+        if (resp.status === 401) {
+          errorBox.textContent = "Tu sesión expiró o se abrió en otro dispositivo. Inicia sesión de nuevo.";
+          errorBox.classList.add("is-visible");
+          setToken(null);
+          updateView();
+          return;
+        }
 
         if (!resp.ok) {
           let msg = "Ocurrió un error inesperado. Intenta de nuevo.";
@@ -524,18 +654,10 @@
         errorBox.textContent = "No se pudo contactar el servidor. Revisa tu conexión e intenta de nuevo.";
         errorBox.classList.add("is-visible");
       } finally {
-        button.disabled = false;
-        button.innerText = originalBtnText;
+        constanciaButton.disabled = false;
+        constanciaButton.innerText = originalConstanciaBtnText;
       }
     });
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
