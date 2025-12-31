@@ -52,6 +52,12 @@
       color: var(--text-soft);
     }
 
+    .topbar-session {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .brand {
       display: inline-flex;
       align-items: center;
@@ -515,6 +521,9 @@
     const loginCard = document.getElementById("login-card");
     const constanciaCard = document.getElementById("constancia-card");
 
+    const topbarSession = document.getElementById("topbar-session");
+    const logoutButton = document.getElementById("logout-button");
+    
     const loginForm = document.getElementById("login-form");
     const loginButton = document.getElementById("login-button");
     const loginErrorBox = document.getElementById("login-error-box");
@@ -542,6 +551,9 @@
       const hasToken = !!getToken();
       loginCard.style.display = hasToken ? "none" : "block";
       constanciaCard.style.display = hasToken ? "block" : "none";
+      if (topbarSession) {
+        topbarSession.style.display = hasToken ? "inline-flex" : "none";
+      }
     }
 
     updateView();
@@ -706,6 +718,7 @@
   </script>
 </body>
 </html>
+
 
 
 
