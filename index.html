@@ -209,6 +209,8 @@
       overflow: hidden;
     }
 
+    button { min-height: 44px; }
+
     button::after {
       content: "";
       position: absolute;
@@ -485,7 +487,7 @@
         </div>
 
         <button type="submit" id="constancia-button">
-          <span>Generar constancia</span>
+          <span id="constancia-btn-text">Generar constancia</span>
         </button>
 
         <p class="hint">
@@ -526,7 +528,8 @@
     const constanciaForm = document.getElementById("constancia-form");
     const constanciaButton = document.getElementById("constancia-button");
     const errorBox = document.getElementById("error-box");
-    const originalConstanciaBtnText = constanciaButton.innerText;
+    const constanciaBtnText = document.getElementById("constancia-btn-text");
+    const originalConstanciaBtnText = constanciaBtnText.textContent;
 
     function getToken() {
       return localStorage.getItem(TOKEN_KEY);
@@ -648,7 +651,7 @@
       }
 
       constanciaButton.disabled = true;
-      constanciaButton.innerText = "Generando...";
+      constanciaBtnText.textContent = "Generando...";
 
       try {
         const formData = new FormData(constanciaForm);
@@ -705,12 +708,13 @@
         errorBox.classList.add("is-visible");
       } finally {
         constanciaButton.disabled = false;
-        constanciaButton.innerText = originalConstanciaBtnText;
+        constanciaBtnText.textContent = originalConstanciaBtnText;
       }
     });
   </script>
 </body>
 </html>
+
 
 
 
