@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>CSF Docs · Generar Constancia</title>
+  <title>CSF Docs · Gestor</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * { box-sizing: border-box; }
@@ -52,7 +52,7 @@
 
     .shell {
       width: 100%;
-      max-width: 760px; /* gestor: un poco más ancho por historial */
+      max-width: 860px;
       animation: fadeIn 0.35s ease-out;
     }
 
@@ -90,7 +90,6 @@
       flex-direction: column;
       line-height: 1.15;
     }
-
     .brand-title b { font-size: 0.95rem; }
     .brand-title span { font-size: 0.78rem; color: var(--text-muted); }
 
@@ -136,8 +135,7 @@
       background: rgba(249, 250, 251, 0.95);
       color: #4b5563;
       font-size: 0.8rem;
-      font-weight: 700;
-      box-shadow: none;
+      font-weight: 800;
       cursor: pointer;
       transition:
         background 0.15s ease,
@@ -165,188 +163,42 @@
       box-shadow: 0 6px 14px rgba(248, 113, 113, 0.35);
     }
 
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--card-radius);
-      padding: 20px 20px 16px;
-      box-shadow: var(--shadow-soft);
-      border: 1px solid var(--border-subtle);
-      margin-bottom: 10px;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    h1 {
-      font-size: 1.35rem;
-      margin: 0 0 4px;
-      color: var(--text-main);
-      letter-spacing: -0.01em;
-    }
-
-    .subtitle {
-      margin: 0;
-      font-size: 0.92rem;
-      color: var(--text-muted);
-      line-height: 1.45;
-    }
-
-    /* Layout: gestor (form + historial) */
-    .app-grid {
+    .grid {
       display: grid;
       grid-template-columns: 1fr 320px;
       gap: 10px;
       align-items: start;
     }
 
-    .side-card {
-      background: #fff;
-      border-radius: 16px;
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--card-radius);
+      padding: 18px;
+      box-shadow: var(--shadow-soft);
       border: 1px solid var(--border-subtle);
-      box-shadow: 0 12px 26px rgba(15,23,42,.06);
-      padding: 12px;
-      position: sticky;
-      top: 12px;
     }
 
-    .side-title {
-      font-weight: 900;
-      font-size: .9rem;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom: 10px;
+    h1 {
+      font-size: 1.25rem;
+      margin: 0 0 4px;
+      letter-spacing: -0.01em;
     }
 
-    .side-title small {
-      font-weight: 700;
-      color: var(--text-soft);
-      font-size: .78rem;
-    }
-
-    .history-list {
-      display: grid;
-      gap: 8px;
-      max-height: 480px;
-      overflow: auto;
-      padding-right: 2px;
-    }
-
-    .hist-item {
-      border: 1px solid rgba(148,163,184,.35);
-      border-radius: 14px;
-      padding: 10px;
-      background: rgba(249,250,251,.85);
-      transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease;
-    }
-
-    .hist-item:hover {
-      transform: translateY(-1px);
-      border-color: rgba(37,99,235,.28);
-      box-shadow: 0 10px 22px rgba(37,99,235,.10);
-    }
-
-    .hist-top {
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      margin-bottom: 8px;
-    }
-
-    .hist-rfc { font-weight: 900; font-size: .86rem; }
-    .hist-time { font-size: .72rem; color: var(--text-soft); white-space: nowrap; }
-
-    .hist-meta {
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-      margin-bottom: 8px;
-    }
-
-    .tag {
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(17,24,39,.10);
-      background: rgba(255,255,255,.8);
-      font-size: .72rem;
-      color: rgba(17,24,39,.72);
-      white-space: nowrap;
-      max-width: 100%;
-    }
-
-    .hist-actions {
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-    }
-
-    /* Steps */
-    .steps {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-top: 8px;
-      margin-bottom: 6px;
-    }
-
-    .step {
-      border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 12px;
-      background: #fff;
-    }
-
-    .step-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .step-title {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 900;
+    .subtitle {
+      margin: 0 0 12px;
       font-size: 0.9rem;
-      color: #111827;
+      color: var(--text-muted);
+      line-height: 1.45;
     }
 
-    .step-title small {
-      font-weight: 700;
-      color: var(--text-soft);
-      font-size: 0.78rem;
-    }
-
-    /* Fields */
-    .field { margin-bottom: 14px; }
+    .field { margin-bottom: 12px; }
 
     label {
       display: block;
       margin-bottom: 6px;
-      font-size: 0.8rem;
-      font-weight: 800;
+      font-size: 0.78rem;
+      font-weight: 900;
       color: #374151;
-    }
-
-    .label-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 8px;
-    }
-
-    .label-hint {
-      font-size: 0.72rem;
-      color: var(--text-soft);
     }
 
     input, textarea {
@@ -364,9 +216,7 @@
         transform 0.06s ease;
     }
 
-    textarea { min-height: 70px; resize: vertical; }
-
-    input::placeholder, textarea::placeholder { color: #9ca3af; }
+    textarea { min-height: 92px; resize: vertical; }
 
     input:focus, textarea:focus {
       background: #ffffff;
@@ -375,15 +225,13 @@
       transform: translateY(-1px);
     }
 
-    .field:focus-within label { color: var(--accent-strong); }
-
-    /* Main button */
+    /* CTA principal */
     button.primary {
       width: 100%;
-      padding: 12px 16px;
+      padding: 13px 16px;
       border-radius: var(--radius-full);
       border: none;
-      font-weight: 900;
+      font-weight: 950;
       font-size: 1.02rem;
       cursor: pointer;
       background: linear-gradient(135deg, #2563eb, #1d4ed8);
@@ -393,31 +241,12 @@
       justify-content: center;
       gap: 10px;
       box-shadow: 0 12px 26px rgba(37, 99, 235, 0.45);
-      transition:
-        transform 0.08s ease,
-        box-shadow 0.08s ease,
-        filter 0.1s ease,
-        opacity 0.12s ease;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.1s ease, opacity 0.12s ease;
+      min-height: 50px;
+      user-select: none;
       position: relative;
       overflow: hidden;
-      min-height: 48px;
-      user-select: none;
     }
-
-    button.primary::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.35) 40%, transparent 80%);
-      opacity: 0;
-      transform: translateX(-80%);
-      transition: transform 0.55s ease, opacity 0.3s ease;
-      pointer-events: none;
-    }
-
-    button.primary:hover::after { opacity: 1; transform: translateX(40%); }
-    button.primary:hover { filter: brightness(1.03); transform: translateY(-1px); box-shadow: 0 16px 30px rgba(37, 99, 235, 0.52); }
-    button.primary:active { transform: translateY(0); box-shadow: 0 9px 18px rgba(37, 99, 235, 0.42); filter: brightness(0.99); }
 
     button.primary:disabled {
       opacity: 0.85;
@@ -427,7 +256,6 @@
       filter: grayscale(.08);
     }
 
-    /* Loading spinner */
     .spinner {
       width: 16px;
       height: 16px;
@@ -438,26 +266,47 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Progress strip */
+    .row-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .mini {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,.55);
+      background: rgba(249,250,251,.95);
+      color: #4b5563;
+      font-weight: 850;
+      cursor:pointer;
+      user-select:none;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    .mini:hover{ transform: translateY(-1px); box-shadow: 0 10px 20px rgba(15,23,42,.10); }
+
     .progress {
       display: none;
       margin-top: 10px;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1px solid var(--border-subtle);
       background: #fff;
       padding: 10px 12px;
     }
     .progress.is-visible { display: block; }
+
     .progress-top {
       display:flex; align-items:center; justify-content:space-between; gap:10px;
       margin-bottom: 8px;
     }
-    .progress-title {
-      font-weight: 900;
-      font-size: 0.85rem;
-      display:flex; align-items:center; gap:8px;
-    }
+    .progress-title { font-weight: 950; font-size: 0.86rem; display:flex; align-items:center; gap:8px; }
     .progress-sub { color: var(--text-muted); font-size: 0.78rem; line-height:1.35; }
+
     .bar {
       height: 10px;
       border-radius: 999px;
@@ -473,7 +322,6 @@
       transition: width .35s ease;
     }
 
-    /* Notices */
     .notice {
       display: none;
       margin-top: 10px;
@@ -497,79 +345,54 @@
       background: linear-gradient(180deg, var(--bad-soft), rgba(239,68,68,.06));
     }
 
-    .notice-title{
-      font-weight: 900;
-      display:flex; align-items:center; gap:8px;
-      margin-bottom: 4px;
-    }
-    .notice-body{
-      color: rgba(17,24,39,.86);
-      font-size: 0.88rem;
-      line-height: 1.45;
-    }
+    .notice-title{ font-weight: 950; display:flex; align-items:center; gap:8px; margin-bottom: 4px; }
+    .notice-body{ color: rgba(17,24,39,.86); font-size: 0.88rem; line-height: 1.45; }
 
-    .notice-actions{
-      margin-top: 10px;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
+    /* lateral */
+    .side {
+      position: sticky;
+      top: 12px;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid var(--border-subtle);
+      background: #fff;
+      box-shadow: 0 12px 26px rgba(15,23,42,.06);
     }
+    .side-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 10px; }
+    .side-top b { font-weight: 950; font-size: .9rem; }
+    .side-top small { color: var(--text-soft); font-weight: 800; font-size: .78rem; }
 
-    .mini {
+    .history-list { display:grid; gap:8px; max-height: 520px; overflow:auto; padding-right: 2px; }
+    .hist-item {
+      border: 1px solid rgba(148,163,184,.35);
+      border-radius: 14px;
+      padding: 10px;
+      background: rgba(249,250,251,.85);
+      transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease;
+      cursor: pointer;
+    }
+    .hist-item:hover {
+      transform: translateY(-1px);
+      border-color: rgba(37,99,235,.28);
+      box-shadow: 0 10px 22px rgba(37,99,235,.10);
+    }
+    .hist-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 6px; }
+    .hist-rfc { font-weight: 950; font-size: .86rem; }
+    .hist-time { font-size: .72rem; color: var(--text-soft); white-space: nowrap; }
+    .tag {
       display:inline-flex;
       align-items:center;
-      gap:8px;
-      padding: 8px 12px;
+      gap:6px;
+      padding: 4px 8px;
       border-radius: 999px;
-      border: 1px solid rgba(37,99,235,.22);
-      background: rgba(37,99,235,.08);
-      color: #1e3a8a;
-      font-weight: 900;
-      cursor:pointer;
-      transition: transform .08s ease, box-shadow .12s ease, background .12s ease;
-      user-select:none;
-      font-size: 0.85rem;
+      border: 1px solid rgba(17,24,39,.10);
+      background: rgba(255,255,255,.8);
+      font-size: .72rem;
+      color: rgba(17,24,39,.72);
       white-space: nowrap;
-    }
-    .mini:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 10px 20px rgba(37,99,235,.14);
-      background: rgba(37,99,235,.10);
-    }
-    .mini:active{ transform: translateY(0); box-shadow:none; }
-
-    .mini.gray{
-      border-color: rgba(148,163,184,.55);
-      background: rgba(249,250,251,.95);
-      color: #4b5563;
-      font-weight: 800;
-    }
-
-    .mini.danger{
-      border-color: rgba(239,68,68,.28);
-      background: rgba(239,68,68,.10);
-      color: #991b1b;
-      font-weight: 900;
-    }
-
-    .hint {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 10px;
-      line-height: 1.5;
-      padding: 9px 10px;
-      border-radius: 12px;
-      background: #f9fafb;
-      border: 1px dashed #e5e7eb;
-    }
-    .hint strong { color: #374151; }
-
-    .footer {
-      margin-top: 4px;
-      font-size: 0.72rem;
-      color: #9ca3af;
-      text-align: center;
-      line-height: 1.45;
+      max-width: 100%;
+      margin-right: 6px;
+      margin-top: 6px;
     }
 
     .kbd {
@@ -583,16 +406,17 @@
       white-space: nowrap;
     }
 
-    @media (max-width: 860px) {
-      .app-grid { grid-template-columns: 1fr; }
-      .side-card { position: static; }
+    .footer {
+      margin-top: 10px;
+      font-size: 0.72rem;
+      color: #9ca3af;
+      text-align: center;
+      line-height: 1.45;
     }
 
-    @media (max-width: 480px) {
-      .card { padding: 18px 16px 14px; border-radius: 14px; }
-      h1 { font-size: 1.25rem; }
-      .topbar { flex-direction: column; align-items: flex-start; }
-      .top-actions { justify-content: flex-start; }
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+      .side { position: static; }
     }
 
     @keyframes fadeIn {
@@ -609,7 +433,7 @@
         <div class="brand-badge">CSF</div>
         <div class="brand-title">
           <b>CSF Docs</b>
-          <span>Flujo pro para gestores (lote + historial).</span>
+          <span>Modo gestor: pega → genera → siguiente.</span>
         </div>
       </div>
 
@@ -618,244 +442,141 @@
           <span id="session-dot" class="dot warn"></span>
           <span id="session-text">Sesión: no iniciada</span>
         </div>
-
-        <!-- gestor actions -->
-        <button id="new-job-top" type="button" class="button-ghost" style="display:none;" title="Nueva constancia (limpiar)">
-          ➕ Nueva constancia
-        </button>
-
-        <button id="logout-button" type="button" class="button-ghost danger" style="display:none;">
-          ↩ Cerrar sesión
-        </button>
+        <button id="logout-button" type="button" class="button-ghost danger" style="display:none;">↩ Cerrar sesión</button>
       </div>
     </div>
 
     <!-- LOGIN -->
     <div class="card" id="login-card">
-      <div class="card-header">
-        <div>
-          <h1>Acceso</h1>
-          <p class="subtitle">Ingresa con tu usuario y contraseña para generar constancias.</p>
+      <h1>Acceso</h1>
+      <p class="subtitle">Inicia sesión para generar constancias.</p>
+
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="login-username">Usuario</label>
+          <input type="text" id="login-username" autocomplete="username" required />
         </div>
-      </div>
 
-      <div class="steps">
-        <div class="step">
-          <div class="step-top">
-            <div class="step-title">Paso 1 · Sesión <small>Accede con tu cuenta</small></div>
-            <span class="chip" style="box-shadow:none;background:var(--accent-soft);border-color:rgba(37,99,235,.22);color:#1e3a8a;">
-              Tip: <span class="kbd">Enter</span> para entrar
-            </span>
-          </div>
-
-          <form id="login-form" novalidate>
-            <div class="field">
-              <label for="login-username">Usuario</label>
-              <input type="text" id="login-username" autocomplete="username" placeholder="" required />
-            </div>
-
-            <div class="field">
-              <label for="login-password">Contraseña</label>
-              <input type="password" id="login-password" autocomplete="current-password" required />
-            </div>
-
-            <button class="primary" type="submit" id="login-button">Iniciar sesión</button>
-
-            <div id="login-notice" class="notice bad" style="margin-top:10px;">
-              <div class="notice-title">❌ No se pudo iniciar sesión</div>
-              <div class="notice-body" id="login-notice-body"></div>
-              <div class="notice-actions">
-                <button type="button" class="mini gray" id="login-tryagain">Intentar de nuevo</button>
-              </div>
-            </div>
-
-            <p class="hint">
-              🔒 Por seguridad, se permite <strong>una sesión activa por usuario</strong>.
-              Si inicias sesión en otro dispositivo, esta sesión se cerrará.
-            </p>
-          </form>
+        <div class="field">
+          <label for="login-password">Contraseña</label>
+          <input type="password" id="login-password" autocomplete="current-password" required />
         </div>
-      </div>
+
+        <button class="primary" type="submit" id="login-button">
+          <span style="font-size:1rem;">🔑</span>
+          <span>Entrar</span>
+        </button>
+
+        <div id="login-notice" class="notice bad">
+          <div class="notice-title">❌ No se pudo iniciar sesión</div>
+          <div class="notice-body" id="login-notice-body"></div>
+        </div>
+
+        <div class="footer">
+          🔒 Una sesión activa por usuario.
+        </div>
+      </form>
     </div>
 
     <!-- APP -->
-    <div class="card" id="app-card" style="display:none;">
-      <div class="card-header">
-        <div>
-          <h1>Constancia de Situación Fiscal</h1>
-          <p class="subtitle">Optimizado para gestor: pegado rápido, historial, “nueva constancia” y mensajes claros.</p>
-        </div>
-      </div>
+    <div class="grid" id="app-wrap" style="display:none;">
+      <!-- MAIN -->
+      <div class="card">
+        <h1>Generar CSF</h1>
+        <p class="subtitle">
+          Pega los datos (WhatsApp) y listo. Atajo: <span class="kbd">Ctrl/⌘ + Enter</span> para pegar+generar.
+        </p>
 
-      <div class="app-grid">
-        <!-- MAIN -->
-        <div>
-          <div class="steps">
-            <!-- Paso 1: Sesión -->
-            <div class="step">
-              <div class="step-top">
-                <div class="step-title">Paso 1 · Sesión <small>Verifica antes de generar</small></div>
-                <span class="chip" style="box-shadow:none;background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.22);color:#065f46;">
-                  <span class="dot ok"></span>
-                  <span id="session-user">Sesión activa</span>
-                </span>
-              </div>
-              <div class="step-body" style="color:var(--text-muted); font-size:.86rem; line-height:1.45;">
-                Si aparece “sesión cerrada por seguridad”, vuelve a iniciar sesión y continúa.
-              </div>
-            </div>
-
-            <!-- Paso 2: Datos -->
-            <div class="step">
-              <div class="step-top">
-                <div class="step-title">Paso 2 · Datos <small>Captura (o pega) y listo</small></div>
-                <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                  <button type="button" class="button-ghost" id="use-last" style="display:none;">↻ Usar último</button>
-                  <button type="button" class="button-ghost" id="new-job">➕ Nueva constancia</button>
-                </div>
-              </div>
-
-              <div class="field">
-                <div class="label-row">
-                  <label for="rfc">RFC</label>
-                  <span class="label-hint">13 (física) / 12 (moral)</span>
-                </div>
-                <input type="text" id="rfc" name="rfc" placeholder="Ej. TOHJ640426XXX" required />
-              </div>
-
-              <div class="field">
-                <div class="label-row">
-                  <label for="idcif">idCIF</label>
-                  <span class="label-hint">Tal como aparece en el QR</span>
-                </div>
-                <input type="text" id="idcif" name="idcif" placeholder="Ej. 19010347XXX" required />
-              </div>
-
-              <div class="field">
-                <div class="label-row">
-                  <label for="lugar_emision">Lugar de emisión</label>
-                  <span class="label-hint">Opcional</span>
-                </div>
-                <input type="text" id="lugar_emision" name="lugar_emision" placeholder="Ej. MONTERREY , NUEVO LEÓN" />
-              </div>
-
-              <div class="field">
-                <div class="label-row">
-                  <label for="pegado">Pegado rápido</label>
-                  <span class="label-hint">Pega texto de WhatsApp y se autocompleta</span>
-                </div>
-                <textarea id="pegado" placeholder="Ej:
+        <!-- Pegado rápido primero (lo principal para gestor) -->
+        <div class="field">
+          <label for="pegado">Pegado rápido (recomendado)</label>
+          <textarea id="pegado" placeholder="Ej:
 RFC: TOHJ640426XXX
 idCIF: 19010347XXX
 Lugar: MONTERREY, NUEVO LEÓN"></textarea>
+        </div>
 
-                <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
-                  <button type="button" class="mini gray" id="parse-pegado">Autocompletar</button>
-                  <button type="button" class="mini gray" id="clear-all">Limpiar</button>
-                  <button type="button" class="mini" id="paste-generate" title="Autocompletar y generar (Ctrl/⌘ + Enter)">
-                    Pegar → Autocompletar → Generar
-                  </button>
-                </div>
-              </div>
+        <div class="row-actions">
+          <button type="button" class="mini" id="autofill">Autocompletar</button>
+          <button type="button" class="mini" id="new-job">Nueva</button>
+          <button type="button" class="mini" id="use-last" style="display:none;">Usar último</button>
+        </div>
 
-              <p class="hint">
-                Tip: <strong>Ctrl/⌘ + Enter</strong> en “Pegado rápido” = autocompleta y genera.
-              </p>
-            </div>
-
-            <!-- Paso 3: Acción -->
-            <div class="step">
-              <div class="step-top">
-                <div class="step-title">Paso 3 · Acción <small>Genera y descarga</small></div>
-                <span class="chip" style="box-shadow:none;background:var(--accent-soft);border-color:rgba(37,99,235,.22);color:#1e3a8a;">
-                  Consejo: no cierres la página
-                </span>
-              </div>
-
-              <form id="constancia-form">
-                <button class="primary" type="submit" id="generate-button">
-                  <span id="gen-icon" style="font-size:1rem;">⚡</span>
-                  <span id="gen-text">Generar constancia</span>
-                </button>
-
-                <!-- Progreso secuencial -->
-                <div id="progress" class="progress">
-                  <div class="progress-top">
-                    <div class="progress-title" id="progress-title">⏳ Iniciando…</div>
-                    <div class="kbd" id="progress-step">Idle</div>
-                  </div>
-                  <div class="bar"><div class="barFill" id="barFill"></div></div>
-                  <div class="progress-sub" id="progress-sub" style="margin-top:8px;">
-                    Esto puede tardar 5–10 segundos. No cierres la página.
-                  </div>
-                </div>
-
-                <!-- Notice éxito -->
-                <div id="notice-ok" class="notice ok">
-                  <div class="notice-title">✅ Constancia generada correctamente</div>
-                  <div class="notice-body" id="ok-body"></div>
-                  <div class="notice-actions">
-                    <button type="button" class="mini" id="generate-again">Generar otra</button>
-                    <button type="button" class="mini gray" id="copy-last">Copiar RFC/idCIF</button>
-                    <button type="button" class="mini gray" id="focus-rfc">Ir a RFC</button>
-                  </div>
-                </div>
-
-                <!-- Notice sesión -->
-                <div id="notice-session" class="notice warn">
-                  <div class="notice-title">🔒 Sesión cerrada por seguridad</div>
-                  <div class="notice-body">
-                    Tu cuenta se usó en otro dispositivo. Por seguridad, cerramos esta sesión.
-                    <div style="margin-top:6px; color:var(--text-muted); font-size:.86rem;">
-                      Tip: si trabajan varios, lo ideal es <b>un usuario por gestor</b>.
-                    </div>
-                  </div>
-                  <div class="notice-actions">
-                    <button type="button" class="mini" id="go-login">Iniciar sesión de nuevo</button>
-                  </div>
-                </div>
-
-                <!-- Notice error -->
-                <div id="notice-bad" class="notice bad">
-                  <div class="notice-title">⚠️ No se pudo generar</div>
-                  <div class="notice-body" id="bad-body"></div>
-                  <div class="notice-actions">
-                    <button type="button" class="mini" id="retry">Reintentar</button>
-                    <button type="button" class="mini gray" id="edit-data">Editar datos</button>
-                  </div>
-                </div>
-
-                <div class="footer" style="margin-top:10px;">
-                  Este sitio no almacena tus datos; solo se usan para consultar la constancia en el SAT.
-                </div>
-              </form>
-            </div>
+        <!-- Campos (por si quieren corregir) -->
+        <div style="margin-top:12px;">
+          <div class="field">
+            <label for="rfc">RFC</label>
+            <input type="text" id="rfc" placeholder="TOHJ640426XXX" />
+          </div>
+          <div class="field">
+            <label for="idcif">idCIF</label>
+            <input type="text" id="idcif" placeholder="19010347XXX" />
+          </div>
+          <div class="field">
+            <label for="lugar_emision">Lugar de emisión (opcional)</label>
+            <input type="text" id="lugar_emision" placeholder="MONTERREY, NUEVO LEÓN" />
           </div>
         </div>
 
-        <!-- SIDE: HISTORIAL -->
-        <aside class="side-card">
-          <div class="side-title">
-            <div>Historial <small>(últimos 10)</small></div>
-            <button type="button" class="mini danger" id="clear-history" title="Borrar historial">
-              🧹 Limpiar
-            </button>
-          </div>
+        <form id="constancia-form">
+          <button class="primary" type="submit" id="generate-button" style="margin-top:10px;">
+            <span id="gen-icon" style="font-size:1rem;">⚡</span>
+            <span id="gen-text">Generar y descargar</span>
+          </button>
 
-          <div style="margin-bottom:10px;">
-            <input id="history-search" type="text" placeholder="Buscar RFC..." />
-            <div style="margin-top:8px; color:var(--text-muted); font-size:.78rem; line-height:1.35;">
-              Click en un registro para rellenar. Útil cuando tramitas en lote.
+          <div id="progress" class="progress">
+            <div class="progress-top">
+              <div class="progress-title" id="progress-title">⏳ Iniciando…</div>
+              <div class="kbd" id="progress-step">Idle</div>
+            </div>
+            <div class="bar"><div class="barFill" id="barFill"></div></div>
+            <div class="progress-sub" id="progress-sub" style="margin-top:8px;">
+              Esto puede tardar 5–10 segundos. No cierres la página.
             </div>
           </div>
 
-          <div id="history-list" class="history-list"></div>
-
-          <div style="margin-top:10px; color:var(--text-soft); font-size:.72rem; line-height:1.45;">
-            Atajos: <span class="kbd">Ctrl/⌘+K</span> buscar · <span class="kbd">Ctrl/⌘+Enter</span> pegar+generar
+          <div id="notice-ok" class="notice ok">
+            <div class="notice-title">✅ Generada</div>
+            <div class="notice-body" id="ok-body"></div>
           </div>
-        </aside>
+
+          <div id="notice-session" class="notice warn">
+            <div class="notice-title">🔒 Sesión cerrada por seguridad</div>
+            <div class="notice-body">
+              Tu cuenta se usó en otro dispositivo. Por seguridad, cerramos esta sesión.
+            </div>
+          </div>
+
+          <div id="notice-bad" class="notice bad">
+            <div class="notice-title">⚠️ No se pudo generar</div>
+            <div class="notice-body" id="bad-body"></div>
+          </div>
+
+          <div class="footer">
+            Este sitio no almacena datos; solo consulta al SAT y descarga el archivo.
+          </div>
+        </form>
       </div>
+
+      <!-- SIDE -->
+      <aside class="side">
+        <div class="side-top">
+          <div>
+            <b>Historial</b> <small>(últimos 10)</small>
+          </div>
+          <button type="button" class="button-ghost" id="clear-history">Limpiar</button>
+        </div>
+
+        <div class="field" style="margin-bottom:10px;">
+          <input id="history-search" type="text" placeholder="Buscar RFC..." />
+        </div>
+
+        <div id="history-list" class="history-list"></div>
+
+        <div style="margin-top:10px; color:var(--text-soft); font-size:.72rem; line-height:1.45;">
+          Atajos: <span class="kbd">Ctrl/⌘+K</span> buscar · <span class="kbd">Ctrl/⌘+Enter</span> pegar+generar
+        </div>
+      </aside>
     </div>
   </div>
 
@@ -870,21 +591,16 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
 
     // ================== DOM ==================
     const loginCard = document.getElementById("login-card");
-    const appCard   = document.getElementById("app-card");
+    const appWrap   = document.getElementById("app-wrap");
 
     const sessionDot  = document.getElementById("session-dot");
     const sessionText = document.getElementById("session-text");
-    const sessionUser = document.getElementById("session-user");
     const logoutBtn   = document.getElementById("logout-button");
-
-    const newJobTop = document.getElementById("new-job-top");
-    const newJob = document.getElementById("new-job");
 
     const loginForm = document.getElementById("login-form");
     const loginBtn  = document.getElementById("login-button");
     const loginNotice = document.getElementById("login-notice");
     const loginNoticeBody = document.getElementById("login-notice-body");
-    const loginTryAgain = document.getElementById("login-tryagain");
 
     const constanciaForm = document.getElementById("constancia-form");
     const genBtn = document.getElementById("generate-button");
@@ -896,10 +612,9 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     const lugarInput = document.getElementById("lugar_emision");
 
     const pegado = document.getElementById("pegado");
-    const parsePegado = document.getElementById("parse-pegado");
-    const clearAll = document.getElementById("clear-all");
-    const useLast = document.getElementById("use-last");
-    const pasteGenerate = document.getElementById("paste-generate");
+    const autofillBtn = document.getElementById("autofill");
+    const newJobBtn = document.getElementById("new-job");
+    const useLastBtn = document.getElementById("use-last");
 
     const progress = document.getElementById("progress");
     const progressTitle = document.getElementById("progress-title");
@@ -912,13 +627,6 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     const noticeSession = document.getElementById("notice-session");
     const noticeBad = document.getElementById("notice-bad");
     const badBody = document.getElementById("bad-body");
-
-    const goLoginBtn = document.getElementById("go-login");
-    const retryBtn = document.getElementById("retry");
-    const editDataBtn = document.getElementById("edit-data");
-    const genAgainBtn = document.getElementById("generate-again");
-    const copyLastBtn = document.getElementById("copy-last");
-    const focusRfcBtn = document.getElementById("focus-rfc");
 
     const historyListEl = document.getElementById("history-list");
     const historySearch = document.getElementById("history-search");
@@ -949,51 +657,36 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       }
     };
 
-    const setHistory = (arr) => {
-      localStorage.setItem(HISTORY_KEY, JSON.stringify(arr || []));
-    };
+    const setHistory = (arr) => localStorage.setItem(HISTORY_KEY, JSON.stringify(arr || []));
 
     const addToHistory = (item) => {
       if (!item || !item.rfc) return;
       let h = getHistory();
-
-      // de-dup por rfc+idcif (si coincide, lo movemos arriba)
       h = h.filter(x => !(x.rfc === item.rfc && (x.idcif || "") === (item.idcif || "")));
-
       h.unshift(item);
       if (h.length > HISTORY_MAX) h = h.slice(0, HISTORY_MAX);
       setHistory(h);
       renderHistory();
     };
 
-    // ================== UX HELPERS ==================
-    function show(el){ el.style.display = ""; }
-    function hide(el){ el.style.display = "none"; }
-
+    // ================== UX ==================
     function setSessionChip(state, text) {
-      // state: "ok" | "warn" | "bad"
       sessionDot.className = "dot " + state;
       sessionText.textContent = text;
     }
 
     function setViewLoggedIn(username) {
-      hide(loginCard);
-      show(appCard);
-      show(logoutBtn);
-      show(newJobTop);
-
+      loginCard.style.display = "none";
+      appWrap.style.display = "grid";
+      logoutBtn.style.display = "inline-flex";
       setSessionChip("ok", `Sesión: activa (${username})`);
-      sessionUser.textContent = `Sesión activa: ${username}`;
     }
 
     function setViewLoggedOut() {
-      show(loginCard);
-      hide(appCard);
-      hide(logoutBtn);
-      hide(newJobTop);
-
+      loginCard.style.display = "block";
+      appWrap.style.display = "none";
+      logoutBtn.style.display = "none";
       setSessionChip("warn", "Sesión: no iniciada");
-      sessionUser.textContent = "Sesión activa";
     }
 
     function resetNotices() {
@@ -1003,30 +696,24 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     }
 
     function lockForm(locked) {
-      // evita doble clic mental + bloquea inputs
       genBtn.disabled = !!locked;
       rfcInput.disabled = !!locked;
       idInput.disabled = !!locked;
       lugarInput.disabled = !!locked;
-
       pegado.disabled = !!locked;
-      parsePegado.disabled = !!locked;
-      clearAll.disabled = !!locked;
-      useLast.disabled = !!locked;
-      pasteGenerate.disabled = !!locked;
-
-      newJob.disabled = !!locked;
-      newJobTop.disabled = !!locked;
+      autofillBtn.disabled = !!locked;
+      newJobBtn.disabled = !!locked;
+      useLastBtn.disabled = !!locked;
     }
 
     function setStatus(step) {
       const map = {
-        idle:   { pct: 0,  title:"⚡ Listo para generar", sub:"Completa RFC e idCIF y presiona Generar.", chip:"Idle", icon:"⚡", btn:"Generar constancia" },
+        idle:   { pct: 0,  title:"⚡ Listo", sub:"Pega datos y genera.", chip:"Idle", icon:"⚡", btn:"Generar y descargar" },
         valid:  { pct: 18, title:"🔐 Validando sesión…", sub:"Verificando acceso…", chip:"Validando", icon:null, btn:"Validando…" },
-        sat:    { pct: 42, title:"🌐 Conectando con SAT…", sub:"Consultando información… (no cierres la página)", chip:"SAT", icon:null, btn:"Consultando SAT…" },
+        sat:    { pct: 42, title:"🌐 Consultando SAT…", sub:"Esto puede tardar unos segundos (no cierres).", chip:"SAT", icon:null, btn:"Consultando SAT…" },
         doc:    { pct: 72, title:"📄 Generando archivo…", sub:"Preparando la constancia…", chip:"Documento", icon:null, btn:"Generando…" },
-        down:   { pct: 92, title:"⬇️ Descargando…", sub:"Estamos iniciando la descarga…", chip:"Descarga", icon:null, btn:"Descargando…" },
-        done:   { pct: 100,title:"✅ Listo", sub:"Descarga completada. Puedes generar otra.", chip:"Listo", icon:"✅", btn:"Generar otra" },
+        down:   { pct: 92, title:"⬇️ Descargando…", sub:"Iniciando descarga…", chip:"Descarga", icon:null, btn:"Descargando…" },
+        done:   { pct: 100,title:"✅ Listo", sub:"Descarga completada. Puedes pegar el siguiente.", chip:"Listo", icon:"✅", btn:"Generar siguiente" },
       };
       const s = map[step] || map.idle;
 
@@ -1035,11 +722,8 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       progressSub.textContent = s.sub;
       progressStep.textContent = s.chip;
       barFill.style.width = s.pct + "%";
-
-      if (s.icon) genIcon.textContent = s.icon;
       genText.textContent = s.btn;
 
-      // spinner cuando no hay icon
       if (!s.icon && step !== "idle" && step !== "done") {
         genIcon.innerHTML = '<span class="spinner" aria-hidden="true"></span>';
       } else {
@@ -1049,35 +733,27 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
 
     function validateRFC(v) {
       const t = (v || "").trim().toUpperCase();
-      // RFC: 12 o 13 chars, simplificado
       return /^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/.test(t);
     }
-
     function validateIDCIF(v) {
       const t = (v || "").trim();
       return /^\d{8,20}$/.test(t);
     }
 
-    function setFieldAutofmt() {
+    function normalizeInputs() {
       rfcInput.value = (rfcInput.value || "").toUpperCase().replace(/\s+/g,"").slice(0,13);
       idInput.value = (idInput.value || "").replace(/\s+/g,"").slice(0,20);
     }
 
-    // ---- Parser pro: acepta texto libre (WhatsApp)
     function tryParsePegado() {
       const t = (pegado.value || "").trim();
       if (!t) return;
 
       const up = t.toUpperCase();
-
-      // RFC: buscar patrón, incluso si viene con "RFC:"
       const rfcM = up.match(/\b([A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3})\b/);
-
-      // idCIF: preferir si viene como "IDCIF:" o "ID CIF:" etc.
       const idLabel = up.match(/ID\s*CIF\s*[:\-]?\s*(\d{8,20})/i);
       const idM = idLabel || up.match(/\b(\d{8,20})\b/);
 
-      // Lugar: si viene como "LUGAR:" o "LUGAR DE EMISION:" o "EMISION:"
       const lugarM =
         up.match(/LUGAR\s*(DE\s*)?EMISI[ÓO]N\s*[:\-]\s*(.+)$/im) ||
         up.match(/LUGAR\s*[:\-]\s*(.+)$/im) ||
@@ -1086,18 +762,12 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       if (rfcM && rfcM[1]) rfcInput.value = rfcM[1];
       if (idM && idM[1]) idInput.value = idM[1];
 
-      if (lugarM && lugarM[1]) {
-        // cuando usamos match con grupos distintos (depende del regex)
+      if (lugarM && lugarM[lugarM.length - 1]) {
         const raw = (lugarM[lugarM.length - 1] || "").trim();
         if (raw && raw.length >= 3) lugarInput.value = raw.replace(/\s+/g, " ").slice(0, 80);
       }
 
-      setFieldAutofmt();
-
-      // enfoque inteligente
-      if (!rfcInput.value) rfcInput.focus();
-      else if (!idInput.value) idInput.focus();
-      else genBtn.focus();
+      normalizeInputs();
     }
 
     function clearJob({ keepLugar = true } = {}) {
@@ -1107,27 +777,25 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       if (!keepLugar) lugarInput.value = "";
       resetNotices();
       setStatus("idle");
-      rfcInput.focus();
+      pegado.focus();
     }
 
     function showLastCTA() {
       const last = getLastPayload();
       if (last && (last.rfc || last.idcif || last.lugar_emision)) {
-        useLast.style.display = "inline-flex";
-        useLast.textContent = `↻ Usar último (${(last.rfc || "").slice(0,6)}…)`;
+        useLastBtn.style.display = "inline-flex";
+        useLastBtn.textContent = `Usar último (${(last.rfc || "").slice(0,6)}…)`;
       } else {
-        useLast.style.display = "none";
+        useLastBtn.style.display = "none";
       }
     }
 
-    // ================== HISTORIAL UI ==================
+    // ================== HISTORIAL ==================
     function formatTime(ts) {
       try {
         const d = new Date(ts);
         return d.toLocaleString("es-MX", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "short" });
-      } catch {
-        return "";
-      }
+      } catch { return ""; }
     }
 
     function renderHistory() {
@@ -1136,97 +804,60 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       const filtered = q ? h.filter(x => (x.rfc || "").includes(q)) : h;
 
       historyListEl.innerHTML = "";
-
       if (!filtered.length) {
         historyListEl.innerHTML = `
-          <div style="border:1px dashed rgba(148,163,184,.55); border-radius:14px; padding:12px; color:var(--text-muted); font-size:.86rem; line-height:1.45;">
-            Aún no hay historial. Genera una constancia y aquí aparecerán los últimos RFC.
+          <div class="hist-item" style="cursor:default;">
+            <div style="color:var(--text-muted); font-size:.86rem; line-height:1.45;">
+              Aún no hay historial. Genera una constancia y aquí aparecerán los últimos RFC.
+            </div>
           </div>`;
         return;
       }
 
       for (const item of filtered) {
-        const wrap = document.createElement("div");
-        wrap.className = "hist-item";
-        wrap.innerHTML = `
+        const div = document.createElement("div");
+        div.className = "hist-item";
+        div.innerHTML = `
           <div class="hist-top">
             <div class="hist-rfc">${item.rfc || ""}</div>
             <div class="hist-time">${formatTime(item.ts)}</div>
           </div>
-          <div class="hist-meta">
+          <div>
             <span class="tag">idCIF: <b>${(item.idcif || "").slice(0, 20)}</b></span>
-            ${item.lugar_emision ? `<span class="tag">Lugar: <b>${item.lugar_emision.slice(0, 28)}</b></span>` : ``}
+            ${item.lugar_emision ? `<span class="tag">Lugar: <b>${item.lugar_emision.slice(0, 26)}</b></span>` : ``}
           </div>
-          <div class="hist-actions">
-            <button type="button" class="mini gray" data-act="fill">Rellenar</button>
-            <button type="button" class="mini gray" data-act="copy">Copiar</button>
-            <button type="button" class="mini" data-act="gen">Generar</button>
+          <div style="margin-top:8px; color:var(--text-soft); font-size:.72rem;">
+            Click para rellenar.
           </div>
         `;
-
-        wrap.addEventListener("click", (e) => {
-          const btn = e.target.closest("button");
-          if (!btn) return;
-
-          const act = btn.getAttribute("data-act");
-          if (!act) return;
-
-          const payload = {
-            rfc: item.rfc || "",
-            idcif: item.idcif || "",
-            lugar_emision: item.lugar_emision || ""
-          };
-
-          if (act === "fill") {
-            rfcInput.value = payload.rfc;
-            idInput.value = payload.idcif;
-            if (payload.lugar_emision) lugarInput.value = payload.lugar_emision;
-            setFieldAutofmt();
-            resetNotices();
-            setStatus("idle");
-            genBtn.focus();
-          }
-
-          if (act === "copy") {
-            const txt = `${payload.rfc} ${payload.idcif}`.trim();
-            navigator.clipboard?.writeText(txt).catch(() => alert("Texto:\n" + txt));
-          }
-
-          if (act === "gen") {
-            rfcInput.value = payload.rfc;
-            idInput.value = payload.idcif;
-            if (payload.lugar_emision) lugarInput.value = payload.lugar_emision;
-            setFieldAutofmt();
-            resetNotices();
-            setStatus("idle");
-            constanciaForm.requestSubmit();
-          }
+        div.addEventListener("click", () => {
+          rfcInput.value = item.rfc || "";
+          idInput.value = item.idcif || "";
+          if (item.lugar_emision) lugarInput.value = item.lugar_emision;
+          normalizeInputs();
+          resetNotices();
+          setStatus("idle");
+          pegado.focus();
+          pegado.select();
         });
-
-        historyListEl.appendChild(wrap);
+        historyListEl.appendChild(div);
       }
     }
 
-    // ================== VIEW INIT ==================
+    // ================== INIT ==================
     document.getElementById("login-username").value = getSavedUser();
-
     showLastCTA();
     renderHistory();
 
     const token = getToken();
-    if (token) {
-      const u = getSavedUser() || "usuario";
-      setViewLoggedIn(u);
-      setStatus("idle");
-    } else {
-      setViewLoggedOut();
-    }
+    if (token) setViewLoggedIn(getSavedUser() || "usuario");
+    else setViewLoggedOut();
+
+    setStatus("idle");
 
     // ================== EVENTS ==================
-    // Buscar historial (Ctrl/⌘+K)
     window.addEventListener("keydown", (e) => {
-      const isK = e.key.toLowerCase() === "k";
-      if ((e.ctrlKey || e.metaKey) && isK) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         historySearch.focus();
         historySearch.select();
@@ -1241,56 +872,34 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       renderHistory();
     });
 
-    // Autocompletar pegado
-    parsePegado.addEventListener("click", tryParsePegado);
+    autofillBtn.addEventListener("click", () => {
+      tryParsePegado();
+      rfcInput.focus();
+    });
 
-    // Atajo: Ctrl/⌘+Enter en pegado = autocompletar + generar
+    // Ctrl/⌘+Enter = autocompleta y genera
     pegado.addEventListener("keydown", (e) => {
-      const isEnter = e.key === "Enter";
-      if ((e.ctrlKey || e.metaKey) && isEnter) {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
         e.preventDefault();
         tryParsePegado();
         constanciaForm.requestSubmit();
       }
     });
 
-    pasteGenerate.addEventListener("click", () => {
-      tryParsePegado();
-      constanciaForm.requestSubmit();
-    });
+    newJobBtn.addEventListener("click", () => clearJob({ keepLugar: true }));
 
-    function handleNewJob() {
-      // gestor: por defecto conserva lugar (muchos hacen en misma ciudad)
-      clearJob({ keepLugar: true });
-    }
-
-    newJob.addEventListener("click", handleNewJob);
-    newJobTop.addEventListener("click", handleNewJob);
-
-    clearAll.addEventListener("click", () => clearJob({ keepLugar: false }));
-
-    useLast.addEventListener("click", () => {
+    useLastBtn.addEventListener("click", () => {
       const last = getLastPayload();
       if (!last) return;
       rfcInput.value = last.rfc || "";
       idInput.value  = last.idcif || "";
       lugarInput.value = last.lugar_emision || "";
-      setFieldAutofmt();
+      normalizeInputs();
       resetNotices();
       setStatus("idle");
-      genBtn.focus();
     });
-
-    // En vivo: formateo
-    rfcInput.addEventListener("input", setFieldAutofmt);
-    idInput.addEventListener("input", setFieldAutofmt);
 
     // Login
-    loginTryAgain.addEventListener("click", () => {
-      loginNotice.classList.remove("is-visible");
-      document.getElementById("login-password").focus();
-    });
-
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       loginNotice.classList.remove("is-visible");
@@ -1306,7 +915,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       }
 
       loginBtn.disabled = true;
-      loginBtn.textContent = "Entrando…";
+      loginBtn.innerHTML = `<span class="spinner" aria-hidden="true"></span><span>Entrando…</span>`;
 
       try {
         const resp = await fetch(`${API_BASE}/login`, {
@@ -1318,9 +927,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         const data = await resp.json().catch(() => ({}));
 
         if (resp.status === 409) {
-          loginNoticeBody.textContent =
-            data.message ||
-            "Tu cuenta ya está activa en otro dispositivo. Cierra sesión ahí o usa la misma sesión.";
+          loginNoticeBody.textContent = data.message || "Tu cuenta ya está activa en otro dispositivo.";
           loginNotice.classList.add("is-visible");
           return;
         }
@@ -1335,10 +942,9 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         setSavedUser(username);
 
         setViewLoggedIn(username);
-        setStatus("idle");
-        resetNotices();
         showLastCTA();
-        rfcInput.focus();
+        setStatus("idle");
+        pegado.focus();
 
       } catch (err) {
         console.error(err);
@@ -1346,7 +952,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         loginNotice.classList.add("is-visible");
       } finally {
         loginBtn.disabled = false;
-        loginBtn.textContent = "Iniciar sesión";
+        loginBtn.innerHTML = `<span style="font-size:1rem;">🔑</span><span>Entrar</span>`;
       }
     });
 
@@ -1365,52 +971,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       } finally {
         setToken(null);
         setViewLoggedOut();
-        resetNotices();
         setStatus("idle");
-      }
-    });
-
-    goLoginBtn.addEventListener("click", () => {
-      setToken(null);
-      setViewLoggedOut();
-      resetNotices();
-      setStatus("idle");
-      document.getElementById("login-password").value = "";
-      document.getElementById("login-password").focus();
-    });
-
-    retryBtn.addEventListener("click", () => {
-      resetNotices();
-      constanciaForm.requestSubmit();
-    });
-
-    editDataBtn.addEventListener("click", () => {
-      resetNotices();
-      setStatus("idle");
-      rfcInput.focus();
-    });
-
-    genAgainBtn.addEventListener("click", () => {
-      resetNotices();
-      setStatus("idle");
-      handleNewJob();
-    });
-
-    focusRfcBtn.addEventListener("click", () => {
-      resetNotices();
-      setStatus("idle");
-      rfcInput.focus();
-      rfcInput.select();
-    });
-
-    copyLastBtn.addEventListener("click", async () => {
-      const last = getLastPayload();
-      if (!last) return;
-      const text = `${last.rfc || ""} ${last.idcif || ""}`.trim();
-      try {
-        await navigator.clipboard.writeText(text);
-      } catch (_) {
-        alert("Copiar no disponible. Texto:\n" + text);
       }
     });
 
@@ -1418,8 +979,6 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     constanciaForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       resetNotices();
-
-      // Feedback inmediato
       setStatus("valid");
 
       const token = getToken();
@@ -1429,21 +988,18 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         return;
       }
 
-      // evita doble clic mental
       lockForm(true);
 
-      // Normalizar inputs
-      setFieldAutofmt();
+      normalizeInputs();
       const rfc = (rfcInput.value || "").trim().toUpperCase();
       const idcif = (idInput.value || "").trim();
       const lugar = (lugarInput.value || "").trim();
 
-      // Validación humana (antes de backend)
       if (!validateRFC(rfc)) {
         lockForm(false);
         setStatus("idle");
         noticeBad.classList.add("is-visible");
-        badBody.textContent = "Revisa el RFC. Formato típico: TOHJ640426XXX (12–13 caracteres).";
+        badBody.textContent = "Revisa el RFC (ej: TOHJ640426XXX).";
         rfcInput.focus();
         return;
       }
@@ -1451,12 +1007,11 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         lockForm(false);
         setStatus("idle");
         noticeBad.classList.add("is-visible");
-        badBody.textContent = "Revisa el idCIF. Debe ser numérico (8–20 dígitos).";
+        badBody.textContent = "Revisa el idCIF (numérico 8–20 dígitos).";
         idInput.focus();
         return;
       }
 
-      // guarda último uso
       setLastPayload({ rfc, idcif, lugar_emision: lugar });
       showLastCTA();
 
@@ -1471,23 +1026,19 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         const resp = await fetch(`${API_BASE}/generar`, {
           method: "POST",
           body: formData,
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "X-Requested-With": "fetch",
-          },
+          headers: { "Authorization": `Bearer ${token}`, "X-Requested-With": "fetch" },
         });
 
         if (resp.status === 401) {
           setToken(null);
-          lockForm(false);
           setStatus("idle");
-          noticeSession.classList.add("is-visible");
           setSessionChip("warn", "Sesión: cerrada");
+          noticeSession.classList.add("is-visible");
+          setViewLoggedOut();
           return;
         }
 
         if (!resp.ok) {
-          // mensajes para gestor (más “qué hacer”)
           let msg = "Ocurrió un error. Intenta de nuevo.";
           try {
             const data = await resp.json();
@@ -1496,12 +1047,9 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
 
           const lower = (msg || "").toLowerCase();
           if (lower.includes("sat") || lower.includes("timeout") || lower.includes("tiempo")) {
-            msg = "SAT no respondió. Reintenta en 30–60 segundos. Si persiste, cambia de red o intenta más tarde.";
-          } else if (lower.includes("idcif") || lower.includes("cif")) {
-            msg = "RFC e idCIF podrían no coincidir. Verifica que sean del mismo QR/constancia.";
+            msg = "SAT no respondió. Reintenta en 30–60 segundos o intenta más tarde.";
           }
 
-          lockForm(false);
           setStatus("idle");
           noticeBad.classList.add("is-visible");
           badBody.textContent = msg;
@@ -1528,31 +1076,21 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         a.remove();
         window.URL.revokeObjectURL(url);
 
-        // éxito: cierra ciclo + agrega a historial
         setStatus("done");
         noticeOk.classList.add("is-visible");
-
         okBody.innerHTML = `
-          <div style="margin-bottom:6px;"><b>RFC:</b> <span class="kbd">${rfc}</span></div>
-          <div style="margin-bottom:6px;"><b>idCIF:</b> <span class="kbd">${idcif}</span></div>
-          ${lugar ? `<div style="margin-bottom:6px;"><b>Lugar:</b> <span class="kbd">${lugar}</span></div>` : ``}
-          <div style="color:var(--text-muted); font-size:.86rem;">Archivo: <span class="kbd">${filename}</span></div>
+          <div><b>RFC:</b> <span class="kbd">${rfc}</span></div>
+          <div style="margin-top:6px;"><b>idCIF:</b> <span class="kbd">${idcif}</span></div>
+          <div style="margin-top:6px; color:var(--text-muted); font-size:.86rem;">Archivo: <span class="kbd">${filename}</span></div>
         `;
 
-        addToHistory({
-          rfc,
-          idcif,
-          lugar_emision: lugar,
-          ts: Date.now(),
-        });
+        addToHistory({ rfc, idcif, lugar_emision: lugar, ts: Date.now() });
 
-        // gesto pro: deja listo para siguiente
-        // (no auto-limpia para que el gestor pueda re-descargar si quiere;
-        //  pero enfocamos para “siguiente”)
+        // listo para el siguiente: enfoca pegado
         setTimeout(() => {
-          rfcInput.focus();
-          rfcInput.select();
-        }, 50);
+          pegado.focus();
+          pegado.select();
+        }, 60);
 
       } catch (err) {
         console.error(err);
