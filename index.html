@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Generar CIF</title>
+  <title>CSF Docs · Generar Constancia</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * { box-sizing: border-box; }
@@ -12,14 +12,27 @@
       --card-bg: #ffffff;
       --card-radius: 18px;
       --border-subtle: #e5e7eb;
+
       --accent: #2563eb;
-      --accent-soft: rgba(37, 99, 235, 0.08);
+      --accent-soft: rgba(37, 99, 235, 0.10);
       --accent-strong: #1d4ed8;
+
       --text-main: #111827;
       --text-muted: #6b7280;
       --text-soft: #9ca3af;
+
+      --ok: #22c55e;
+      --ok-soft: rgba(34, 197, 94, 0.14);
+
+      --warn: #f59e0b;
+      --warn-soft: rgba(245, 158, 11, 0.14);
+
+      --bad: #ef4444;
+      --bad-soft: rgba(239, 68, 68, 0.14);
+
       --input-bg: #f9fafb;
       --input-border: #d1d5db;
+
       --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.12);
       --radius-full: 999px;
       --transition-fast: 0.16s ease;
@@ -39,51 +52,122 @@
 
     .shell {
       width: 100%;
-      max-width: 520px;
-      animation: fadeIn 0.4s ease-out;
+      max-width: 560px;
+      animation: fadeIn 0.35s ease-out;
     }
 
     .topbar {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      margin-bottom: 10px;
-      font-size: 0.8rem;
-      color: var(--text-soft);
-    }
-
-    .topbar-session {
-      display: inline-flex;
-      align-items: center;
       gap: 10px;
+      margin-bottom: 10px;
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      font-weight: 600;
-      color: #111827;
+      gap: 10px;
     }
 
     .brand-badge {
-      width: 26px;
-      height: 26px;
-      border-radius: 8px;
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
       background: linear-gradient(135deg, #1d4ed8, #38bdf8);
       display: flex;
       align-items: center;
       justify-content: center;
       color: #eff6ff;
-      font-size: 0.7rem;
-      font-weight: 700;
-      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.4);
+      font-size: 0.72rem;
+      font-weight: 900;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+      flex: 0 0 auto;
+    }
+
+    .brand-title {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .brand-title b { font-size: 0.95rem; }
+    .brand-title span { font-size: 0.78rem; color: var(--text-muted); }
+
+    .top-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: #fff;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.05);
+      max-width: 100%;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--text-soft);
+    }
+    .dot.ok { background: var(--ok); box-shadow: 0 0 0 3px rgba(34,197,94,.18); }
+    .dot.warn { background: var(--warn); box-shadow: 0 0 0 3px rgba(245,158,11,.18); }
+    .dot.bad { background: var(--bad); box-shadow: 0 0 0 3px rgba(239,68,68,.18); }
+
+    .button-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      background: rgba(249, 250, 251, 0.95);
+      color: #4b5563;
+      font-size: 0.8rem;
+      font-weight: 600;
+      box-shadow: none;
+      cursor: pointer;
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.08s ease,
+        box-shadow 0.08s ease,
+        opacity 0.12s ease;
+      user-select: none;
+    }
+
+    .button-ghost:hover {
+      background: #eef2ff;
+      border-color: rgba(37, 99, 235, 0.45);
+      color: #1e3a8a;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.18);
+    }
+
+    .button-ghost.danger:hover {
+      background: #fee2e2;
+      border-color: #ef4444;
+      color: #b91c1c;
+      box-shadow: 0 6px 14px rgba(248, 113, 113, 0.35);
     }
 
     .card {
       background: var(--card-bg);
       border-radius: var(--card-radius);
-      padding: 22px 22px 18px;
+      padding: 20px 20px 16px;
       box-shadow: var(--shadow-soft);
       border: 1px solid var(--border-subtle);
       margin-bottom: 10px;
@@ -93,12 +177,12 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 8px;
+      gap: 10px;
       margin-bottom: 10px;
     }
 
     h1 {
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       margin: 0 0 4px;
       color: var(--text-main);
       letter-spacing: -0.01em;
@@ -106,44 +190,62 @@
 
     .subtitle {
       margin: 0;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       color: var(--text-muted);
+      line-height: 1.45;
     }
 
-    .status-chip {
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent-strong);
-      font-size: 0.75rem;
+    /* Steps */
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 8px;
+      margin-bottom: 6px;
+    }
+
+    .step {
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .step-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .step-title {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      border: 1px solid rgba(37, 99, 235, 0.25);
+      gap: 8px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: #111827;
     }
 
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
-    }
-
-    .meta-row {
-      margin-top: 6px;
-      margin-bottom: 4px;
-      font-size: 0.78rem;
+    .step-title small {
+      font-weight: 600;
       color: var(--text-soft);
+      font-size: 0.78rem;
     }
 
-    .field { margin-bottom: 16px; }
+    .step-body {
+      display: block;
+    }
+
+    /* Fields */
+    .field { margin-bottom: 14px; }
 
     label {
       display: block;
       margin-bottom: 6px;
       font-size: 0.8rem;
-      font-weight: 600;
+      font-weight: 700;
       color: #374151;
     }
 
@@ -155,11 +257,11 @@
     }
 
     .label-hint {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: var(--text-soft);
     }
 
-    input {
+    input, textarea {
       width: 100%;
       padding: 10px 11px;
       border-radius: 10px;
@@ -174,9 +276,11 @@
         transform 0.06s ease;
     }
 
-    input::placeholder { color: #9ca3af; }
+    textarea { min-height: 70px; resize: vertical; }
 
-    input:focus {
+    input::placeholder, textarea::placeholder { color: #9ca3af; }
+
+    input:focus, textarea:focus {
       background: #ffffff;
       border-color: var(--accent);
       box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.8), 0 0 0 6px rgba(59, 130, 246, 0.15);
@@ -185,21 +289,22 @@
 
     .field:focus-within label { color: var(--accent-strong); }
 
-    button {
+    /* Main button */
+    button.primary {
       width: 100%;
-      padding: 11px 16px;
+      padding: 12px 16px;
       border-radius: var(--radius-full);
       border: none;
-      font-weight: 600;
-      font-size: 0.96rem;
+      font-weight: 800;
+      font-size: 0.98rem;
       cursor: pointer;
       background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: #ffffff;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.5);
+      gap: 10px;
+      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.45);
       transition:
         transform 0.08s ease,
         box-shadow 0.08s ease,
@@ -207,491 +312,870 @@
         opacity 0.12s ease;
       position: relative;
       overflow: hidden;
+      min-height: 46px;
+      user-select: none;
     }
 
-    button { min-height: 44px; }
-
-    button::after {
+    button.primary::after {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        120deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.35) 40%,
-        transparent 80%
-      );
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.35) 40%, transparent 80%);
       opacity: 0;
       transform: translateX(-80%);
       transition: transform 0.55s ease, opacity 0.3s ease;
       pointer-events: none;
     }
 
-    button:hover::after {
-      opacity: 1;
-      transform: translateX(40%);
-    }
+    button.primary:hover::after { opacity: 1; transform: translateX(40%); }
+    button.primary:hover { filter: brightness(1.03); transform: translateY(-1px); box-shadow: 0 16px 30px rgba(37, 99, 235, 0.52); }
+    button.primary:active { transform: translateY(0); box-shadow: 0 9px 18px rgba(37, 99, 235, 0.42); filter: brightness(0.99); }
 
-    button:hover {
-      filter: brightness(1.03);
-      transform: translateY(-1px);
-      box-shadow: 0 14px 26px rgba(37, 99, 235, 0.55);
-    }
-
-    button:active {
-      transform: translateY(0);
-      box-shadow: 0 7px 14px rgba(37, 99, 235, 0.45);
-      filter: brightness(0.99);
-    }
-
-    button:disabled {
+    button.primary:disabled {
       opacity: 0.85;
       cursor: default;
       transform: none;
-      box-shadow: 0 7px 14px rgba(148, 163, 184, 0.6);
+      box-shadow: 0 8px 18px rgba(148, 163, 184, 0.55);
+      filter: grayscale(.08);
     }
 
-    .button-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
+    /* Loading spinner */
+    .spinner {
+      width: 16px;
+      height: 16px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.8); /* gris suave */
-      background: rgba(249, 250, 251, 0.95);      /* casi blanco */
-      color: #4b5563;                              /* gris medio */
-      font-size: 0.8rem;
-      font-weight: 500;
-      box-shadow: none;
-      cursor: pointer;
-      transition:
-        background 0.15s ease,
-        border-color 0.15s ease,
-        color 0.15s ease,
-        transform 0.08s ease,
-        box-shadow 0.08s ease;
+      border: 2px solid rgba(255,255,255,.55);
+      border-top-color: rgba(255,255,255,1);
+      animation: spin .65s linear infinite;
     }
-    
-    .button-ghost:hover {
-      background: #fee2e2;               /* rojito muy suave */
-      border-color: #ef4444;
-      color: #b91c1c;
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Progress strip */
+    .progress {
+      display: none;
+      margin-top: 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background: #fff;
+      padding: 10px 12px;
+    }
+    .progress.is-visible { display: block; }
+    .progress-top {
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom: 8px;
+    }
+    .progress-title {
+      font-weight: 800;
+      font-size: 0.85rem;
+      display:flex; align-items:center; gap:8px;
+    }
+    .progress-sub { color: var(--text-muted); font-size: 0.78rem; line-height:1.35; }
+    .bar {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,.06);
+      border: 1px solid rgba(15,23,42,.06);
+      overflow: hidden;
+    }
+    .barFill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(37,99,235,.95), rgba(56,189,248,.85));
+      transition: width .35s ease;
+    }
+
+    /* Notices */
+    .notice {
+      display: none;
+      margin-top: 10px;
+      border-radius: 14px;
+      padding: 10px 12px;
+      border: 1px solid var(--border-subtle);
+      background: #fff;
+    }
+    .notice.is-visible { display: block; animation: fadeIn .18s ease-out; }
+
+    .notice.ok {
+      border-color: rgba(34,197,94,.22);
+      background: linear-gradient(180deg, var(--ok-soft), rgba(34,197,94,.06));
+    }
+    .notice.warn {
+      border-color: rgba(245,158,11,.22);
+      background: linear-gradient(180deg, var(--warn-soft), rgba(245,158,11,.06));
+    }
+    .notice.bad {
+      border-color: rgba(239,68,68,.22);
+      background: linear-gradient(180deg, var(--bad-soft), rgba(239,68,68,.06));
+    }
+
+    .notice-title{
+      font-weight: 900;
+      display:flex; align-items:center; gap:8px;
+      margin-bottom: 4px;
+    }
+    .notice-body{
+      color: rgba(17,24,39,.86);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .notice-actions{
+      margin-top: 10px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .mini {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(37,99,235,.22);
+      background: rgba(37,99,235,.08);
+      color: #1e3a8a;
+      font-weight: 800;
+      cursor:pointer;
+      transition: transform .08s ease, box-shadow .12s ease, background .12s ease;
+      user-select:none;
+      font-size: 0.85rem;
+    }
+    .mini:hover{
       transform: translateY(-1px);
-      box-shadow: 0 6px 14px rgba(248, 113, 113, 0.35);
+      box-shadow: 0 10px 20px rgba(37,99,235,.14);
+      background: rgba(37,99,235,.10);
     }
-    
-    .button-ghost:active {
-      transform: translateY(0);
-      box-shadow: 0 3px 8px rgba(248, 113, 113, 0.25);
+    .mini:active{ transform: translateY(0); box-shadow:none; }
+
+    .mini.gray{
+      border-color: rgba(148,163,184,.55);
+      background: rgba(249,250,251,.95);
+      color: #4b5563;
+      font-weight: 700;
     }
 
     .hint {
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       margin-top: 10px;
       line-height: 1.5;
       padding: 9px 10px;
-      border-radius: 10px;
+      border-radius: 12px;
       background: #f9fafb;
       border: 1px dashed #e5e7eb;
     }
-
     .hint strong { color: #374151; }
-
-    .security-row {
-      margin-top: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      color: var(--text-soft);
-      gap: 8px;
-    }
-
-    .security-left,
-    .security-right {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      white-space: nowrap;
-    }
-
-    .error-box {
-      margin-top: 10px;
-      font-size: 0.8rem;
-      color: #991b1b;
-      background: #fee2e2;
-      border: 1px solid #fecaca;
-      border-radius: 10px;
-      padding: 8px 10px;
-      display: none;
-    }
-
-    .error-box.is-visible {
-      display: block;
-      animation: shake 0.18s ease-out;
-    }
 
     .footer {
       margin-top: 4px;
       font-size: 0.72rem;
       color: #9ca3af;
       text-align: center;
+      line-height: 1.45;
+    }
+
+    .kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: .72rem;
+      padding: 2px 6px;
+      border-radius: 8px;
+      background: rgba(17,24,39,.06);
+      border: 1px solid rgba(17,24,39,.08);
+      color: rgba(17,24,39,.75);
+      white-space: nowrap;
     }
 
     @media (max-width: 480px) {
-      .card {
-        padding: 18px 16px 16px;
-        border-radius: 14px;
-      }
+      .card { padding: 18px 16px 14px; border-radius: 14px; }
       h1 { font-size: 1.25rem; }
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
-      }
-      .security-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+      .topbar { flex-direction: column; align-items: flex-start; }
+      .top-actions { justify-content: flex-start; }
     }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-2px); }
-      50% { transform: translateX(2px); }
-      75% { transform: translateX(-1px); }
-      100% { transform: translateX(0); }
-    }
   </style>
 </head>
+
 <body>
   <div class="shell">
     <div class="topbar">
       <div class="brand">
-        <div>
-          <div>Registro Federal de Contribuyentes</div>
-          <div style="font-size:0.72rem; color:#6b7280;">Proceso automático en segundos.</div>
+        <div class="brand-badge">CSF</div>
+        <div class="brand-title">
+          <b>CSF Docs</b>
+          <span>Generación automática en segundos.</span>
         </div>
       </div>
 
-      <div id="topbar-session" class="topbar-session" style="display:none;">
-        <button type="button" class="button-ghost" id="logout-button">
-          <span style="font-size:0.8rem;">↩</span>
-          <span>Cerrar sesión</span>
+      <div class="top-actions">
+        <div id="session-chip" class="chip" title="Estado de sesión">
+          <span id="session-dot" class="dot warn"></span>
+          <span id="session-text">Sesión: no iniciada</span>
+        </div>
+        <button id="logout-button" type="button" class="button-ghost danger" style="display:none;">
+          ↩ Cerrar sesión
         </button>
       </div>
     </div>
 
-    <!-- CARD LOGIN -->
+    <!-- LOGIN -->
     <div class="card" id="login-card">
       <div class="card-header">
         <div>
           <h1>Acceso</h1>
-          <p class="subtitle">
-            Ingresa con tu usuario y contraseña para generar constancias.
-          </p>
+          <p class="subtitle">Ingresa con tu usuario y contraseña para generar constancias.</p>
         </div>
       </div>
 
-      <form id="login-form" novalidate>
-        <div class="field">
-          <label for="login-username">Usuario</label>
-          <input
-            type="text"
-            id="login-username"
-            autocomplete="username"
-            placeholder=""
-            required
-          />
+      <div class="steps">
+        <div class="step">
+          <div class="step-top">
+            <div class="step-title">Paso 1 · Sesión <small>Accede con tu cuenta</small></div>
+            <span class="chip" style="box-shadow:none;background:var(--accent-soft);border-color:rgba(37,99,235,.22);color:#1e3a8a;">
+              Tip: <span class="kbd">Enter</span> para entrar
+            </span>
+          </div>
+
+          <form id="login-form" novalidate>
+            <div class="field">
+              <label for="login-username">Usuario</label>
+              <input type="text" id="login-username" autocomplete="username" placeholder="" required />
+            </div>
+
+            <div class="field">
+              <label for="login-password">Contraseña</label>
+              <input type="password" id="login-password" autocomplete="current-password" required />
+            </div>
+
+            <button class="primary" type="submit" id="login-button">Iniciar sesión</button>
+
+            <div id="login-notice" class="notice bad" style="margin-top:10px;">
+              <div class="notice-title">❌ No se pudo iniciar sesión</div>
+              <div class="notice-body" id="login-notice-body"></div>
+              <div class="notice-actions">
+                <button type="button" class="mini gray" id="login-tryagain">Intentar de nuevo</button>
+              </div>
+            </div>
+
+            <p class="hint">
+              🔒 Por seguridad, se permite <strong>una sesión activa por usuario</strong>.
+              Si inicias sesión en otro dispositivo, esta sesión se cerrará.
+            </p>
+          </form>
         </div>
-
-        <div class="field">
-          <label for="login-password">Contraseña</label>
-          <input
-            type="password"
-            id="login-password"
-            autocomplete="current-password"
-            required
-          />
-        </div>
-
-        <button type="submit" id="login-button">
-          Iniciar sesión
-        </button>
-
-        <p id="login-error-box" class="error-box"></p>
-
-        <p class="hint">
-          Por seguridad, solo se permite una sesión activa por usuario. Si inicias sesión
-          en otro dispositivo, la sesión anterior se cerrará.
-        </p>
-      </form>
+      </div>
     </div>
 
-    <!-- CARD CONSTANCIA -->
-    <div class="card" id="constancia-card" style="display:none;">
+    <!-- APP -->
+    <div class="card" id="app-card" style="display:none;">
       <div class="card-header">
         <div>
           <h1>Constancia de Situación Fiscal</h1>
-          <p class="subtitle">
-            Genera tu constancia en formato Word lista para imprimir o convertir a PDF.
-          </p>
+          <p class="subtitle">Escribe RFC + idCIF. Descarga un archivo Word listo para imprimir o convertir a PDF.</p>
         </div>
       </div>
 
-      <form id="constancia-form">
-        <div class="field">
-          <div class="label-row">
-            <label for="rfc">RFC</label>
+      <div class="steps">
+        <!-- Paso 1: Sesión -->
+        <div class="step">
+          <div class="step-top">
+            <div class="step-title">Paso 1 · Sesión <small>Verifica antes de generar</small></div>
+            <span class="chip" style="box-shadow:none;background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.22);color:#065f46;">
+              <span class="dot ok"></span>
+              <span id="session-user">Sesión activa</span>
+            </span>
           </div>
-          <input
-            type="text"
-            id="rfc"
-            name="rfc"
-            placeholder="Ej. TOHJ640426XXX"
-            required
-          />
-        </div>
-
-        <div class="field">
-          <div class="label-row">
-            <label for="idcif">idCIF</label>
-            <span class="label-hint">Tal como aparece en la constancia</span>
-          </div>
-          <input
-            type="text"
-            id="idcif"
-            name="idcif"
-            placeholder="Ej. 19010347XXX"
-            required
-          />
-        </div>
-
-        <div class="field">
-          <div class="label-row">
-            <label for="lugar_emision">Lugar de emisión</label>
-            <span class="label-hint">Opcional: se asignará automáticamente</span>
-          </div>
-          <input
-            type="text"
-            id="lugar_emision"
-            name="lugar_emision"
-            placeholder="Ej. MONTERREY , NUEVO LEÓN"
-          />
-        </div>
-
-        <button type="submit" id="constancia-button">
-          <span id="constancia-btn-text">Generar constancia</span>
-        </button>
-
-        <p class="hint">
-          Al enviar, se consultará el servicio del SAT y se descargará un archivo
-          <strong>.docx</strong> con tu constancia. Puedes abrirlo en Word para guardarlo como PDF o imprimirlo.
-        </p>
-
-        <div class="security-row">
-          <div class="security-left">
-            <span>🔒</span>
-            <span>Solo lectura de tu información.</span>
+          <div class="step-body" style="color:var(--text-muted); font-size:.86rem; line-height:1.45;">
+            Si ves “sesión cerrada por seguridad”, vuelve a iniciar sesión y continúa.
           </div>
         </div>
 
-        <p id="error-box" class="error-box"></p>
-      </form>
+        <!-- Paso 2: Datos -->
+        <div class="step">
+          <div class="step-top">
+            <div class="step-title">Paso 2 · Datos <small>Evita errores de captura</small></div>
+            <button type="button" class="button-ghost" id="use-last" style="display:none;">
+              ↻ Usar último
+            </button>
+          </div>
+
+          <div class="field">
+            <div class="label-row">
+              <label for="rfc">RFC</label>
+              <span class="label-hint">13 (física) o 12 (moral)</span>
+            </div>
+            <input type="text" id="rfc" name="rfc" placeholder="Ej. TOHJ640426XXX" required />
+          </div>
+
+          <div class="field">
+            <div class="label-row">
+              <label for="idcif">idCIF</label>
+              <span class="label-hint">Tal como aparece en el QR</span>
+            </div>
+            <input type="text" id="idcif" name="idcif" placeholder="Ej. 19010347XXX" required />
+          </div>
+
+          <div class="field">
+            <div class="label-row">
+              <label for="lugar_emision">Lugar de emisión</label>
+              <span class="label-hint">Opcional</span>
+            </div>
+            <input type="text" id="lugar_emision" name="lugar_emision" placeholder="Ej. MONTERREY , NUEVO LEÓN" />
+          </div>
+
+          <div class="field">
+            <div class="label-row">
+              <label for="pegado">Pegado rápido</label>
+              <span class="label-hint">Pega “RFC IDCIF” y se autocompleta</span>
+            </div>
+            <textarea id="pegado" placeholder="Ej: TOHJ640426XXX 19010347XXX"></textarea>
+            <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+              <button type="button" class="mini gray" id="parse-pegado">Autocompletar</button>
+              <button type="button" class="mini gray" id="clear-all">Limpiar</button>
+            </div>
+          </div>
+
+          <p class="hint">
+            Tip: Puedes pegar RFC + idCIF en una sola línea. Ej: <strong>TOHJ640426XXX 19010347XXX</strong>
+          </p>
+        </div>
+
+        <!-- Paso 3: Acción -->
+        <div class="step">
+          <div class="step-top">
+            <div class="step-title">Paso 3 · Acción <small>Genera y descarga</small></div>
+            <span class="chip" style="box-shadow:none;background:var(--accent-soft);border-color:rgba(37,99,235,.22);color:#1e3a8a;">
+              Consejo: no cierres la página
+            </span>
+          </div>
+
+          <form id="constancia-form">
+            <button class="primary" type="submit" id="generate-button">
+              <span id="gen-icon" style="font-size:1rem;">⚡</span>
+              <span id="gen-text">Generar constancia</span>
+            </button>
+
+            <!-- Progreso secuencial -->
+            <div id="progress" class="progress">
+              <div class="progress-top">
+                <div class="progress-title" id="progress-title">⏳ Iniciando…</div>
+                <div class="kbd" id="progress-step">Idle</div>
+              </div>
+              <div class="bar"><div class="barFill" id="barFill"></div></div>
+              <div class="progress-sub" id="progress-sub" style="margin-top:8px;">
+                Esto puede tardar 5–10 segundos. No cierres la página.
+              </div>
+            </div>
+
+            <!-- Notice éxito -->
+            <div id="notice-ok" class="notice ok">
+              <div class="notice-title">✅ Constancia generada correctamente</div>
+              <div class="notice-body" id="ok-body"></div>
+              <div class="notice-actions">
+                <button type="button" class="mini" id="generate-again">Generar otra</button>
+                <button type="button" class="mini gray" id="copy-last">Copiar RFC/idCIF</button>
+              </div>
+            </div>
+
+            <!-- Notice sesión -->
+            <div id="notice-session" class="notice warn">
+              <div class="notice-title">🔒 Sesión cerrada por seguridad</div>
+              <div class="notice-body">
+                Tu cuenta se usó en otro dispositivo. Por seguridad, cerramos esta sesión.
+              </div>
+              <div class="notice-actions">
+                <button type="button" class="mini" id="go-login">Iniciar sesión de nuevo</button>
+              </div>
+            </div>
+
+            <!-- Notice error -->
+            <div id="notice-bad" class="notice bad">
+              <div class="notice-title">⚠️ No se pudo generar</div>
+              <div class="notice-body" id="bad-body"></div>
+              <div class="notice-actions">
+                <button type="button" class="mini" id="retry">Reintentar</button>
+                <button type="button" class="mini gray" id="edit-data">Editar datos</button>
+              </div>
+            </div>
+
+            <div class="footer" style="margin-top:10px;">
+              Este sitio no almacena tus datos; solo se usan para consultar la constancia en el SAT.
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-
-    <p class="footer">
-      Este sitio no almacena tus datos; solo se usan para consultar tu constancia en el SAT.
-    </p>
   </div>
 
   <script>
+    // ================== CONFIG ==================
     const API_BASE = "https://constancia-backend.onrender.com";
     const TOKEN_KEY = "constancia_token";
+    const USER_KEY  = "constancia_user";
+    const LAST_KEY  = "constancia_last_payload";
 
+    // ================== DOM ==================
     const loginCard = document.getElementById("login-card");
-    const constanciaCard = document.getElementById("constancia-card");
+    const appCard   = document.getElementById("app-card");
 
-    const topbarSession = document.getElementById("topbar-session");
-    const logoutButton = document.getElementById("logout-button");
-    
+    const sessionChip = document.getElementById("session-chip");
+    const sessionDot  = document.getElementById("session-dot");
+    const sessionText = document.getElementById("session-text");
+    const sessionUser = document.getElementById("session-user");
+    const logoutBtn   = document.getElementById("logout-button");
+
     const loginForm = document.getElementById("login-form");
-    const loginButton = document.getElementById("login-button");
-    const loginErrorBox = document.getElementById("login-error-box");
+    const loginBtn  = document.getElementById("login-button");
+    const loginNotice = document.getElementById("login-notice");
+    const loginNoticeBody = document.getElementById("login-notice-body");
+    const loginTryAgain = document.getElementById("login-tryagain");
 
     const constanciaForm = document.getElementById("constancia-form");
-    const constanciaButton = document.getElementById("constancia-button");
-    const errorBox = document.getElementById("error-box");
-    const constanciaBtnText = document.getElementById("constancia-btn-text");
-    const originalConstanciaBtnText = constanciaBtnText.textContent;
+    const genBtn = document.getElementById("generate-button");
+    const genText = document.getElementById("gen-text");
+    const genIcon = document.getElementById("gen-icon");
 
-    function getToken() {
-      return localStorage.getItem(TOKEN_KEY);
+    const rfcInput = document.getElementById("rfc");
+    const idInput  = document.getElementById("idcif");
+    const lugarInput = document.getElementById("lugar_emision");
+    const pegado = document.getElementById("pegado");
+    const parsePegado = document.getElementById("parse-pegado");
+    const clearAll = document.getElementById("clear-all");
+    const useLast = document.getElementById("use-last");
+
+    const progress = document.getElementById("progress");
+    const progressTitle = document.getElementById("progress-title");
+    const progressSub = document.getElementById("progress-sub");
+    const progressStep = document.getElementById("progress-step");
+    const barFill = document.getElementById("barFill");
+
+    const noticeOk = document.getElementById("notice-ok");
+    const okBody = document.getElementById("ok-body");
+    const noticeSession = document.getElementById("notice-session");
+    const noticeBad = document.getElementById("notice-bad");
+    const badBody = document.getElementById("bad-body");
+
+    const goLoginBtn = document.getElementById("go-login");
+    const retryBtn = document.getElementById("retry");
+    const editDataBtn = document.getElementById("edit-data");
+    const genAgainBtn = document.getElementById("generate-again");
+    const copyLastBtn = document.getElementById("copy-last");
+
+    // ================== STORAGE ==================
+    const getToken = () => localStorage.getItem(TOKEN_KEY);
+    const setToken = (t) => t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY);
+
+    const getSavedUser = () => localStorage.getItem(USER_KEY) || "";
+    const setSavedUser = (u) => u ? localStorage.setItem(USER_KEY, u) : localStorage.removeItem(USER_KEY);
+
+    const getLastPayload = () => {
+      try { return JSON.parse(localStorage.getItem(LAST_KEY) || "null"); } catch { return null; }
+    };
+    const setLastPayload = (obj) => {
+      if (!obj) localStorage.removeItem(LAST_KEY);
+      else localStorage.setItem(LAST_KEY, JSON.stringify(obj));
+    };
+
+    // ================== UX HELPERS ==================
+    function show(el){ el.style.display = ""; }
+    function hide(el){ el.style.display = "none"; }
+
+    function setSessionChip(state, text) {
+      // state: "ok" | "warn" | "bad"
+      sessionDot.className = "dot " + state;
+      sessionText.textContent = text;
     }
 
-    function setToken(token) {
-      if (token) {
-        localStorage.setItem(TOKEN_KEY, token);
+    function setViewLoggedIn(username) {
+      hide(loginCard);
+      show(appCard);
+      show(logoutBtn);
+
+      setSessionChip("ok", `Sesión: activa (${username})`);
+      sessionUser.textContent = `Sesión activa: ${username}`;
+    }
+
+    function setViewLoggedOut() {
+      show(loginCard);
+      hide(appCard);
+      hide(logoutBtn);
+
+      setSessionChip("warn", "Sesión: no iniciada");
+      sessionUser.textContent = "Sesión activa";
+    }
+
+    function resetNotices() {
+      noticeOk.classList.remove("is-visible");
+      noticeBad.classList.remove("is-visible");
+      noticeSession.classList.remove("is-visible");
+    }
+
+    function lockForm(locked) {
+      // evita doble clic mental + bloquea inputs
+      genBtn.disabled = !!locked;
+      rfcInput.disabled = !!locked;
+      idInput.disabled = !!locked;
+      lugarInput.disabled = !!locked;
+      pegado.disabled = !!locked;
+      parsePegado.disabled = !!locked;
+      clearAll.disabled = !!locked;
+      useLast.disabled = !!locked;
+    }
+
+    function setStatus(step) {
+      // 1) Estados claros (Idle, Validando, SAT, DOC, Listo)
+      // 9) Percepción de velocidad: frases humanas
+      const map = {
+        idle:   { pct: 0,  title:"⚡ Listo para generar", sub:"Completa RFC e idCIF y presiona Generar.", chip:"Idle", icon:"⚡", btn:"Generar constancia" },
+        valid:  { pct: 18, title:"🔐 Validando sesión…", sub:"Verificando acceso…", chip:"Validando", icon:null, btn:"Validando…" },
+        sat:    { pct: 42, title:"🌐 Conectando con SAT…", sub:"Consultando información… (no cierres la página)", chip:"SAT", icon:null, btn:"Consultando SAT…" },
+        doc:    { pct: 72, title:"📄 Generando archivo…", sub:"Preparando la constancia…", chip:"Documento", icon:null, btn:"Generando…" },
+        down:   { pct: 92, title:"⬇️ Descargando…", sub:"Estamos iniciando la descarga…", chip:"Descarga", icon:null, btn:"Descargando…" },
+        done:   { pct: 100,title:"✅ Listo", sub:"Descarga completada. Puedes generar otra.", chip:"Listo", icon:"✅", btn:"Generar otra" },
+      };
+      const s = map[step] || map.idle;
+
+      progress.classList.add("is-visible");
+      progressTitle.textContent = s.title;
+      progressSub.textContent = s.sub;
+      progressStep.textContent = s.chip;
+      barFill.style.width = s.pct + "%";
+
+      if (s.icon) genIcon.textContent = s.icon;
+      genText.textContent = s.btn;
+
+      // spinner cuando no hay icon (en pasos intermedios)
+      if (!s.icon && step !== "idle" && step !== "done") {
+        genIcon.innerHTML = '<span class="spinner" aria-hidden="true"></span>';
       } else {
-        localStorage.removeItem(TOKEN_KEY);
+        genIcon.textContent = s.icon || "⚡";
       }
     }
 
-    function updateView() {
-      const hasToken = !!getToken();
-      loginCard.style.display = hasToken ? "none" : "block";
-      constanciaCard.style.display = hasToken ? "block" : "none";
-      if (topbarSession) {
-        topbarSession.style.display = hasToken ? "inline-flex" : "none";
+    function validateRFC(v) {
+      const t = (v || "").trim().toUpperCase();
+      // RFC: 12 o 13 chars, simplificado
+      return /^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/.test(t);
+    }
+
+    function validateIDCIF(v) {
+      const t = (v || "").trim();
+      return /^\d{8,20}$/.test(t);
+    }
+
+    function setFieldAutofmt() {
+      rfcInput.value = (rfcInput.value || "").toUpperCase().replace(/\s+/g,"").slice(0,13);
+      idInput.value = (idInput.value || "").replace(/\s+/g,"").slice(0,20);
+    }
+
+    function tryParsePegado() {
+      const t = (pegado.value || "").trim().toUpperCase();
+      if (!t) return;
+
+      // Busca RFC y un número largo
+      const rfcM = t.match(/\b([A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3})\b/);
+      const idM  = t.match(/\b(\d{8,20})\b/);
+
+      if (rfcM && rfcM[1]) rfcInput.value = rfcM[1];
+      if (idM && idM[1]) idInput.value = idM[1];
+
+      setFieldAutofmt();
+      // enfoque inteligente
+      if (!rfcInput.value) rfcInput.focus();
+      else if (!idInput.value) idInput.focus();
+      else lugarInput.focus();
+    }
+
+    function showLastCTA() {
+      const last = getLastPayload();
+      if (last && (last.rfc || last.idcif || last.lugar_emision)) {
+        useLast.style.display = "inline-flex";
+        useLast.textContent = `↻ Usar último (${(last.rfc || "").slice(0,6)}…)`;
+      } else {
+        useLast.style.display = "none";
       }
     }
 
-    updateView();
+    // ================== VIEW INIT ==================
+    // Prefill username
+    document.getElementById("login-username").value = getSavedUser();
 
-    // ---- LOGIN ----
+    showLastCTA();
+
+    const token = getToken();
+    if (token) {
+      // No verificamos token aquí (sin endpoint). Solo mostramos la app.
+      // Si expira, el 401 nos regresará a login con UX friendly.
+      const u = getSavedUser() || "usuario";
+      setViewLoggedIn(u);
+      setStatus("idle");
+    } else {
+      setViewLoggedOut();
+    }
+
+    // ================== EVENTS ==================
+    // Autocompletar pegado
+    parsePegado.addEventListener("click", tryParsePegado);
+    pegado.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "enter") {
+        e.preventDefault();
+        tryParsePegado();
+      }
+    });
+
+    clearAll.addEventListener("click", () => {
+      rfcInput.value = "";
+      idInput.value = "";
+      lugarInput.value = "";
+      pegado.value = "";
+      resetNotices();
+      setStatus("idle");
+      rfcInput.focus();
+    });
+
+    useLast.addEventListener("click", () => {
+      const last = getLastPayload();
+      if (!last) return;
+      rfcInput.value = last.rfc || "";
+      idInput.value  = last.idcif || "";
+      lugarInput.value = last.lugar_emision || "";
+      setFieldAutofmt();
+      resetNotices();
+      setStatus("idle");
+    });
+
+    // En vivo: formateo
+    rfcInput.addEventListener("input", setFieldAutofmt);
+    idInput.addEventListener("input", setFieldAutofmt);
+
+    // Login
+    loginTryAgain.addEventListener("click", () => {
+      loginNotice.classList.remove("is-visible");
+      document.getElementById("login-password").focus();
+    });
+
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      loginErrorBox.classList.remove("is-visible");
-      loginErrorBox.textContent = "";
+      loginNotice.classList.remove("is-visible");
+      loginNoticeBody.textContent = "";
 
-      const username = document.getElementById("login-username").value.trim();
-      const password = document.getElementById("login-password").value;
+      const username = (document.getElementById("login-username").value || "").trim();
+      const password = document.getElementById("login-password").value || "";
 
       if (!username || !password) {
-        loginErrorBox.textContent = "Escribe usuario y contraseña.";
-        loginErrorBox.classList.add("is-visible");
+        loginNoticeBody.textContent = "Escribe usuario y contraseña.";
+        loginNotice.classList.add("is-visible");
         return;
       }
 
-      loginButton.disabled = true;
-      loginButton.innerText = "Entrando...";
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Entrando…";
 
       try {
         const resp = await fetch(`${API_BASE}/login`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Requested-With": "fetch",
-          },
+          headers: { "Content-Type": "application/json", "X-Requested-With": "fetch" },
           body: JSON.stringify({ username, password }),
         });
-      
+
         const data = await resp.json().catch(() => ({}));
-      
-        // 1) Caso específico: ya tiene sesión activa
+
         if (resp.status === 409) {
-          loginErrorBox.textContent =
-            data.message || "Este usuario ya tiene sesión activa.";
-          loginErrorBox.classList.add("is-visible");
+          // UX-friendly (no técnico)
+          loginNoticeBody.textContent =
+            data.message ||
+            "Tu cuenta ya está activa en otro dispositivo. Cierra sesión ahí o usa la misma sesión.";
+          loginNotice.classList.add("is-visible");
           return;
         }
-      
-        // 2) Cualquier otro error de login
+
         if (!resp.ok || !data.ok) {
-          loginErrorBox.textContent =
-            data.message || "No se pudo iniciar sesión.";
-          loginErrorBox.classList.add("is-visible");
+          loginNoticeBody.textContent = data.message || "Usuario o contraseña incorrectos.";
+          loginNotice.classList.add("is-visible");
           return;
         }
-      
-        // 3) Éxito
+
         setToken(data.token);
-        updateView();
+        setSavedUser(username);
+        setViewLoggedIn(username);
+        setStatus("idle");
+        resetNotices();
+        showLastCTA();
+        rfcInput.focus();
+
       } catch (err) {
         console.error(err);
-        loginErrorBox.textContent = "No se pudo contactar el servidor. Intenta de nuevo.";
-        loginErrorBox.classList.add("is-visible");
+        loginNoticeBody.textContent = "No se pudo contactar el servidor. Revisa tu conexión e intenta de nuevo.";
+        loginNotice.classList.add("is-visible");
       } finally {
-        loginButton.disabled = false;
-        loginButton.innerText = "Iniciar sesión";
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Iniciar sesión";
       }
     });
 
-    // ---- LOGOUT ----
-    logoutButton.addEventListener("click", async () => {
+    // Logout
+    logoutBtn.addEventListener("click", async () => {
       const token = getToken();
       try {
         if (token) {
           await fetch(`${API_BASE}/logout`, {
             method: "POST",
-            headers: {
-              "Authorization": `Bearer ${token}`,
-              "X-Requested-With": "fetch",
-            },
+            headers: { "Authorization": `Bearer ${token}`, "X-Requested-With": "fetch" },
           });
         }
       } catch (err) {
         console.error("Error en logout:", err);
       } finally {
         setToken(null);
-        updateView();
+        setViewLoggedOut();
+        resetNotices();
+        setStatus("idle");
       }
     });
 
-    // ---- GENERAR CONSTANCIA ----
+    goLoginBtn.addEventListener("click", () => {
+      setToken(null);
+      setViewLoggedOut();
+      resetNotices();
+      setStatus("idle");
+      document.getElementById("login-password").value = "";
+      document.getElementById("login-password").focus();
+    });
+
+    retryBtn.addEventListener("click", () => {
+      resetNotices();
+      constanciaForm.requestSubmit();
+    });
+
+    editDataBtn.addEventListener("click", () => {
+      resetNotices();
+      setStatus("idle");
+      rfcInput.focus();
+    });
+
+    genAgainBtn.addEventListener("click", () => {
+      resetNotices();
+      setStatus("idle");
+      rfcInput.select();
+      rfcInput.focus();
+    });
+
+    copyLastBtn.addEventListener("click", async () => {
+      const last = getLastPayload();
+      if (!last) return;
+      const text = `${last.rfc || ""} ${last.idcif || ""}`.trim();
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (_) {
+        // fallback simple
+        alert("Copiar no disponible. Texto:\n" + text);
+      }
+    });
+
+    // Generar
     constanciaForm.addEventListener("submit", async (e) => {
       e.preventDefault();
+      resetNotices();
 
-      errorBox.classList.remove("is-visible");
-      errorBox.textContent = "";
+      // 3) Feedback inmediato (optimismo visual)
+      setStatus("valid");
 
       const token = getToken();
       if (!token) {
-        errorBox.textContent = "Tu sesión no está activa. Inicia sesión de nuevo.";
-        errorBox.classList.add("is-visible");
-        setToken(null);
-        updateView();
+        // UX-friendly
+        noticeSession.classList.add("is-visible");
+        setStatus("idle");
         return;
       }
 
-      constanciaButton.disabled = true;
-      constanciaBtnText.textContent = "Generando...";
+      // 5) Evitar doble clic mental
+      lockForm(true);
+
+      // Normalizar inputs
+      setFieldAutofmt();
+      const rfc = (rfcInput.value || "").trim().toUpperCase();
+      const idcif = (idInput.value || "").trim();
+      const lugar = (lugarInput.value || "").trim();
+
+      // Validación humana (antes de backend)
+      if (!validateRFC(rfc)) {
+        lockForm(false);
+        setStatus("idle");
+        noticeBad.classList.add("is-visible");
+        badBody.textContent = "Revisa el RFC. Debe tener 12–13 caracteres y formato válido (ej: TOHJ640426XXX).";
+        rfcInput.focus();
+        return;
+      }
+      if (!validateIDCIF(idcif)) {
+        lockForm(false);
+        setStatus("idle");
+        noticeBad.classList.add("is-visible");
+        badBody.textContent = "Revisa el idCIF. Debe ser numérico y normalmente tiene 8–20 dígitos.";
+        idInput.focus();
+        return;
+      }
+
+      // 6) Autocompletado inteligente: guardar último uso
+      setLastPayload({ rfc, idcif, lugar_emision: lugar });
+      showLastCTA();
 
       try {
-        const formData = new FormData(constanciaForm);
-        const headers = { "X-Requested-With": "fetch" };
-        headers["Authorization"] = `Bearer ${token}`;
+        // secuencia
+        setStatus("sat");
+
+        const formData = new FormData();
+        formData.append("rfc", rfc);
+        formData.append("idcif", idcif);
+        if (lugar) formData.append("lugar_emision", lugar);
 
         const resp = await fetch(`${API_BASE}/generar`, {
           method: "POST",
           body: formData,
-          headers,
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "X-Requested-With": "fetch",
+          },
         });
 
         if (resp.status === 401) {
-          errorBox.textContent = "Tu sesión expiró o se abrió en otro dispositivo. Inicia sesión de nuevo.";
-          errorBox.classList.add("is-visible");
+          // 4) Manejo elegante de errores
           setToken(null);
-          updateView();
+          lockForm(false);
+          setStatus("idle");
+          noticeSession.classList.add("is-visible");
+          setSessionChip("warn", "Sesión: cerrada");
           return;
         }
 
         if (!resp.ok) {
-          let msg = "Ocurrió un error inesperado. Intenta de nuevo.";
+          let msg = "Ocurrió un error. Intenta de nuevo.";
           try {
             const data = await resp.json();
             if (data && data.message) msg = data.message;
           } catch (_) {}
-          errorBox.textContent = msg;
-          errorBox.classList.add("is-visible");
+          lockForm(false);
+          setStatus("idle");
+          noticeBad.classList.add("is-visible");
+          badBody.textContent = msg;
           return;
         }
 
+        setStatus("doc");
+
         const blob = await resp.blob();
+
+        setStatus("down");
 
         let filename = "constancia_RFC.docx";
         const dispo = resp.headers.get("Content-Disposition");
         if (dispo) {
           const match = dispo.match(/filename="?([^"]+)"?/i);
-          if (match && match[1]) {
-            filename = match[1];
-          }
+          if (match && match[1]) filename = match[1];
         }
 
         const url = window.URL.createObjectURL(blob);
@@ -702,29 +1186,25 @@
         a.click();
         a.remove();
         window.URL.revokeObjectURL(url);
+
+        // 7) Confirmación sutil de éxito
+        setStatus("done");
+        noticeOk.classList.add("is-visible");
+        okBody.innerHTML = `
+          <div style="margin-bottom:6px;"><b>RFC:</b> <span class="kbd">${rfc}</span></div>
+          <div style="margin-bottom:6px;"><b>idCIF:</b> <span class="kbd">${idcif}</span></div>
+          <div style="color:var(--text-muted); font-size:.86rem;">Archivo: <span class="kbd">${filename}</span></div>
+        `;
+
       } catch (err) {
         console.error(err);
-        errorBox.textContent = "No se pudo contactar el servidor. Revisa tu conexión e intenta de nuevo.";
-        errorBox.classList.add("is-visible");
+        setStatus("idle");
+        noticeBad.classList.add("is-visible");
+        badBody.textContent = "No se pudo contactar el servidor. Revisa tu conexión e intenta de nuevo.";
       } finally {
-        constanciaButton.disabled = false;
-        constanciaBtnText.textContent = originalConstanciaBtnText;
+        lockForm(false);
       }
     });
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
