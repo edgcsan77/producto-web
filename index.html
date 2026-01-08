@@ -52,7 +52,7 @@
 
     .shell {
       width: 100%;
-      max-width: 560px;
+      max-width: 760px; /* gestor: un poco más ancho por historial */
       animation: fadeIn 0.35s ease-out;
     }
 
@@ -136,7 +136,7 @@
       background: rgba(249, 250, 251, 0.95);
       color: #4b5563;
       font-size: 0.8rem;
-      font-weight: 600;
+      font-weight: 700;
       box-shadow: none;
       cursor: pointer;
       transition:
@@ -147,6 +147,7 @@
         box-shadow 0.08s ease,
         opacity 0.12s ease;
       user-select: none;
+      white-space: nowrap;
     }
 
     .button-ghost:hover {
@@ -195,6 +196,97 @@
       line-height: 1.45;
     }
 
+    /* Layout: gestor (form + historial) */
+    .app-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .side-card {
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 12px 26px rgba(15,23,42,.06);
+      padding: 12px;
+      position: sticky;
+      top: 12px;
+    }
+
+    .side-title {
+      font-weight: 900;
+      font-size: .9rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
+
+    .side-title small {
+      font-weight: 700;
+      color: var(--text-soft);
+      font-size: .78rem;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 8px;
+      max-height: 480px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .hist-item {
+      border: 1px solid rgba(148,163,184,.35);
+      border-radius: 14px;
+      padding: 10px;
+      background: rgba(249,250,251,.85);
+      transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+
+    .hist-item:hover {
+      transform: translateY(-1px);
+      border-color: rgba(37,99,235,.28);
+      box-shadow: 0 10px 22px rgba(37,99,235,.10);
+    }
+
+    .hist-top {
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom: 8px;
+    }
+
+    .hist-rfc { font-weight: 900; font-size: .86rem; }
+    .hist-time { font-size: .72rem; color: var(--text-soft); white-space: nowrap; }
+
+    .hist-meta {
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom: 8px;
+    }
+
+    .tag {
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(17,24,39,.10);
+      background: rgba(255,255,255,.8);
+      font-size: .72rem;
+      color: rgba(17,24,39,.72);
+      white-space: nowrap;
+      max-width: 100%;
+    }
+
+    .hist-actions {
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+
     /* Steps */
     .steps {
       display: grid;
@@ -223,19 +315,15 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-weight: 800;
+      font-weight: 900;
       font-size: 0.9rem;
       color: #111827;
     }
 
     .step-title small {
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-soft);
       font-size: 0.78rem;
-    }
-
-    .step-body {
-      display: block;
     }
 
     /* Fields */
@@ -245,7 +333,7 @@
       display: block;
       margin-bottom: 6px;
       font-size: 0.8rem;
-      font-weight: 700;
+      font-weight: 800;
       color: #374151;
     }
 
@@ -295,8 +383,8 @@
       padding: 12px 16px;
       border-radius: var(--radius-full);
       border: none;
-      font-weight: 800;
-      font-size: 0.98rem;
+      font-weight: 900;
+      font-size: 1.02rem;
       cursor: pointer;
       background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: #ffffff;
@@ -312,7 +400,7 @@
         opacity 0.12s ease;
       position: relative;
       overflow: hidden;
-      min-height: 46px;
+      min-height: 48px;
       user-select: none;
     }
 
@@ -365,7 +453,7 @@
       margin-bottom: 8px;
     }
     .progress-title {
-      font-weight: 800;
+      font-weight: 900;
       font-size: 0.85rem;
       display:flex; align-items:center; gap:8px;
     }
@@ -436,11 +524,12 @@
       border: 1px solid rgba(37,99,235,.22);
       background: rgba(37,99,235,.08);
       color: #1e3a8a;
-      font-weight: 800;
+      font-weight: 900;
       cursor:pointer;
       transition: transform .08s ease, box-shadow .12s ease, background .12s ease;
       user-select:none;
       font-size: 0.85rem;
+      white-space: nowrap;
     }
     .mini:hover{
       transform: translateY(-1px);
@@ -453,7 +542,14 @@
       border-color: rgba(148,163,184,.55);
       background: rgba(249,250,251,.95);
       color: #4b5563;
-      font-weight: 700;
+      font-weight: 800;
+    }
+
+    .mini.danger{
+      border-color: rgba(239,68,68,.28);
+      background: rgba(239,68,68,.10);
+      color: #991b1b;
+      font-weight: 900;
     }
 
     .hint {
@@ -487,6 +583,11 @@
       white-space: nowrap;
     }
 
+    @media (max-width: 860px) {
+      .app-grid { grid-template-columns: 1fr; }
+      .side-card { position: static; }
+    }
+
     @media (max-width: 480px) {
       .card { padding: 18px 16px 14px; border-radius: 14px; }
       h1 { font-size: 1.25rem; }
@@ -508,7 +609,7 @@
         <div class="brand-badge">CSF</div>
         <div class="brand-title">
           <b>CSF Docs</b>
-          <span>Generación automática en segundos.</span>
+          <span>Flujo pro para gestores (lote + historial).</span>
         </div>
       </div>
 
@@ -517,6 +618,12 @@
           <span id="session-dot" class="dot warn"></span>
           <span id="session-text">Sesión: no iniciada</span>
         </div>
+
+        <!-- gestor actions -->
+        <button id="new-job-top" type="button" class="button-ghost" style="display:none;" title="Nueva constancia (limpiar)">
+          ➕ Nueva constancia
+        </button>
+
         <button id="logout-button" type="button" class="button-ghost danger" style="display:none;">
           ↩ Cerrar sesión
         </button>
@@ -576,138 +683,178 @@
       <div class="card-header">
         <div>
           <h1>Constancia de Situación Fiscal</h1>
-          <p class="subtitle">Escribe RFC + idCIF. Descarga un archivo Word listo para imprimir o convertir a PDF.</p>
+          <p class="subtitle">Optimizado para gestor: pegado rápido, historial, “nueva constancia” y mensajes claros.</p>
         </div>
       </div>
 
-      <div class="steps">
-        <!-- Paso 1: Sesión -->
-        <div class="step">
-          <div class="step-top">
-            <div class="step-title">Paso 1 · Sesión <small>Verifica antes de generar</small></div>
-            <span class="chip" style="box-shadow:none;background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.22);color:#065f46;">
-              <span class="dot ok"></span>
-              <span id="session-user">Sesión activa</span>
-            </span>
-          </div>
-          <div class="step-body" style="color:var(--text-muted); font-size:.86rem; line-height:1.45;">
-            Si ves “sesión cerrada por seguridad”, vuelve a iniciar sesión y continúa.
+      <div class="app-grid">
+        <!-- MAIN -->
+        <div>
+          <div class="steps">
+            <!-- Paso 1: Sesión -->
+            <div class="step">
+              <div class="step-top">
+                <div class="step-title">Paso 1 · Sesión <small>Verifica antes de generar</small></div>
+                <span class="chip" style="box-shadow:none;background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.22);color:#065f46;">
+                  <span class="dot ok"></span>
+                  <span id="session-user">Sesión activa</span>
+                </span>
+              </div>
+              <div class="step-body" style="color:var(--text-muted); font-size:.86rem; line-height:1.45;">
+                Si aparece “sesión cerrada por seguridad”, vuelve a iniciar sesión y continúa.
+              </div>
+            </div>
+
+            <!-- Paso 2: Datos -->
+            <div class="step">
+              <div class="step-top">
+                <div class="step-title">Paso 2 · Datos <small>Captura (o pega) y listo</small></div>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <button type="button" class="button-ghost" id="use-last" style="display:none;">↻ Usar último</button>
+                  <button type="button" class="button-ghost" id="new-job">➕ Nueva constancia</button>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="label-row">
+                  <label for="rfc">RFC</label>
+                  <span class="label-hint">13 (física) / 12 (moral)</span>
+                </div>
+                <input type="text" id="rfc" name="rfc" placeholder="Ej. TOHJ640426XXX" required />
+              </div>
+
+              <div class="field">
+                <div class="label-row">
+                  <label for="idcif">idCIF</label>
+                  <span class="label-hint">Tal como aparece en el QR</span>
+                </div>
+                <input type="text" id="idcif" name="idcif" placeholder="Ej. 19010347XXX" required />
+              </div>
+
+              <div class="field">
+                <div class="label-row">
+                  <label for="lugar_emision">Lugar de emisión</label>
+                  <span class="label-hint">Opcional</span>
+                </div>
+                <input type="text" id="lugar_emision" name="lugar_emision" placeholder="Ej. MONTERREY , NUEVO LEÓN" />
+              </div>
+
+              <div class="field">
+                <div class="label-row">
+                  <label for="pegado">Pegado rápido</label>
+                  <span class="label-hint">Pega texto de WhatsApp y se autocompleta</span>
+                </div>
+                <textarea id="pegado" placeholder="Ej:
+RFC: TOHJ640426XXX
+idCIF: 19010347XXX
+Lugar: MONTERREY, NUEVO LEÓN"></textarea>
+
+                <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                  <button type="button" class="mini gray" id="parse-pegado">Autocompletar</button>
+                  <button type="button" class="mini gray" id="clear-all">Limpiar</button>
+                  <button type="button" class="mini" id="paste-generate" title="Autocompletar y generar (Ctrl/⌘ + Enter)">
+                    Pegar → Autocompletar → Generar
+                  </button>
+                </div>
+              </div>
+
+              <p class="hint">
+                Tip: <strong>Ctrl/⌘ + Enter</strong> en “Pegado rápido” = autocompleta y genera.
+              </p>
+            </div>
+
+            <!-- Paso 3: Acción -->
+            <div class="step">
+              <div class="step-top">
+                <div class="step-title">Paso 3 · Acción <small>Genera y descarga</small></div>
+                <span class="chip" style="box-shadow:none;background:var(--accent-soft);border-color:rgba(37,99,235,.22);color:#1e3a8a;">
+                  Consejo: no cierres la página
+                </span>
+              </div>
+
+              <form id="constancia-form">
+                <button class="primary" type="submit" id="generate-button">
+                  <span id="gen-icon" style="font-size:1rem;">⚡</span>
+                  <span id="gen-text">Generar constancia</span>
+                </button>
+
+                <!-- Progreso secuencial -->
+                <div id="progress" class="progress">
+                  <div class="progress-top">
+                    <div class="progress-title" id="progress-title">⏳ Iniciando…</div>
+                    <div class="kbd" id="progress-step">Idle</div>
+                  </div>
+                  <div class="bar"><div class="barFill" id="barFill"></div></div>
+                  <div class="progress-sub" id="progress-sub" style="margin-top:8px;">
+                    Esto puede tardar 5–10 segundos. No cierres la página.
+                  </div>
+                </div>
+
+                <!-- Notice éxito -->
+                <div id="notice-ok" class="notice ok">
+                  <div class="notice-title">✅ Constancia generada correctamente</div>
+                  <div class="notice-body" id="ok-body"></div>
+                  <div class="notice-actions">
+                    <button type="button" class="mini" id="generate-again">Generar otra</button>
+                    <button type="button" class="mini gray" id="copy-last">Copiar RFC/idCIF</button>
+                    <button type="button" class="mini gray" id="focus-rfc">Ir a RFC</button>
+                  </div>
+                </div>
+
+                <!-- Notice sesión -->
+                <div id="notice-session" class="notice warn">
+                  <div class="notice-title">🔒 Sesión cerrada por seguridad</div>
+                  <div class="notice-body">
+                    Tu cuenta se usó en otro dispositivo. Por seguridad, cerramos esta sesión.
+                    <div style="margin-top:6px; color:var(--text-muted); font-size:.86rem;">
+                      Tip: si trabajan varios, lo ideal es <b>un usuario por gestor</b>.
+                    </div>
+                  </div>
+                  <div class="notice-actions">
+                    <button type="button" class="mini" id="go-login">Iniciar sesión de nuevo</button>
+                  </div>
+                </div>
+
+                <!-- Notice error -->
+                <div id="notice-bad" class="notice bad">
+                  <div class="notice-title">⚠️ No se pudo generar</div>
+                  <div class="notice-body" id="bad-body"></div>
+                  <div class="notice-actions">
+                    <button type="button" class="mini" id="retry">Reintentar</button>
+                    <button type="button" class="mini gray" id="edit-data">Editar datos</button>
+                  </div>
+                </div>
+
+                <div class="footer" style="margin-top:10px;">
+                  Este sitio no almacena tus datos; solo se usan para consultar la constancia en el SAT.
+                </div>
+              </form>
+            </div>
           </div>
         </div>
 
-        <!-- Paso 2: Datos -->
-        <div class="step">
-          <div class="step-top">
-            <div class="step-title">Paso 2 · Datos <small>Evita errores de captura</small></div>
-            <button type="button" class="button-ghost" id="use-last" style="display:none;">
-              ↻ Usar último
+        <!-- SIDE: HISTORIAL -->
+        <aside class="side-card">
+          <div class="side-title">
+            <div>Historial <small>(últimos 10)</small></div>
+            <button type="button" class="mini danger" id="clear-history" title="Borrar historial">
+              🧹 Limpiar
             </button>
           </div>
 
-          <div class="field">
-            <div class="label-row">
-              <label for="rfc">RFC</label>
-              <span class="label-hint">13 (física)</span>
-            </div>
-            <input type="text" id="rfc" name="rfc" placeholder="Ej. TOHJ640426XXX" required />
-          </div>
-
-          <div class="field">
-            <div class="label-row">
-              <label for="idcif">idCIF</label>
-              <span class="label-hint">Tal como aparece en el QR</span>
-            </div>
-            <input type="text" id="idcif" name="idcif" placeholder="Ej. 19010347XXX" required />
-          </div>
-
-          <div class="field">
-            <div class="label-row">
-              <label for="lugar_emision">Lugar de emisión</label>
-              <span class="label-hint">Opcional</span>
-            </div>
-            <input type="text" id="lugar_emision" name="lugar_emision" placeholder="Ej. MONTERREY , NUEVO LEÓN" />
-          </div>
-
-          <div class="field">
-            <div class="label-row">
-              <label for="pegado">Pegado rápido</label>
-              <span class="label-hint">Pega “RFC IDCIF” y se autocompleta</span>
-            </div>
-            <textarea id="pegado" placeholder="Ej: TOHJ640426XXX 19010347XXX"></textarea>
-            <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
-              <button type="button" class="mini gray" id="parse-pegado">Autocompletar</button>
-              <button type="button" class="mini gray" id="clear-all">Limpiar</button>
+          <div style="margin-bottom:10px;">
+            <input id="history-search" type="text" placeholder="Buscar RFC..." />
+            <div style="margin-top:8px; color:var(--text-muted); font-size:.78rem; line-height:1.35;">
+              Click en un registro para rellenar. Útil cuando tramitas en lote.
             </div>
           </div>
 
-          <p class="hint">
-            Tip: Puedes pegar RFC + idCIF en una sola línea. Ej: <strong>TOHJ640426XXX 19010347XXX</strong>
-          </p>
-        </div>
+          <div id="history-list" class="history-list"></div>
 
-        <!-- Paso 3: Acción -->
-        <div class="step">
-          <div class="step-top">
-            <div class="step-title">Paso 3 · Acción <small>Genera y descarga</small></div>
-            <span class="chip" style="box-shadow:none;background:var(--accent-soft);border-color:rgba(37,99,235,.22);color:#1e3a8a;">
-              Consejo: no cierres la página
-            </span>
+          <div style="margin-top:10px; color:var(--text-soft); font-size:.72rem; line-height:1.45;">
+            Atajos: <span class="kbd">Ctrl/⌘+K</span> buscar · <span class="kbd">Ctrl/⌘+Enter</span> pegar+generar
           </div>
-
-          <form id="constancia-form">
-            <button class="primary" type="submit" id="generate-button">
-              <span id="gen-icon" style="font-size:1rem;">⚡</span>
-              <span id="gen-text">Generar constancia</span>
-            </button>
-
-            <!-- Progreso secuencial -->
-            <div id="progress" class="progress">
-              <div class="progress-top">
-                <div class="progress-title" id="progress-title">⏳ Iniciando…</div>
-                <div class="kbd" id="progress-step">Idle</div>
-              </div>
-              <div class="bar"><div class="barFill" id="barFill"></div></div>
-              <div class="progress-sub" id="progress-sub" style="margin-top:8px;">
-                Esto puede tardar 5–10 segundos. No cierres la página.
-              </div>
-            </div>
-
-            <!-- Notice éxito -->
-            <div id="notice-ok" class="notice ok">
-              <div class="notice-title">✅ Constancia generada correctamente</div>
-              <div class="notice-body" id="ok-body"></div>
-              <div class="notice-actions">
-                <button type="button" class="mini" id="generate-again">Generar otra</button>
-                <button type="button" class="mini gray" id="copy-last">Copiar RFC/idCIF</button>
-              </div>
-            </div>
-
-            <!-- Notice sesión -->
-            <div id="notice-session" class="notice warn">
-              <div class="notice-title">🔒 Sesión cerrada por seguridad</div>
-              <div class="notice-body">
-                Tu cuenta se usó en otro dispositivo. Por seguridad, cerramos esta sesión.
-              </div>
-              <div class="notice-actions">
-                <button type="button" class="mini" id="go-login">Iniciar sesión de nuevo</button>
-              </div>
-            </div>
-
-            <!-- Notice error -->
-            <div id="notice-bad" class="notice bad">
-              <div class="notice-title">⚠️ No se pudo generar</div>
-              <div class="notice-body" id="bad-body"></div>
-              <div class="notice-actions">
-                <button type="button" class="mini" id="retry">Reintentar</button>
-                <button type="button" class="mini gray" id="edit-data">Editar datos</button>
-              </div>
-            </div>
-
-            <div class="footer" style="margin-top:10px;">
-              Este sitio no almacena tus datos; solo se usan para consultar la constancia en el SAT.
-            </div>
-          </form>
-        </div>
+        </aside>
       </div>
     </div>
   </div>
@@ -718,16 +865,20 @@
     const TOKEN_KEY = "constancia_token";
     const USER_KEY  = "constancia_user";
     const LAST_KEY  = "constancia_last_payload";
+    const HISTORY_KEY = "constancia_history_v1";
+    const HISTORY_MAX = 10;
 
     // ================== DOM ==================
     const loginCard = document.getElementById("login-card");
     const appCard   = document.getElementById("app-card");
 
-    const sessionChip = document.getElementById("session-chip");
     const sessionDot  = document.getElementById("session-dot");
     const sessionText = document.getElementById("session-text");
     const sessionUser = document.getElementById("session-user");
     const logoutBtn   = document.getElementById("logout-button");
+
+    const newJobTop = document.getElementById("new-job-top");
+    const newJob = document.getElementById("new-job");
 
     const loginForm = document.getElementById("login-form");
     const loginBtn  = document.getElementById("login-button");
@@ -743,10 +894,12 @@
     const rfcInput = document.getElementById("rfc");
     const idInput  = document.getElementById("idcif");
     const lugarInput = document.getElementById("lugar_emision");
+
     const pegado = document.getElementById("pegado");
     const parsePegado = document.getElementById("parse-pegado");
     const clearAll = document.getElementById("clear-all");
     const useLast = document.getElementById("use-last");
+    const pasteGenerate = document.getElementById("paste-generate");
 
     const progress = document.getElementById("progress");
     const progressTitle = document.getElementById("progress-title");
@@ -765,6 +918,11 @@
     const editDataBtn = document.getElementById("edit-data");
     const genAgainBtn = document.getElementById("generate-again");
     const copyLastBtn = document.getElementById("copy-last");
+    const focusRfcBtn = document.getElementById("focus-rfc");
+
+    const historyListEl = document.getElementById("history-list");
+    const historySearch = document.getElementById("history-search");
+    const clearHistoryBtn = document.getElementById("clear-history");
 
     // ================== STORAGE ==================
     const getToken = () => localStorage.getItem(TOKEN_KEY);
@@ -781,6 +939,33 @@
       else localStorage.setItem(LAST_KEY, JSON.stringify(obj));
     };
 
+    const getHistory = () => {
+      try {
+        const raw = localStorage.getItem(HISTORY_KEY);
+        const arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr : [];
+      } catch {
+        return [];
+      }
+    };
+
+    const setHistory = (arr) => {
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(arr || []));
+    };
+
+    const addToHistory = (item) => {
+      if (!item || !item.rfc) return;
+      let h = getHistory();
+
+      // de-dup por rfc+idcif (si coincide, lo movemos arriba)
+      h = h.filter(x => !(x.rfc === item.rfc && (x.idcif || "") === (item.idcif || "")));
+
+      h.unshift(item);
+      if (h.length > HISTORY_MAX) h = h.slice(0, HISTORY_MAX);
+      setHistory(h);
+      renderHistory();
+    };
+
     // ================== UX HELPERS ==================
     function show(el){ el.style.display = ""; }
     function hide(el){ el.style.display = "none"; }
@@ -795,6 +980,7 @@
       hide(loginCard);
       show(appCard);
       show(logoutBtn);
+      show(newJobTop);
 
       setSessionChip("ok", `Sesión: activa (${username})`);
       sessionUser.textContent = `Sesión activa: ${username}`;
@@ -804,6 +990,7 @@
       show(loginCard);
       hide(appCard);
       hide(logoutBtn);
+      hide(newJobTop);
 
       setSessionChip("warn", "Sesión: no iniciada");
       sessionUser.textContent = "Sesión activa";
@@ -821,15 +1008,18 @@
       rfcInput.disabled = !!locked;
       idInput.disabled = !!locked;
       lugarInput.disabled = !!locked;
+
       pegado.disabled = !!locked;
       parsePegado.disabled = !!locked;
       clearAll.disabled = !!locked;
       useLast.disabled = !!locked;
+      pasteGenerate.disabled = !!locked;
+
+      newJob.disabled = !!locked;
+      newJobTop.disabled = !!locked;
     }
 
     function setStatus(step) {
-      // 1) Estados claros (Idle, Validando, SAT, DOC, Listo)
-      // 9) Percepción de velocidad: frases humanas
       const map = {
         idle:   { pct: 0,  title:"⚡ Listo para generar", sub:"Completa RFC e idCIF y presiona Generar.", chip:"Idle", icon:"⚡", btn:"Generar constancia" },
         valid:  { pct: 18, title:"🔐 Validando sesión…", sub:"Verificando acceso…", chip:"Validando", icon:null, btn:"Validando…" },
@@ -849,7 +1039,7 @@
       if (s.icon) genIcon.textContent = s.icon;
       genText.textContent = s.btn;
 
-      // spinner cuando no hay icon (en pasos intermedios)
+      // spinner cuando no hay icon
       if (!s.icon && step !== "idle" && step !== "done") {
         genIcon.innerHTML = '<span class="spinner" aria-hidden="true"></span>';
       } else {
@@ -873,22 +1063,51 @@
       idInput.value = (idInput.value || "").replace(/\s+/g,"").slice(0,20);
     }
 
+    // ---- Parser pro: acepta texto libre (WhatsApp)
     function tryParsePegado() {
-      const t = (pegado.value || "").trim().toUpperCase();
+      const t = (pegado.value || "").trim();
       if (!t) return;
 
-      // Busca RFC y un número largo
-      const rfcM = t.match(/\b([A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3})\b/);
-      const idM  = t.match(/\b(\d{8,20})\b/);
+      const up = t.toUpperCase();
+
+      // RFC: buscar patrón, incluso si viene con "RFC:"
+      const rfcM = up.match(/\b([A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3})\b/);
+
+      // idCIF: preferir si viene como "IDCIF:" o "ID CIF:" etc.
+      const idLabel = up.match(/ID\s*CIF\s*[:\-]?\s*(\d{8,20})/i);
+      const idM = idLabel || up.match(/\b(\d{8,20})\b/);
+
+      // Lugar: si viene como "LUGAR:" o "LUGAR DE EMISION:" o "EMISION:"
+      const lugarM =
+        up.match(/LUGAR\s*(DE\s*)?EMISI[ÓO]N\s*[:\-]\s*(.+)$/im) ||
+        up.match(/LUGAR\s*[:\-]\s*(.+)$/im) ||
+        up.match(/EMISI[ÓO]N\s*[:\-]\s*(.+)$/im);
 
       if (rfcM && rfcM[1]) rfcInput.value = rfcM[1];
       if (idM && idM[1]) idInput.value = idM[1];
 
+      if (lugarM && lugarM[1]) {
+        // cuando usamos match con grupos distintos (depende del regex)
+        const raw = (lugarM[lugarM.length - 1] || "").trim();
+        if (raw && raw.length >= 3) lugarInput.value = raw.replace(/\s+/g, " ").slice(0, 80);
+      }
+
       setFieldAutofmt();
+
       // enfoque inteligente
       if (!rfcInput.value) rfcInput.focus();
       else if (!idInput.value) idInput.focus();
-      else lugarInput.focus();
+      else genBtn.focus();
+    }
+
+    function clearJob({ keepLugar = true } = {}) {
+      rfcInput.value = "";
+      idInput.value = "";
+      pegado.value = "";
+      if (!keepLugar) lugarInput.value = "";
+      resetNotices();
+      setStatus("idle");
+      rfcInput.focus();
     }
 
     function showLastCTA() {
@@ -901,16 +1120,101 @@
       }
     }
 
+    // ================== HISTORIAL UI ==================
+    function formatTime(ts) {
+      try {
+        const d = new Date(ts);
+        return d.toLocaleString("es-MX", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "short" });
+      } catch {
+        return "";
+      }
+    }
+
+    function renderHistory() {
+      const q = (historySearch.value || "").trim().toUpperCase();
+      const h = getHistory();
+      const filtered = q ? h.filter(x => (x.rfc || "").includes(q)) : h;
+
+      historyListEl.innerHTML = "";
+
+      if (!filtered.length) {
+        historyListEl.innerHTML = `
+          <div style="border:1px dashed rgba(148,163,184,.55); border-radius:14px; padding:12px; color:var(--text-muted); font-size:.86rem; line-height:1.45;">
+            Aún no hay historial. Genera una constancia y aquí aparecerán los últimos RFC.
+          </div>`;
+        return;
+      }
+
+      for (const item of filtered) {
+        const wrap = document.createElement("div");
+        wrap.className = "hist-item";
+        wrap.innerHTML = `
+          <div class="hist-top">
+            <div class="hist-rfc">${item.rfc || ""}</div>
+            <div class="hist-time">${formatTime(item.ts)}</div>
+          </div>
+          <div class="hist-meta">
+            <span class="tag">idCIF: <b>${(item.idcif || "").slice(0, 20)}</b></span>
+            ${item.lugar_emision ? `<span class="tag">Lugar: <b>${item.lugar_emision.slice(0, 28)}</b></span>` : ``}
+          </div>
+          <div class="hist-actions">
+            <button type="button" class="mini gray" data-act="fill">Rellenar</button>
+            <button type="button" class="mini gray" data-act="copy">Copiar</button>
+            <button type="button" class="mini" data-act="gen">Generar</button>
+          </div>
+        `;
+
+        wrap.addEventListener("click", (e) => {
+          const btn = e.target.closest("button");
+          if (!btn) return;
+
+          const act = btn.getAttribute("data-act");
+          if (!act) return;
+
+          const payload = {
+            rfc: item.rfc || "",
+            idcif: item.idcif || "",
+            lugar_emision: item.lugar_emision || ""
+          };
+
+          if (act === "fill") {
+            rfcInput.value = payload.rfc;
+            idInput.value = payload.idcif;
+            if (payload.lugar_emision) lugarInput.value = payload.lugar_emision;
+            setFieldAutofmt();
+            resetNotices();
+            setStatus("idle");
+            genBtn.focus();
+          }
+
+          if (act === "copy") {
+            const txt = `${payload.rfc} ${payload.idcif}`.trim();
+            navigator.clipboard?.writeText(txt).catch(() => alert("Texto:\n" + txt));
+          }
+
+          if (act === "gen") {
+            rfcInput.value = payload.rfc;
+            idInput.value = payload.idcif;
+            if (payload.lugar_emision) lugarInput.value = payload.lugar_emision;
+            setFieldAutofmt();
+            resetNotices();
+            setStatus("idle");
+            constanciaForm.requestSubmit();
+          }
+        });
+
+        historyListEl.appendChild(wrap);
+      }
+    }
+
     // ================== VIEW INIT ==================
-    // Prefill username
     document.getElementById("login-username").value = getSavedUser();
 
     showLastCTA();
+    renderHistory();
 
     const token = getToken();
     if (token) {
-      // No verificamos token aquí (sin endpoint). Solo mostramos la app.
-      // Si expira, el 401 nos regresará a login con UX friendly.
       const u = getSavedUser() || "usuario";
       setViewLoggedIn(u);
       setStatus("idle");
@@ -919,24 +1223,51 @@
     }
 
     // ================== EVENTS ==================
-    // Autocompletar pegado
-    parsePegado.addEventListener("click", tryParsePegado);
-    pegado.addEventListener("keydown", (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "enter") {
+    // Buscar historial (Ctrl/⌘+K)
+    window.addEventListener("keydown", (e) => {
+      const isK = e.key.toLowerCase() === "k";
+      if ((e.ctrlKey || e.metaKey) && isK) {
         e.preventDefault();
-        tryParsePegado();
+        historySearch.focus();
+        historySearch.select();
       }
     });
 
-    clearAll.addEventListener("click", () => {
-      rfcInput.value = "";
-      idInput.value = "";
-      lugarInput.value = "";
-      pegado.value = "";
-      resetNotices();
-      setStatus("idle");
-      rfcInput.focus();
+    historySearch.addEventListener("input", renderHistory);
+
+    clearHistoryBtn.addEventListener("click", () => {
+      if (!confirm("¿Borrar historial local de este navegador?")) return;
+      setHistory([]);
+      renderHistory();
     });
+
+    // Autocompletar pegado
+    parsePegado.addEventListener("click", tryParsePegado);
+
+    // Atajo: Ctrl/⌘+Enter en pegado = autocompletar + generar
+    pegado.addEventListener("keydown", (e) => {
+      const isEnter = e.key === "Enter";
+      if ((e.ctrlKey || e.metaKey) && isEnter) {
+        e.preventDefault();
+        tryParsePegado();
+        constanciaForm.requestSubmit();
+      }
+    });
+
+    pasteGenerate.addEventListener("click", () => {
+      tryParsePegado();
+      constanciaForm.requestSubmit();
+    });
+
+    function handleNewJob() {
+      // gestor: por defecto conserva lugar (muchos hacen en misma ciudad)
+      clearJob({ keepLugar: true });
+    }
+
+    newJob.addEventListener("click", handleNewJob);
+    newJobTop.addEventListener("click", handleNewJob);
+
+    clearAll.addEventListener("click", () => clearJob({ keepLugar: false }));
 
     useLast.addEventListener("click", () => {
       const last = getLastPayload();
@@ -947,6 +1278,7 @@
       setFieldAutofmt();
       resetNotices();
       setStatus("idle");
+      genBtn.focus();
     });
 
     // En vivo: formateo
@@ -986,7 +1318,6 @@
         const data = await resp.json().catch(() => ({}));
 
         if (resp.status === 409) {
-          // UX-friendly (no técnico)
           loginNoticeBody.textContent =
             data.message ||
             "Tu cuenta ya está activa en otro dispositivo. Cierra sesión ahí o usa la misma sesión.";
@@ -1002,6 +1333,7 @@
 
         setToken(data.token);
         setSavedUser(username);
+
         setViewLoggedIn(username);
         setStatus("idle");
         resetNotices();
@@ -1061,8 +1393,14 @@
     genAgainBtn.addEventListener("click", () => {
       resetNotices();
       setStatus("idle");
-      rfcInput.select();
+      handleNewJob();
+    });
+
+    focusRfcBtn.addEventListener("click", () => {
+      resetNotices();
+      setStatus("idle");
       rfcInput.focus();
+      rfcInput.select();
     });
 
     copyLastBtn.addEventListener("click", async () => {
@@ -1072,7 +1410,6 @@
       try {
         await navigator.clipboard.writeText(text);
       } catch (_) {
-        // fallback simple
         alert("Copiar no disponible. Texto:\n" + text);
       }
     });
@@ -1082,18 +1419,17 @@
       e.preventDefault();
       resetNotices();
 
-      // 3) Feedback inmediato (optimismo visual)
+      // Feedback inmediato
       setStatus("valid");
 
       const token = getToken();
       if (!token) {
-        // UX-friendly
         noticeSession.classList.add("is-visible");
         setStatus("idle");
         return;
       }
 
-      // 5) Evitar doble clic mental
+      // evita doble clic mental
       lockForm(true);
 
       // Normalizar inputs
@@ -1107,7 +1443,7 @@
         lockForm(false);
         setStatus("idle");
         noticeBad.classList.add("is-visible");
-        badBody.textContent = "Revisa el RFC. Debe tener 12–13 caracteres y formato válido (ej: TOHJ640426XXX).";
+        badBody.textContent = "Revisa el RFC. Formato típico: TOHJ640426XXX (12–13 caracteres).";
         rfcInput.focus();
         return;
       }
@@ -1115,17 +1451,16 @@
         lockForm(false);
         setStatus("idle");
         noticeBad.classList.add("is-visible");
-        badBody.textContent = "Revisa el idCIF. Debe ser numérico y normalmente tiene 8–20 dígitos.";
+        badBody.textContent = "Revisa el idCIF. Debe ser numérico (8–20 dígitos).";
         idInput.focus();
         return;
       }
 
-      // 6) Autocompletado inteligente: guardar último uso
+      // guarda último uso
       setLastPayload({ rfc, idcif, lugar_emision: lugar });
       showLastCTA();
 
       try {
-        // secuencia
         setStatus("sat");
 
         const formData = new FormData();
@@ -1143,7 +1478,6 @@
         });
 
         if (resp.status === 401) {
-          // 4) Manejo elegante de errores
           setToken(null);
           lockForm(false);
           setStatus("idle");
@@ -1153,11 +1487,20 @@
         }
 
         if (!resp.ok) {
+          // mensajes para gestor (más “qué hacer”)
           let msg = "Ocurrió un error. Intenta de nuevo.";
           try {
             const data = await resp.json();
             if (data && data.message) msg = data.message;
           } catch (_) {}
+
+          const lower = (msg || "").toLowerCase();
+          if (lower.includes("sat") || lower.includes("timeout") || lower.includes("tiempo")) {
+            msg = "SAT no respondió. Reintenta en 30–60 segundos. Si persiste, cambia de red o intenta más tarde.";
+          } else if (lower.includes("idcif") || lower.includes("cif")) {
+            msg = "RFC e idCIF podrían no coincidir. Verifica que sean del mismo QR/constancia.";
+          }
+
           lockForm(false);
           setStatus("idle");
           noticeBad.classList.add("is-visible");
@@ -1166,9 +1509,7 @@
         }
 
         setStatus("doc");
-
         const blob = await resp.blob();
-
         setStatus("down");
 
         let filename = "constancia_RFC.docx";
@@ -1187,14 +1528,31 @@
         a.remove();
         window.URL.revokeObjectURL(url);
 
-        // 7) Confirmación sutil de éxito
+        // éxito: cierra ciclo + agrega a historial
         setStatus("done");
         noticeOk.classList.add("is-visible");
+
         okBody.innerHTML = `
           <div style="margin-bottom:6px;"><b>RFC:</b> <span class="kbd">${rfc}</span></div>
           <div style="margin-bottom:6px;"><b>idCIF:</b> <span class="kbd">${idcif}</span></div>
+          ${lugar ? `<div style="margin-bottom:6px;"><b>Lugar:</b> <span class="kbd">${lugar}</span></div>` : ``}
           <div style="color:var(--text-muted); font-size:.86rem;">Archivo: <span class="kbd">${filename}</span></div>
         `;
+
+        addToHistory({
+          rfc,
+          idcif,
+          lugar_emision: lugar,
+          ts: Date.now(),
+        });
+
+        // gesto pro: deja listo para siguiente
+        // (no auto-limpia para que el gestor pueda re-descargar si quiere;
+        //  pero enfocamos para “siguiente”)
+        setTimeout(() => {
+          rfcInput.focus();
+          rfcInput.select();
+        }, 50);
 
       } catch (err) {
         console.error(err);
@@ -1208,4 +1566,3 @@
   </script>
 </body>
 </html>
-
