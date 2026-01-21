@@ -518,6 +518,21 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
           </div>
         </div>
 
+        <!-- Formato de descarga -->
+        <div class="field" style="margin-top:12px;">
+          <label>Formato de descarga</label>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <label style="display:flex; align-items:center; gap:8px; margin:0; font-weight:900;">
+              <input type="radio" name="out_format" value="pdf" checked />
+              PDF (recomendado)
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; margin:0; font-weight:900;">
+              <input type="radio" name="out_format" value="docx" />
+              Word (DOCX)
+            </label>
+          </div>
+        </div>
+        
         <form id="constancia-form">
           <button class="primary" type="submit" id="generate-button" style="margin-top:10px;">
             <span id="gen-icon" style="font-size:1rem;">⚡</span>
@@ -631,6 +646,11 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     const historyListEl = document.getElementById("history-list");
     const historySearch = document.getElementById("history-search");
     const clearHistoryBtn = document.getElementById("clear-history");
+
+    const getSelectedFormat = () => {
+      const el = document.querySelector('input[name="out_format"]:checked');
+      return (el && el.value) ? el.value : "pdf";
+    };
 
     // ================== STORAGE ==================
     const getToken = () => localStorage.getItem(TOKEN_KEY);
@@ -1023,6 +1043,9 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         formData.append("idcif", idcif);
         if (lugar) formData.append("lugar_emision", lugar);
 
+        const format = getSelectedFormat();
+        formData.append("format", format);
+        
         const resp = await fetch(`${API_BASE}/generar`, {
           method: "POST",
           body: formData,
@@ -1056,11 +1079,17 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
           return;
         }
 
+        const format = getSelectedFormat();
         setStatus("doc");
+        if (format === "pdf") {
+          progressTitle.textContent = "🧾 Convirtiendo a PDF…";
+          progressSub.textContent = "Esto puede tardar un poco más. No cierres la página.";
+        }
         const blob = await resp.blob();
         setStatus("down");
 
-        let filename = "constancia_RFC.docx";
+        const format = getSelectedFormat();
+        let filename = format === "pdf" ? "constancia_RFC.pdf" : "constancia_RFC.docx";
         const dispo = resp.headers.get("Content-Disposition");
         if (dispo) {
           const match = dispo.match(/filename="?([^"]+)"?/i);
@@ -1104,3 +1133,4 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
   </script>
 </body>
 </html>
+
