@@ -1043,8 +1043,8 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         formData.append("idcif", idcif);
         if (lugar) formData.append("lugar_emision", lugar);
 
-        const format = getSelectedFormat();
-        formData.append("format", format);
+        const outFormat = getSelectedFormat();
+        formData.append("format", outFormat);
         
         const resp = await fetch(`${API_BASE}/generar`, {
           method: "POST",
@@ -1081,7 +1081,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
 
         const format = getSelectedFormat();
         setStatus("doc");
-        if (format === "pdf") {
+        if (outFormat === "pdf") {
           progressTitle.textContent = "🧾 Convirtiendo a PDF…";
           progressSub.textContent = "Esto puede tardar un poco más. No cierres la página.";
         }
@@ -1089,7 +1089,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         setStatus("down");
 
         const format = getSelectedFormat();
-        let filename = format === "pdf" ? "constancia_RFC.pdf" : "constancia_RFC.docx";
+        let filename = outFormat === "pdf" ? "constancia_RFC.pdf" : "constancia_RFC.docx";
         const dispo = resp.headers.get("Content-Disposition");
         if (dispo) {
           const match = dispo.match(/filename="?([^"]+)"?/i);
@@ -1133,4 +1133,5 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
   </script>
 </body>
 </html>
+
 
