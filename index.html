@@ -1000,21 +1000,21 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       e.preventDefault();
       resetNotices();
       setStatus("valid");
-
+    
       const token = getToken();
       if (!token) {
         noticeSession.classList.add("is-visible");
         setStatus("idle");
         return;
       }
-
+    
       lockForm(true);
-
+    
       normalizeInputs();
       const rfc = (rfcInput.value || "").trim().toUpperCase();
       const idcif = (idInput.value || "").trim();
       const lugar = (lugarInput.value || "").trim();
-
+    
       if (!validateRFC(rfc)) {
         lockForm(false);
         setStatus("idle");
@@ -1031,27 +1031,27 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         idInput.focus();
         return;
       }
-
+    
       setLastPayload({ rfc, idcif, lugar_emision: lugar });
       showLastCTA();
-
+    
       try {
         setStatus("sat");
-
+    
         const formData = new FormData();
         formData.append("rfc", rfc);
         formData.append("idcif", idcif);
         if (lugar) formData.append("lugar_emision", lugar);
-
+    
         const outFormat = getSelectedFormat();
         formData.append("format", outFormat);
-        
+    
         const resp = await fetch(`${API_BASE}/generar`, {
           method: "POST",
           body: formData,
           headers: { "Authorization": `Bearer ${token}`, "X-Requested-With": "fetch" },
         });
-
+    
         if (resp.status === 401) {
           setToken(null);
           setStatus("idle");
@@ -1060,42 +1060,41 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
           setViewLoggedOut();
           return;
         }
-
+    
         if (!resp.ok) {
           let msg = "Ocurrió un error. Intenta de nuevo.";
           try {
             const data = await resp.json();
             if (data && data.message) msg = data.message;
           } catch (_) {}
-
+    
           const lower = (msg || "").toLowerCase();
           if (lower.includes("sat") || lower.includes("timeout") || lower.includes("tiempo")) {
             msg = "SAT no respondió. Reintenta en 30–60 segundos o intenta más tarde.";
           }
-
+    
           setStatus("idle");
           noticeBad.classList.add("is-visible");
           badBody.textContent = msg;
           return;
         }
-
-        const format = getSelectedFormat();
+    
         setStatus("doc");
         if (outFormat === "pdf") {
           progressTitle.textContent = "🧾 Convirtiendo a PDF…";
           progressSub.textContent = "Esto puede tardar un poco más. No cierres la página.";
         }
+    
         const blob = await resp.blob();
         setStatus("down");
-
-        const format = getSelectedFormat();
+    
         let filename = outFormat === "pdf" ? "constancia_RFC.pdf" : "constancia_RFC.docx";
         const dispo = resp.headers.get("Content-Disposition");
         if (dispo) {
           const match = dispo.match(/filename="?([^"]+)"?/i);
           if (match && match[1]) filename = match[1];
         }
-
+    
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
@@ -1104,7 +1103,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         a.click();
         a.remove();
         window.URL.revokeObjectURL(url);
-
+    
         setStatus("done");
         noticeOk.classList.add("is-visible");
         okBody.innerHTML = `
@@ -1112,15 +1111,14 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
           <div style="margin-top:6px;"><b>idCIF:</b> <span class="kbd">${idcif}</span></div>
           <div style="margin-top:6px; color:var(--text-muted); font-size:.86rem;">Archivo: <span class="kbd">${filename}</span></div>
         `;
-
+    
         addToHistory({ rfc, idcif, lugar_emision: lugar, ts: Date.now() });
-
-        // listo para el siguiente: enfoca pegado
+    
         setTimeout(() => {
           pegado.focus();
           pegado.select();
         }, 60);
-
+    
       } catch (err) {
         console.error(err);
         setStatus("idle");
@@ -1133,5 +1131,6 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
   </script>
 </body>
 </html>
+
 
 
