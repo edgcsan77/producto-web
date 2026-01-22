@@ -423,6 +423,71 @@
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* ===== Segmented control (PDF / Word) ===== */
+    .segmented{
+      display:flex;
+      gap:10px;
+      padding:8px;
+      border-radius: 16px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(249,250,251,.95);
+    }
+    
+    .segmented-input{
+      position:absolute;
+      opacity:0;
+      pointer-events:none;
+    }
+    
+    .segmented-btn{
+      flex:1;
+      min-height: 52px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,.55);
+      background: #fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 10px 12px;
+      font-weight: 950;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .08s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+    }
+    
+    .segmented-btn .seg-emoji{ font-size: 1.05rem; }
+    .segmented-btn .seg-sub{
+      font-size: .72rem;
+      color: var(--text-muted);
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(17,24,39,.06);
+      border: 1px solid rgba(17,24,39,.08);
+    }
+    
+    /* seleccionado */
+    .segmented-input:checked + .segmented-btn{
+      border-color: rgba(37,99,235,.55);
+      background: linear-gradient(180deg, rgba(37,99,235,.12), rgba(37,99,235,.06));
+      box-shadow: 0 10px 22px rgba(37,99,235,.14);
+      transform: translateY(-1px);
+    }
+    
+    /* focus accesible */
+    .segmented-input:focus + .segmented-btn{
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.8), 0 0 0 6px rgba(59, 130, 246, 0.15);
+      border-color: var(--accent);
+    }
+    
+    /* móvil: que no se rompa */
+    @media (max-width: 420px){
+      .segmented{ gap:8px; padding:8px; }
+      .segmented-btn{ gap:8px; padding: 10px; min-height: 54px; }
+      .segmented-btn .seg-sub{ display:none; } /* si quieres más limpio en pantallas muy chicas */
+    }
   </style>
 </head>
 
@@ -521,18 +586,24 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         <!-- Formato de descarga -->
         <div class="field" style="margin-top:12px;">
           <label>Formato de descarga</label>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <label style="display:flex; align-items:center; gap:8px; margin:0; font-weight:900;">
-              <input type="radio" name="out_format" value="pdf" checked />
-              PDF (recomendado)
+        
+          <div class="segmented" role="radiogroup" aria-label="Formato de descarga">
+            <input class="segmented-input" type="radio" name="out_format" id="fmt_pdf" value="pdf" checked>
+            <label class="segmented-btn" for="fmt_pdf">
+              <span class="seg-emoji">📄</span>
+              <span>PDF</span>
+              <span class="seg-sub">Recomendado</span>
             </label>
-            <label style="display:flex; align-items:center; gap:8px; margin:0; font-weight:900;">
-              <input type="radio" name="out_format" value="docx" />
-              Word (DOCX)
+        
+            <input class="segmented-input" type="radio" name="out_format" id="fmt_docx" value="docx">
+            <label class="segmented-btn" for="fmt_docx">
+              <span class="seg-emoji">📝</span>
+              <span>Word</span>
+              <span class="seg-sub">DOCX</span>
             </label>
           </div>
         </div>
-        
+
         <form id="constancia-form">
           <button class="primary" type="submit" id="generate-button" style="margin-top:10px;">
             <span id="gen-icon" style="font-size:1rem;">⚡</span>
@@ -1131,6 +1202,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
   </script>
 </body>
 </html>
+
 
 
 
