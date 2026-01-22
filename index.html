@@ -583,26 +583,21 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
           </div>
         </div>
 
-        <!-- Formato de descarga -->
-        <div class="field" style="margin-top:12px;">
-          <label>Formato de descarga</label>
-        
-          <div class="segmented" role="radiogroup" aria-label="Formato de descarga">
-            <input class="segmented-input" type="radio" name="out_format" id="fmt_pdf" value="pdf" checked>
-            <label class="segmented-btn" for="fmt_pdf">
-              <span class="seg-emoji">📄</span>
-              <span>PDF</span>
-              <span class="seg-sub">Recomendado</span>
-            </label>
-        
-            <input class="segmented-input" type="radio" name="out_format" id="fmt_docx" value="docx">
-            <label class="segmented-btn" for="fmt_docx">
-              <span class="seg-emoji">📝</span>
-              <span>Word</span>
-              <span class="seg-sub">DOCX</span>
-            </label>
+        <form id="constancia-form" onsubmit="return false;">
+          <!-- Formato de descarga (DEBE IR DENTRO DEL FORM) -->
+          <div class="field" style="margin-top:12px;">
+            <label>Formato de descarga</label>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <label style="display:flex; align-items:center; gap:8px; margin:0; font-weight:900;">
+                <input type="radio" name="out_format" value="pdf" checked />
+                PDF (recomendado)
+              </label>
+              <label style="display:flex; align-items:center; gap:8px; margin:0; font-weight:900;">
+                <input type="radio" name="out_format" value="docx" />
+                Word (DOCX)
+              </label>
+            </div>
           </div>
-        </div>
 
         <form id="constancia-form" onsubmit="return false">
           <button class="primary" type="submit" id="generate-button" style="margin-top:10px;">
@@ -1201,6 +1196,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
   </script>
 </body>
 </html>
+
 
 
 
