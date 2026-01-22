@@ -583,27 +583,38 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
           </div>
         </div>
 
-        <form id="constancia-form" onsubmit="return false;">
-          <!-- Formato de descarga (DEBE IR DENTRO DEL FORM) -->
+        <form id="constancia-form" novalidate>
+          <!-- Formato de descarga (DENTRO DEL FORM) -->
           <div class="field" style="margin-top:12px;">
             <label>Formato de descarga</label>
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-              <label style="display:flex; align-items:center; gap:8px; margin:0; font-weight:900;">
-                <input type="radio" name="out_format" value="pdf" checked />
-                PDF (recomendado)
+        
+            <!-- ✅ Segmented control bonito -->
+            <div class="segmented" role="radiogroup" aria-label="Formato de descarga">
+              <label style="flex:1; position:relative; margin:0;">
+                <input class="segmented-input" type="radio" name="out_format" value="pdf" checked />
+                <span class="segmented-btn" role="radio" aria-checked="true">
+                  <span class="seg-emoji">📄</span>
+                  <span>PDF</span>
+                  <span class="seg-sub">Recomendado</span>
+                </span>
               </label>
-              <label style="display:flex; align-items:center; gap:8px; margin:0; font-weight:900;">
-                <input type="radio" name="out_format" value="docx" />
-                Word (DOCX)
+        
+              <label style="flex:1; position:relative; margin:0;">
+                <input class="segmented-input" type="radio" name="out_format" value="docx" />
+                <span class="segmented-btn" role="radio" aria-checked="false">
+                  <span class="seg-emoji">📝</span>
+                  <span>Word</span>
+                  <span class="seg-sub">DOCX</span>
+                </span>
               </label>
             </div>
           </div>
-
-        <form id="constancia-form" onsubmit="return false">
+        
           <button class="primary" type="submit" id="generate-button" style="margin-top:10px;">
+            <span id="gen-icon" style="font-size:1rem;">⚡</span>
             <span id="gen-text">Generar y descargar</span>
           </button>
-
+        
           <div id="progress" class="progress">
             <div class="progress-top">
               <div class="progress-title" id="progress-title">⏳ Iniciando…</div>
@@ -614,24 +625,24 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
               Esto puede tardar 5–10 segundos. No cierres la página.
             </div>
           </div>
-
+        
           <div id="notice-ok" class="notice ok">
             <div class="notice-title">✅ Generada</div>
             <div class="notice-body" id="ok-body"></div>
           </div>
-
+        
           <div id="notice-session" class="notice warn">
             <div class="notice-title">🔒 Sesión cerrada por seguridad</div>
             <div class="notice-body">
               Tu cuenta se usó en otro dispositivo. Por seguridad, cerramos esta sesión.
             </div>
           </div>
-
+        
           <div id="notice-bad" class="notice bad">
             <div class="notice-title">⚠️ No se pudo generar</div>
             <div class="notice-body" id="bad-body"></div>
           </div>
-
+        
           <div class="footer">
             Este sitio no almacena datos; solo consulta al SAT y descarga el archivo.
           </div>
@@ -1196,6 +1207,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
   </script>
 </body>
 </html>
+
 
 
 
