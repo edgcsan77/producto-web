@@ -765,6 +765,9 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       renderHistory();
     };
 
+    // ================== KEEPALIVE /PING ==================
+    let _pingTimer = null;
+
     // ================== UX ==================
     function setSessionChip(state, text) {
       sessionDot.className = "dot " + state;
@@ -953,8 +956,6 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     setStatus("idle");
 
     // ================== KEEPALIVE /PING ==================
-    let _pingTimer = null;
-    
     async function doPing() {
       const token = getToken();
       if (!token) return;
@@ -1260,3 +1261,4 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
   </script>
 </body>
 </html>
+
