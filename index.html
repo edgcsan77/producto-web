@@ -778,11 +778,12 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       setSessionChip("ok", `Sesión: activa (${username})`);
     }
 
-    function setViewLoggedOut() {
+    function setViewLoggedOut({ keepChip = false } = {}) {
+      stopPing();
       loginCard.style.display = "block";
       appWrap.style.display = "none";
       logoutBtn.style.display = "none";
-      setSessionChip("warn", "Sesión: no iniciada");
+      if (!keepChip) setSessionChip("warn", "Sesión: no iniciada");
     }
 
     function resetNotices() {
@@ -951,6 +952,54 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
 
     setStatus("idle");
 
+    // ================== KEEPALIVE /PING ==================
+    let _pingTimer = null;
+    
+    async function doPing() {
+      const token = getToken();
+      if (!token) return;
+    
+      try {
+        const r = await fetch(`${API_BASE}/ping`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "X-Requested-With": "fetch",
+          },
+        });
+    
+        if (r.status === 401) {
+          // Sesión inválida/expirada/kickout
+          setToken(null);
+          setViewLoggedOut({ keepChip: true });
+          setSessionChip("warn", "Sesión: cerrada");
+          resetNotices();
+          noticeSession.classList.add("is-visible");
+          setStatus("idle");
+        } else {
+          // ok
+          const u = getSavedUser() || "usuario";
+          setSessionChip("ok", `Sesión: activa (${u})`);
+        }
+      } catch (e) {
+        if ((getToken() || "")) setSessionChip("warn", "Sesión: verificando…");
+      }
+    }
+    
+    function startPing() {
+      if (_pingTimer) clearInterval(_pingTimer);
+      // cada 2 min (ajusta a 120000–300000)
+      _pingTimer = setInterval(doPing, 120000);
+      // ping inmediato al arrancar
+      doPing();
+    }
+    
+    function stopPing() {
+      if (_pingTimer) clearInterval(_pingTimer);
+      _pingTimer = null;
+    }
+
+    if (token) startPing();
     // ================== EVENTS ==================
     window.addEventListener("keydown", (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
@@ -1038,6 +1087,8 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         setSavedUser(username);
 
         setViewLoggedIn(username);
+        startPing();
+
         showLastCTA();
         setStatus("idle");
         pegado.focus();
@@ -1065,6 +1116,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       } catch (err) {
         console.error("Error en logout:", err);
       } finally {
+        stopPing();
         setToken(null);
         setViewLoggedOut();
         setStatus("idle");
@@ -1130,13 +1182,14 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     
         if (resp.status === 401) {
           setToken(null);
-          setStatus("idle");
+          setViewLoggedOut({ keepChip: true });
           setSessionChip("warn", "Sesión: cerrada");
+          setStatus("idle");
+          resetNotices();
           noticeSession.classList.add("is-visible");
-          setViewLoggedOut();
           return;
         }
-    
+
         if (!resp.ok) {
           let msg = "Ocurrió un error. Intenta de nuevo.";
           try {
@@ -1207,12 +1260,3 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
