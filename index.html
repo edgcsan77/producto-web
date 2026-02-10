@@ -498,7 +498,7 @@
         <div class="brand-badge">CSF</div>
         <div class="brand-title">
           <b>CSF Docs</b>
-          <span>Modo gestor: pega → genera → siguiente.</span>
+          <span>Modo gestor</span>
         </div>
       </div>
 
@@ -528,7 +528,6 @@
         </div>
 
         <button class="primary" type="submit" id="login-button">
-          <span style="font-size:1rem;">🔑</span>
           <span>Entrar</span>
         </button>
 
@@ -611,7 +610,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
           </div>
         
           <button class="primary" type="submit" id="generate-button" style="margin-top:10px;">
-            <span id="gen-icon" style="font-size:1rem;">⚡</span>
+            <span id="gen-icon" aria-hidden="true" style="display:none;"></span>
             <span id="gen-text">Generar y descargar</span>
           </button>
         
@@ -632,9 +631,9 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
           </div>
         
           <div id="notice-session" class="notice warn">
-            <div class="notice-title">🔒 Sesión cerrada por seguridad</div>
-            <div class="notice-body">
-              Tu cuenta se usó en otro dispositivo. Por seguridad, cerramos esta sesión.
+            <div class="notice-title" id="session-notice-title">🔒 Sesión cerrada</div>
+            <div class="notice-body" id="session-notice-body">
+              Tu sesión ya no es válida. Vuelve a iniciar sesión.
             </div>
           </div>
         
@@ -679,6 +678,16 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     const LAST_KEY  = "constancia_last_payload";
     const HISTORY_KEY = "constancia_history_v1";
     const HISTORY_MAX = 10;
+
+    const DEVICE_KEY = "constancia_device_id";
+    const getDeviceId = () => {
+      let v = localStorage.getItem(DEVICE_KEY);
+      if (!v) {
+        v = (crypto?.randomUUID ? crypto.randomUUID() : ("dev_" + Math.random().toString(36).slice(2)));
+        localStorage.setItem(DEVICE_KEY, v);
+      }
+      return v;
+    };
 
     // ================== DOM ==================
     const loginCard = document.getElementById("login-card");
@@ -824,10 +833,12 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       barFill.style.width = s.pct + "%";
       genText.textContent = s.btn;
 
-      if (!s.icon && step !== "idle" && step !== "done") {
+      if (step !== "idle" && step !== "done") {
+        genIcon.style.display = "inline-block"; // lo mostramos solo cuando hay spinner
         genIcon.innerHTML = '<span class="spinner" aria-hidden="true"></span>';
       } else {
-        genIcon.textContent = s.icon || "⚡";
+        genIcon.innerHTML = "";
+        genIcon.style.display = "none"; // oculto cuando está idle/done
       }
     }
 
@@ -956,6 +967,36 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     setStatus("idle");
 
     // ================== KEEPALIVE /PING ==================
+    function showSessionNotice(reason) {
+      const titleEl = document.getElementById("session-notice-title");
+      const bodyEl  = document.getElementById("session-notice-body");
+    
+      const r = (reason || "").toUpperCase();
+    
+      let title = "🔒 Sesión cerrada";
+      let body  = "Tu sesión ya no es válida. Vuelve a iniciar sesión.";
+    
+      if (r === "KICKED_BY_NEW_LOGIN") {
+        title = "🔒 Sesión cerrada por seguridad";
+        body  = "Se inició sesión en otro dispositivo o pestaña. Por seguridad, cerramos esta sesión.";
+      } else if (r === "IDLE_OR_SERVER_EXPIRED" || r === "JWT_EXPIRED") {
+        title = "⏳ Sesión caducada";
+        body  = "Tu sesión caducó por inactividad. Inicia sesión de nuevo.";
+      } else if (r === "NO_AUTH_HEADER" || r === "NO_TOKEN") {
+        title = "🔑 Sesión no iniciada";
+        body  = "Inicia sesión para continuar.";
+      } else if (r === "JWT_INVALID") {
+        title = "⚠️ Sesión inválida";
+        body  = "Tu sesión no se pudo validar. Inicia sesión de nuevo.";
+      }
+    
+      titleEl.textContent = title;
+      bodyEl.textContent = body;
+    
+      resetNotices();
+      noticeSession.classList.add("is-visible");
+    }
+
     async function doPing() {
       const token = getToken();
       if (!token) return;
@@ -970,13 +1011,17 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         });
     
         if (r.status === 401) {
-          // Sesión inválida/expirada/kickout
+          let j = {};
+          try { j = await r.json(); } catch {}
+          const reason = j.reason || "UNAUTHORIZED";
+        
           setToken(null);
           setViewLoggedOut({ keepChip: true });
           setSessionChip("warn", "Sesión: cerrada");
-          resetNotices();
-          noticeSession.classList.add("is-visible");
           setStatus("idle");
+        
+          showSessionNotice(reason);
+          return;
         } else {
           // ok
           const u = getSavedUser() || "usuario";
@@ -1067,7 +1112,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         const resp = await fetch(`${API_BASE}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json", "X-Requested-With": "fetch" },
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({ username, password, device_id: getDeviceId() }),
         });
 
         const data = await resp.json().catch(() => ({}));
@@ -1100,7 +1145,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         loginNotice.classList.add("is-visible");
       } finally {
         loginBtn.disabled = false;
-        loginBtn.innerHTML = `<span style="font-size:1rem;">🔑</span><span>Entrar</span>`;
+        loginBtn.innerHTML = `<span>Entrar</span>`;
       }
     });
 
@@ -1132,8 +1177,8 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     
       const token = getToken();
       if (!token) {
-        noticeSession.classList.add("is-visible");
         setStatus("idle");
+        showSessionNotice("NO_TOKEN");
         return;
       }
     
@@ -1182,12 +1227,16 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         });
     
         if (resp.status === 401) {
+          let j = {};
+          try { j = await resp.json(); } catch {}
+          const reason = j.reason || "UNAUTHORIZED";
+        
           setToken(null);
           setViewLoggedOut({ keepChip: true });
           setSessionChip("warn", "Sesión: cerrada");
           setStatus("idle");
-          resetNotices();
-          noticeSession.classList.add("is-visible");
+        
+          showSessionNotice(reason);
           return;
         }
 
@@ -1261,4 +1310,5 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
   </script>
 </body>
 </html>
+
 
