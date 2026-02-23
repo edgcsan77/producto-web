@@ -750,6 +750,11 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       return v;
     };
 
+    // ===== Defaults por usuario =====
+    const USER_DEFAULTS = {
+      "brandon.user": { lugar_emision: "CUAUHTEMOC, CIUDAD DE MEXICO" },
+    };
+
     // ================== DOM ==================
     const loginCard = document.getElementById("login-card");
     const appWrap   = document.getElementById("app-wrap");
@@ -805,6 +810,30 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     const getSavedUser = () => localStorage.getItem(USER_KEY) || "";
     const setSavedUser = (u) => u ? localStorage.setItem(USER_KEY, u) : localStorage.removeItem(USER_KEY);
 
+    const USER_LUGAR_KEY = (u) => `constancia_lugar_emision_${(u || "").toLowerCase()}`;
+
+    function getUserLugarDefault(username) {
+      const uKey = (username || "").toLowerCase();
+    
+      // 1) Si ya guardó uno en este navegador, úsalo
+      const saved = localStorage.getItem(USER_LUGAR_KEY(uKey));
+      if (saved && saved.trim().length >= 3) return saved.trim();
+    
+      // 2) Si existe en el mapa, úsalo
+      const fromMap = USER_DEFAULTS[username] || USER_DEFAULTS[uKey];
+      if (fromMap && fromMap.lugar_emision) return fromMap.lugar_emision;
+    
+      // 3) fallback: nada
+      return "";
+    }
+    
+    function applyLugarDefault(username) {
+      const def = getUserLugarDefault(username);
+      if (def && !(lugarInput.value || "").trim()) {
+        lugarInput.value = def;
+      }
+    }
+        
     const getLastPayload = () => {
       try { return JSON.parse(localStorage.getItem(LAST_KEY) || "null"); } catch { return null; }
     };
@@ -1022,8 +1051,13 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     renderHistory();
 
     const token = getToken();
-    if (token) setViewLoggedIn(getSavedUser() || "usuario");
-    else setViewLoggedOut();
+    if (token) {
+      const u = getSavedUser() || "usuario";
+      setViewLoggedIn(u);
+      applyLugarDefault(u);
+    } else {
+      setViewLoggedOut();
+    }
 
     setStatus("idle");
 
@@ -1194,6 +1228,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
         setSavedUser(username);
 
         setViewLoggedIn(username);
+        applyLugarDefault(username);
         startPing();
 
         showLastCTA();
@@ -1397,6 +1432,7 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
   </script>
 </body>
 </html>
+
 
 
 
