@@ -1370,8 +1370,27 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
           } catch (_) {}
     
           const lower = (msg || "").toLowerCase();
-          if (lower.includes("sat") || lower.includes("timeout") || lower.includes("tiempo")) {
-            msg = "SAT no respondió. Reintenta en 30–60 segundos o intenta más tarde.";
+
+          const isEligibilityError =
+            lower.includes("suspendido") ||
+            lower.includes("no activo") ||
+            lower.includes("sin régimen") ||
+            lower.includes("sin regimen") ||
+            lower.includes("situación fiscal verificable") ||
+            lower.includes("situacion fiscal verificable");
+          
+          const isTemporarySatError =
+            lower.includes("timeout") ||
+            lower.includes("tiempo de espera") ||
+            lower.includes("temporalmente no disponible") ||
+            lower.includes("servicio no disponible") ||
+            lower.includes("sat no respondió") ||
+            lower.includes("sat no respondio");
+          
+          if (!isEligibilityError && isTemporarySatError) {
+            msg =
+              "SAT no respondió. Reintenta en 30–60 segundos " +
+              "o intenta más tarde.";
           }
     
           setStatus("idle");
