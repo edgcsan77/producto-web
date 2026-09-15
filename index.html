@@ -617,11 +617,15 @@
 
         <!-- Pegado rápido primero (lo principal para gestor) -->
         <div class="field">
-          <label for="pegado">Pegado rápido (recomendado)</label>
-          <textarea id="pegado" placeholder="Ej:
-RFC: TOHJ640426XXX
-idCIF: 19010347XXX
-Lugar: MONTERREY, NUEVO LEÓN"></textarea>
+          <label for="pegado">Pegado rápido / lote RFC + IDCIF</label>
+<textarea id="pegado" placeholder="Ejemplo individual:
+TOHJ640426XXX
+19010347123
+
+Ejemplo lote:
+TOHJ640426XXX 19010347123
+GARC900101ABC 12345678901
+LOPE850505XYZ 98765432101"></textarea>
         </div>
 
         <div class="row-actions">
@@ -944,6 +948,68 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     function normalizeInputs() {
       rfcInput.value = (rfcInput.value || "").toUpperCase().replace(/\s+/g,"").slice(0,13);
       idInput.value = (idInput.value || "").replace(/\s+/g,"").slice(0,20);
+    }
+
+    function parseRFCIDCIFBatch(text) {
+      const raw = (text || "").toUpperCase().trim();
+    
+      if (!raw) return [];
+    
+      const rfcRe = /^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/;
+      const idcifRe = /^\d{8,20}$/;
+    
+      // Quitamos etiquetas conocidas sin modificar el orden.
+      const clean = raw
+        .replace(/\bRFC\s*:?\s*/gi, "")
+        .replace(/\bID\s*CIF\s*:?\s*/gi, "")
+        .replace(/[|,;]+/g, " ");
+    
+      const tokens = clean.match(
+        /[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}|\d{8,20}/g
+      ) || [];
+    
+      // Un lote debe venir perfectamente pareado.
+      if (tokens.length < 4 || tokens.length % 2 !== 0) {
+        return [];
+      }
+    
+      const pairs = [];
+      const seen = new Set();
+    
+      for (let i = 0; i < tokens.length; i += 2) {
+        const a = tokens[i];
+        const b = tokens[i + 1];
+    
+        let rfc = "";
+        let idcif = "";
+    
+        // RFC IDCIF
+        if (rfcRe.test(a) && idcifRe.test(b)) {
+          rfc = a;
+          idcif = b;
+        }
+        // IDCIF RFC
+        else if (idcifRe.test(a) && rfcRe.test(b)) {
+          rfc = b;
+          idcif = a;
+        }
+        // Evitar desalineamientos RFC+RFC / IDCIF+IDCIF
+        else {
+          return [];
+        }
+    
+        const key = `${rfc}|${idcif}`;
+    
+        if (!seen.has(key)) {
+          seen.add(key);
+          pairs.push({
+            rfc,
+            idcif
+          });
+        }
+      }
+    
+      return pairs;
     }
 
     function tryParsePegado() {
@@ -1291,6 +1357,133 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
     // Estado inicial
     setPwVisible(false);
 
+    async function generarUnaPareja({
+      rfc,
+      idcif,
+      lugar,
+      token,
+      outFormat
+    }) {
+      const formData = new FormData();
+    
+      formData.append("rfc", rfc);
+      formData.append("idcif", idcif);
+    
+      if (lugar) {
+        formData.append(
+          "lugar_emision",
+          lugar
+        );
+      }
+    
+      formData.append(
+        "format",
+        outFormat
+      );
+    
+      const resp = await fetch(
+        `${API_BASE}/generar`,
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            "Authorization":
+              `Bearer ${token}`,
+            "X-Requested-With":
+              "fetch"
+          }
+        }
+      );
+    
+      if (resp.status === 401) {
+        let data = {};
+    
+        try {
+          data = await resp.json();
+        } catch {}
+    
+        const err = new Error(
+          data.message ||
+          "Sesión no válida."
+        );
+    
+        err.code = "AUTH";
+        err.reason =
+          data.reason ||
+          "UNAUTHORIZED";
+    
+        throw err;
+      }
+    
+      if (!resp.ok) {
+        let data = {};
+    
+        try {
+          data = await resp.json();
+        } catch {}
+    
+        throw new Error(
+          data.message ||
+          `Error HTTP ${resp.status}`
+        );
+      }
+    
+      const blob = await resp.blob();
+    
+      let filename =
+        outFormat === "pdf"
+          ? `${rfc}_RFC.pdf`
+          : `${rfc}_RFC.docx`;
+    
+      const dispo =
+        resp.headers.get(
+          "Content-Disposition"
+        );
+    
+      if (dispo) {
+        const match = dispo.match(
+          /filename="?([^"]+)"?/i
+        );
+    
+        if (match && match[1]) {
+          filename = match[1];
+        }
+      }
+    
+      return {
+        rfc,
+        idcif,
+        filename,
+        blob
+      };
+    }
+
+    function descargarBlob(
+      blob,
+      filename
+    ) {
+      const url =
+        window.URL.createObjectURL(
+          blob
+        );
+    
+      const a =
+        document.createElement("a");
+    
+      a.href = url;
+      a.download = filename;
+    
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    
+      setTimeout(() => {
+        window.URL.revokeObjectURL(
+          url
+        );
+      }, 1000);
+    }
+
     // Generar
     constanciaForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -1305,6 +1498,165 @@ Lugar: MONTERREY, NUEVO LEÓN"></textarea>
       }
     
       lockForm(true);
+
+      const batchPairs =
+        parseRFCIDCIFBatch(
+          pegado.value
+        );
+
+      // ==========================================
+      // LOTE RFC + IDCIF
+      // ==========================================
+      if (batchPairs.length >= 2) {
+        const lugar =
+          (lugarInput.value || "")
+          .trim();
+
+        const outFormat =
+          getSelectedFormat();
+
+        let ok = 0;
+        let fail = 0;
+        const errores = [];
+
+        try {
+          setStatus("sat");
+
+          progressTitle.textContent =
+            `📦 Procesando lote de ${batchPairs.length} constancias…`;
+
+          progressSub.textContent =
+            "Se procesarán una por una para evitar saturar SAT.";
+
+          for (
+            let i = 0;
+            i < batchPairs.length;
+            i++
+          ) {
+            const pair =
+              batchPairs[i];
+
+            const porcentaje =
+              Math.round(
+                (
+                  i /
+                  batchPairs.length
+                ) * 85
+              );
+
+            barFill.style.width =
+              `${Math.max(
+                18,
+                porcentaje
+              )}%`;
+
+            progressStep.textContent =
+              `${i + 1}/${batchPairs.length}`;
+
+            progressTitle.textContent =
+              `⏳ ${i + 1} de ${batchPairs.length}: ${pair.rfc}`;
+
+            try {
+              const result =
+                await generarUnaPareja({
+                  rfc:
+                    pair.rfc,
+                  idcif:
+                    pair.idcif,
+                  lugar,
+                  token,
+                  outFormat
+                });
+
+              descargarBlob(
+                result.blob,
+                result.filename
+              );
+
+              addToHistory({
+                rfc:
+                  pair.rfc,
+                idcif:
+                  pair.idcif,
+                lugar_emision:
+                  lugar,
+                ts:
+                  Date.now()
+              });
+
+              ok++;
+
+            } catch (err) {
+              if (
+                err &&
+                err.code === "AUTH"
+              ) {
+                setToken(null);
+
+                setViewLoggedOut({
+                  keepChip: true
+                });
+
+                setSessionChip(
+                  "warn",
+                  "Sesión: cerrada"
+                );
+
+                showSessionNotice(
+                  err.reason
+                );
+
+                return;
+              }
+
+              fail++;
+
+              errores.push(
+                `${pair.rfc}: ${
+                  err.message ||
+                  "Error"
+                }`
+              );
+            }
+          }
+
+          setStatus("done");
+
+          noticeOk.classList.add(
+            "is-visible"
+          );
+
+          okBody.innerHTML = `
+            <div>
+              <b>Lote terminado</b>
+            </div>
+            <div style="margin-top:6px;">
+              ✅ Generadas:
+              <span class="kbd">${ok}</span>
+            </div>
+            <div style="margin-top:6px;">
+              ❌ Fallidas:
+              <span class="kbd">${fail}</span>
+            </div>
+          `;
+
+          if (errores.length) {
+            noticeBad.classList.add(
+              "is-visible"
+            );
+
+            badBody.textContent =
+              errores.join(" | ");
+          }
+
+          pegado.value = "";
+
+          return;
+
+        } finally {
+          lockForm(false);
+        }
+      }
     
       normalizeInputs();
       const rfc = (rfcInput.value || "").trim().toUpperCase();
