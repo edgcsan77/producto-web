@@ -628,6 +628,13 @@ GARC900101ABC 12345678901
 LOPE850505XYZ 98765432101"></textarea>
         </div>
 
+        <div id="batch-hint" class="notice" style="display:none; margin-top:8px;">
+          <div class="notice-title" id="batch-hint-title">
+            📦 Modo lote detectado
+          </div>
+          <div class="notice-body" id="batch-hint-body"></div>
+        </div>
+
         <div class="row-actions">
           <button type="button" class="mini" id="autofill">Autocompletar</button>
           <button type="button" class="mini" id="new-job">Nueva</button>
@@ -782,6 +789,9 @@ LOPE850505XYZ 98765432101"></textarea>
     const lugarInput = document.getElementById("lugar_emision");
 
     const pegado = document.getElementById("pegado");
+    const batchHint = document.getElementById("batch-hint");
+    const batchHintTitle = document.getElementById("batch-hint-title");
+    const batchHintBody = document.getElementById("batch-hint-body");
     const autofillBtn = document.getElementById("autofill");
     const newJobBtn = document.getElementById("new-job");
     const useLastBtn = document.getElementById("use-last");
@@ -900,13 +910,27 @@ LOPE850505XYZ 98765432101"></textarea>
 
     function lockForm(locked) {
       genBtn.disabled = !!locked;
-      rfcInput.disabled = !!locked;
-      idInput.disabled = !!locked;
+    
       lugarInput.disabled = !!locked;
       pegado.disabled = !!locked;
       autofillBtn.disabled = !!locked;
       newJobBtn.disabled = !!locked;
       useLastBtn.disabled = !!locked;
+    
+      if (locked) {
+        rfcInput.disabled = true;
+        idInput.disabled = true;
+      } else {
+        const pairs = parseRFCIDCIFBatch(
+          pegado.value
+        );
+    
+        const isBatch =
+          pairs.length >= 2;
+    
+        rfcInput.disabled = isBatch;
+        idInput.disabled = isBatch;
+      }
     }
 
     function setStatus(step) {
@@ -1012,6 +1036,50 @@ LOPE850505XYZ 98765432101"></textarea>
       return pairs;
     }
 
+    function updateBatchModeUI() {
+      const pairs = parseRFCIDCIFBatch(
+        pegado.value
+      );
+    
+      const isBatch = pairs.length >= 2;
+    
+      if (isBatch) {
+        batchHint.style.display = "block";
+        batchHint.classList.add("is-visible");
+    
+        batchHintTitle.textContent =
+          `📦 Modo lote detectado: ${pairs.length} constancias`;
+    
+        batchHintBody.textContent =
+          "Los campos RFC e idCIF individuales serán ignorados. " +
+          "Se usará únicamente la lista pegada arriba.";
+    
+        rfcInput.disabled = true;
+        idInput.disabled = true;
+    
+        rfcInput.value = "";
+        idInput.value = "";
+    
+        genText.textContent =
+          `Generar y descargar ${pairs.length} constancias`;
+    
+      } else {
+        batchHint.style.display = "none";
+        batchHint.classList.remove("is-visible");
+    
+        rfcInput.disabled = false;
+        idInput.disabled = false;
+    
+        genText.textContent =
+          "Generar y descargar";
+      }
+    }
+
+    pegado.addEventListener(
+      "input",
+      updateBatchModeUI
+    );
+
     function tryParsePegado() {
       const t = (pegado.value || "").trim();
       if (!t) return;
@@ -1044,6 +1112,7 @@ LOPE850505XYZ 98765432101"></textarea>
       if (!keepLugar) lugarInput.value = "";
       resetNotices();
       setStatus("idle");
+      updateBatchModeUI();
       pegado.focus();
     }
 
@@ -1225,6 +1294,15 @@ LOPE850505XYZ 98765432101"></textarea>
     });
 
     autofillBtn.addEventListener("click", () => {
+      const pairs = parseRFCIDCIFBatch(
+        pegado.value
+      );
+    
+      if (pairs.length >= 2) {
+        updateBatchModeUI();
+        return;
+      }
+    
       tryParsePegado();
       rfcInput.focus();
     });
@@ -1650,6 +1728,7 @@ LOPE850505XYZ 98765432101"></textarea>
           }
 
           pegado.value = "";
+          updateBatchModeUI();
 
           return;
 
